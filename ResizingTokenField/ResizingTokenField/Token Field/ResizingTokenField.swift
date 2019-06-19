@@ -13,7 +13,11 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     private let viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = ResizingTokenFieldFlowLayout()
+        layout.onContentHeightChanged = { [weak self] (oldHeight, newHeight) in
+            self?.updateContentHeight(newHeight: newHeight, animated: false)
+        }
+        
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -63,6 +67,12 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     func appendTokens(_ tokens: [ResizingTokenFieldToken], animated: Bool) {
         viewModel.tokens += tokens
         collectionView.reloadData()
+    }
+    
+    // MARK: - Handling content height
+    
+    private func updateContentHeight(newHeight: CGFloat, animated: Bool) {
+        heightConstraint?.constant = newHeight
     }
     
     // MARK: - UICollectionViewDataSource
