@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
+class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     private let viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     
@@ -81,6 +81,16 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
         
         return cell
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if let token = viewModel.token(atIndexPath: indexPath) {
+            return DefaultTokenCell.size(forToken: token)
+        }
+        
+        return CGSize.zero
     }
     
     // MARK: - UICollectionViewDelegate

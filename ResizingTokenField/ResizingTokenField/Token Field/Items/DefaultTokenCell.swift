@@ -12,15 +12,23 @@ class DefaultTokenCell: UICollectionViewCell, TokenCellItem {
     
     static let nibName: String = "DefaultTokenCell"
     static let identifier: String = "DefaultTokenCell"
+    static let titleTextStyle: UIFont.TextStyle = .body
     
     @IBOutlet private weak var titleLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        titleLabel.font = UIFont.preferredFont(forTextStyle: DefaultTokenCell.titleTextStyle)
     }
     
     // MARK: - TokenCellItem
+    
+    static func size(forToken token: ResizingTokenFieldToken) -> CGSize {
+        let titleSize = token.title.size(withAttributes: [.font: UIFont.preferredFont(forTextStyle: DefaultTokenCell.titleTextStyle)])
+        return CGSize(width: 4 + ceil(titleSize.width) + 4,  // Leading + title + trailing
+                      height: 4 + ceil(titleSize.height) + 4)   // Top + height + bottom
+    }
     
     func populate(withToken token: ResizingTokenFieldToken) {
         titleLabel.text = token.title
