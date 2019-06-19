@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,11 +13,35 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ResizingTokenField" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ycb-qq-1by">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="100" translatesAutoresizingMaskIntoConstraints="NO" id="1A0-6X-olA" customClass="ResizingTokenField" customModule="ResizingTokenField" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44" width="414" height="100"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="1A0-6X-olA" firstAttribute="leading" secondItem="Ycb-qq-1by" secondAttribute="leading" id="HL9-we-ePY"/>
+                                    <constraint firstAttribute="trailing" secondItem="1A0-6X-olA" secondAttribute="trailing" id="jRq-br-rux"/>
+                                    <constraint firstAttribute="bottom" secondItem="1A0-6X-olA" secondAttribute="bottom" id="mgw-ds-PG9"/>
+                                    <constraint firstItem="1A0-6X-olA" firstAttribute="top" secondItem="Ycb-qq-1by" secondAttribute="top" constant="44" id="yCh-nX-tUE"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="1A0-6X-olA" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="7gM-yh-cQv"/>
+                            <constraint firstItem="Ycb-qq-1by" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CMc-AE-eMb"/>
+                            <constraint firstItem="Ycb-qq-1by" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Hpb-4N-vup"/>
+                            <constraint firstItem="Ycb-qq-1by" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="MQS-MB-nxF"/>
+                            <constraint firstItem="Ycb-qq-1by" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ggG-4V-9o9"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
