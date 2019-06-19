@@ -64,7 +64,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     // MARK: - Add/remove tokens
     
-    func appendTokens(_ tokens: [ResizingTokenFieldToken], animated: Bool) {
+    func append(tokens: [ResizingTokenFieldToken], animated: Bool) {
         viewModel.tokens += tokens
         collectionView.reloadData()
     }
