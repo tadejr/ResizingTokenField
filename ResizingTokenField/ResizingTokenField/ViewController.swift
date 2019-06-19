@@ -8,11 +8,28 @@
 
 import UIKit
 
+class Token: ResizingTokenFieldToken {
+    var title: String
+    
+    init(title: String) {
+        self.title = title
+    }
+}
+
 class ViewController: UIViewController {
 
+    @IBOutlet weak var tokenField: ResizingTokenField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let tokens: [Token] = [
+            Token(title: "Lorem"),
+            Token(title: "Ipsum"),
+            Token(title: "Dolor")
+        ]
+        
+        tokenField.appendTokens(tokens, animated: false)
     }
 
 

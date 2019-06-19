@@ -10,6 +10,6 @@ import Foundation
 
 protocol TokenCellItem {
     
-    
+    func populate(withToken token: ResizingTokenFieldToken)
     
 }

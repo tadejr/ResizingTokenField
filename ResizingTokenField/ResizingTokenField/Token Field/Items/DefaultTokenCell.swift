@@ -8,14 +8,22 @@
 
 import UIKit
 
-class DefaultTokenCell: UICollectionViewCell {
+class DefaultTokenCell: UICollectionViewCell, TokenCellItem {
     
     static let nibName: String = "DefaultTokenCell"
     static let identifier: String = "DefaultTokenCell"
     
+    @IBOutlet private weak var titleLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    
+    // MARK: - TokenCellItem
+    
+    func populate(withToken token: ResizingTokenFieldToken) {
+        titleLabel.text = token.title
     }
 
 }

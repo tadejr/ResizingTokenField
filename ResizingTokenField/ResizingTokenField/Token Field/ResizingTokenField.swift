@@ -58,15 +58,26 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                                 forCellWithReuseIdentifier: DefaultTokenCell.identifier)
     }
     
+    // MARK: - Add/remove tokens
+    
+    func appendTokens(_ tokens: [ResizingTokenFieldToken], animated: Bool) {
+        viewModel.tokens += tokens
+        collectionView.reloadData()
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3//viewModel.tokens.count
+        return viewModel.tokens.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell: DefaultTokenCell = collectionView.dequeueReusableCell(withReuseIdentifier: DefaultTokenCell.identifier, for: indexPath) as? DefaultTokenCell else {
             return UICollectionViewCell()
+        }
+        
+        if let token = viewModel.token(atIndexPath: indexPath) {
+            cell.populate(withToken: token)
         }
         
         return cell

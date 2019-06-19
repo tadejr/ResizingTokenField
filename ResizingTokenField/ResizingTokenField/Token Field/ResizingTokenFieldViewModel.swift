@@ -9,6 +9,12 @@
 import UIKit
 
 class ResizingTokenFieldViewModel {
-    private(set) var tokens: [TokenRepresentable] = []
+    var tokens: [ResizingTokenFieldToken] = []
+    
+    func token(atIndexPath indexPath: IndexPath) -> ResizingTokenFieldToken? {
+        guard tokens.count > indexPath.item else { return nil }
+        
+        return tokens[indexPath.item]
+    }
     
 }
