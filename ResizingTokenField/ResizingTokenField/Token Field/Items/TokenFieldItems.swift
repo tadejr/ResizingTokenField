@@ -10,11 +10,9 @@ import UIKit
 
 protocol TokenCellItem {
     
-    /// Returns size of an item for a particular token.
-    /// Implementation should use data in the provided token to determine its size.
-    static func size(forToken token: ResizingTokenFieldToken) -> CGSize
+    /// Returns width of an item for a particular token.
+    static func width(forToken token: ResizingTokenFieldToken, font: UIFont) -> CGFloat
     
-    /// Configure item for the provided token.
-    func populate(withToken token: ResizingTokenFieldToken)
-    
+    /// Configure item for the provided token and font.
+    func populate(withToken token: ResizingTokenFieldToken, font: UIFont)
 }

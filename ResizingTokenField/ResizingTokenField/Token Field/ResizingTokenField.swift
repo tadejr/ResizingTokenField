@@ -10,6 +10,21 @@ import UIKit
 
 class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
+    // MARK: - Configuration
+    
+    /// If set, this will be the text style used for all labels.
+    /// Otherwise default system font with fontSize will be used.
+    var textStyle: UIFont.TextStyle? {
+        get { return viewModel.textStyle }
+        set { viewModel.textStyle = newValue }
+    }
+    
+    /// Used if textStyle is not set. Default value 15.
+    var fontSize: CGFloat {
+        get { return viewModel.fontSize }
+        set { viewModel.fontSize = newValue }
+    }
+    
     private let viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     
     private lazy var collectionView: UICollectionView = {
@@ -101,7 +116,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     private func populate(tokenCell: DefaultTokenCell, atIndexPath indexPath: IndexPath) {
         guard let token = viewModel.token(atIndexPath: indexPath) else { return }
-        tokenCell.populate(withToken: token)
+        tokenCell.populate(withToken: token, font: viewModel.font)
     }
     
     private func populate(textFieldCell: TextFieldCell, atIndexPath indexPath: IndexPath) {
