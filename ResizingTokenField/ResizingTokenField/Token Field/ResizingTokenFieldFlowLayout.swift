@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// A UICollectionViewFlowLayout subclass, which.
+/// - tracks content height changes (onContentHeightChanged)
 class ResizingTokenFieldFlowLayout: UICollectionViewFlowLayout {
     
     // Tracking content height changes

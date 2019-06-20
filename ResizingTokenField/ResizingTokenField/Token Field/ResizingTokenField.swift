@@ -22,6 +22,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .lightGray
         
         return collectionView
     }()
@@ -58,6 +59,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func registerCells() {
+        collectionView.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
         collectionView.register(UINib(nibName: DefaultTokenCell.nibName, bundle: Bundle(for: DefaultTokenCell.self)),
                                 forCellWithReuseIdentifier: DefaultTokenCell.identifier)
     }
@@ -78,29 +80,38 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.tokens.count
+        return viewModel.numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell: DefaultTokenCell = collectionView.dequeueReusableCell(withReuseIdentifier: DefaultTokenCell.identifier, for: indexPath) as? DefaultTokenCell else {
-            return UICollectionViewCell()
-        }
-        
-        if let token = viewModel.token(atIndexPath: indexPath) {
-            cell.populate(withToken: token)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.identifierForCell(atIndexPath: indexPath),
+                                                      for: indexPath)
+        switch cell {
+        case let tokenCell as DefaultTokenCell:
+            populate(tokenCell: tokenCell, atIndexPath: indexPath)
+        case let textFieldCell as TextFieldCell:
+            populate(textFieldCell: textFieldCell, atIndexPath: indexPath)
+        default:
+            // Should never reach.
+            break
         }
         
         return cell
     }
     
+    private func populate(tokenCell: DefaultTokenCell, atIndexPath indexPath: IndexPath) {
+        guard let token = viewModel.token(atIndexPath: indexPath) else { return }
+        tokenCell.populate(withToken: token)
+    }
+    
+    private func populate(textFieldCell: TextFieldCell, atIndexPath indexPath: IndexPath) {
+        
+    }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if let token = viewModel.token(atIndexPath: indexPath) {
-            return DefaultTokenCell.size(forToken: token)
-        }
-        
-        return CGSize.zero
+        return viewModel.sizeForItemAt(indexPath: indexPath)
     }
     
     // MARK: - UICollectionViewDelegate
