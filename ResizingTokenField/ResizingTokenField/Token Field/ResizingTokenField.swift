@@ -25,7 +25,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.fontSize = newValue }
     }
     
-    private let viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
+    private var viewModel: ResizingTokenFieldViewModel!
     
     private lazy var collectionView: UICollectionView = {
         let layout = ResizingTokenFieldFlowLayout()
@@ -52,6 +52,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         
         setUpCollectionView()
         registerCells()
+        viewModel = ResizingTokenFieldViewModel(collectionView: collectionView)
     }
     
     private func setUpCollectionView() {
@@ -83,7 +84,25 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     func append(tokens: [ResizingTokenFieldToken], animated: Bool) {
         viewModel.tokens += tokens
+        reloadDataThenResizeTextFieldCell()
+    }
+    
+    // MARK: - Resizing text field cell
+    
+    /// Reloads data and correctly resizes the text field cell.
+    /// This is done by:
+    /// - setting text field cell size to minimum
+    /// - reloading collection view data; since text field cell width is set to minimum it will stay in the same row only if there is enough room
+    /// - re-invalidates collectionView, causing the cell's size to be recalculated to correct width
+    private func reloadDataThenResizeTextFieldCell() {
+        viewModel.minimizeTextFieldCellSize()
         collectionView.reloadData()
+        
+        // Invalidate layout after a short delay to strecth the text field cell.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.viewModel.invalidateTextFieldCellSize()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
     
     // MARK: - Handling content height
