@@ -15,23 +15,21 @@ class TextFieldCell: UICollectionViewCell {
     /// Implement to handle text field changes.
     var onTextFieldEditingChanged: ((String?) -> Void)?
     
-    private lazy var textField: UITextField = {
-        return UITextField(frame: CGRect.zero)
-    }()
+    let textField: UITextField
     
     required init?(coder aDecoder: NSCoder) {
+        self.textField = UITextField(frame: CGRect.zero)
         super.init(coder: aDecoder)
-        
-        setUp()
+        setUpTextField()
     }
     
     override init(frame: CGRect) {
+        self.textField = UITextField(frame: CGRect.zero)
         super.init(frame: frame)
-        
-        setUp()
+        setUpTextField()
     }
     
-    private func setUp() {
+    private func setUpTextField() {
         addSubview(textField)
         
         backgroundColor = .gray

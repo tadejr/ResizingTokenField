@@ -14,7 +14,7 @@ class ResizingTokenFieldViewModel {
     /// Convenience reference, used for calculating item sizes.
     private weak var collectionView: UICollectionView?
     
-    init(collectionView: UICollectionView) {
+    init(collectionView: UICollectionView?) {
         self.collectionView = collectionView
     }
     
@@ -81,13 +81,6 @@ class ResizingTokenFieldViewModel {
     
     func minimizeTextFieldCellSize() {
         cachedTextFieldCellSize = CGSize(width: Constants.TextFieldCell.minWidth, height: itemHeight)
-    }
-    
-    // MARK: - Selecting tokens
-    
-    private var lastTokenCellIndexPath: IndexPath? {
-        guard tokens.count > 0 else { return nil }
-        return IndexPath(item: tokens.count-1, section: 0)
     }
     
     // MARK: - Data source

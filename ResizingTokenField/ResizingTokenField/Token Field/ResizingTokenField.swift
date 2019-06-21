@@ -27,23 +27,17 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     private var viewModel: ResizingTokenFieldViewModel!
     
-    private lazy var collectionView: UICollectionView = {
-        let layout = ResizingTokenFieldFlowLayout()
-        layout.onContentHeightChanged = { [weak self] (oldHeight, newHeight) in
-            self?.updateContentHeight(newHeight: newHeight, animated: false)
-        }
-        
-        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .lightGray
-        
-        return collectionView
-    }()
+    private var collectionView: UICollectionView?
     
     /// Height constraint of the collection view. This constraint's constant is updated as collection view resizes.
     private var heightConstraint: NSLayoutConstraint?
+    
+    var textField: UITextField? {
+        return textFieldCell?.textField
+    }
+    private var textFieldCell: TextFieldCell? {
+        return collectionView?.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell
+    }
     
     // MARK: - Lifecycle
     
@@ -56,6 +50,17 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func setUpCollectionView() {
+        let layout = ResizingTokenFieldFlowLayout()
+        layout.onContentHeightChanged = { [weak self] (oldHeight, newHeight) in
+            self?.updateContentHeight(newHeight: newHeight, animated: false)
+        }
+        
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .lightGray
+        
         addSubview(collectionView)
         
         collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
@@ -72,11 +77,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                                               constant: 100)
         heightConstraint!.priority = UILayoutPriority(rawValue: 999) // To avoid constraint issues when used in a UIStackView
         addConstraint(heightConstraint!)
+        
+        self.collectionView = collectionView
     }
     
     private func registerCells() {
-        collectionView.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
-        collectionView.register(UINib(nibName: DefaultTokenCell.nibName, bundle: Bundle(for: DefaultTokenCell.self)),
+        collectionView?.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
+        collectionView?.register(UINib(nibName: DefaultTokenCell.nibName, bundle: Bundle(for: DefaultTokenCell.self)),
                                 forCellWithReuseIdentifier: DefaultTokenCell.identifier)
     }
     
@@ -84,12 +91,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     func handleOrientationChange() {
         viewModel.minimizeTextFieldCellSize()
-        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView?.collectionViewLayout.invalidateLayout()
         
         // Invalidate layout after a short delay to strecth the text field cell.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else { return }
             self.viewModel.invalidateTextFieldCellSize()
-            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView?.collectionViewLayout.invalidateLayout()
         }
     }
     
@@ -109,12 +117,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     /// - re-invalidates collectionView, causing the cell's size to be recalculated to correct width
     private func reloadDataThenResizeTextFieldCell() {
         viewModel.minimizeTextFieldCellSize()
-        collectionView.reloadData()
+        collectionView?.reloadData()
         
         // Invalidate layout after a short delay to strecth the text field cell.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else { return }
             self.viewModel.invalidateTextFieldCellSize()
-            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView?.collectionViewLayout.invalidateLayout()
         }
     }
     
