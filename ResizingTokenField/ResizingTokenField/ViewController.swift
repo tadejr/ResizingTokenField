@@ -51,6 +51,13 @@ class ViewController: UIViewController {
         tokenField.append(tokens: tokens, animated: false)
     }
     
+    // MARK: - Rotation
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tokenField.handleOrientationChange()
+    }
+    
     // MARK: - Helpers
     
     private func getRandomTitle() -> String {

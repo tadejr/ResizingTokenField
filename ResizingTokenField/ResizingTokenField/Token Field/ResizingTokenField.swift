@@ -82,9 +82,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     // MARK: - Rotation
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
+    func handleOrientationChange() {
         viewModel.minimizeTextFieldCellSize()
         collectionView.collectionViewLayout.invalidateLayout()
         
