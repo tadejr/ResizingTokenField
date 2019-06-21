@@ -47,20 +47,6 @@ class TextFieldCell: UICollectionViewCell {
         textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
     }
     
-    // MARK: - First responder
-    
-    override var canBecomeFirstResponder: Bool {
-        return textField.canBecomeFirstResponder
-    }
-    
-    override func becomeFirstResponder() -> Bool {
-        return textField.becomeFirstResponder()
-    }
-    
-    override func resignFirstResponder() -> Bool {
-        return textField.resignFirstResponder()
-    }
-    
     // MARK: - Handling text field changes
     
     @objc func textFieldEditingChanged(textField: UITextField) {

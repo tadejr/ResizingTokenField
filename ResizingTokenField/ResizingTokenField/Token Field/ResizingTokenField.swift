@@ -33,10 +33,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     private var heightConstraint: NSLayoutConstraint?
     
     var textField: UITextField? {
-        return textFieldCell?.textField
-    }
-    private var textFieldCell: TextFieldCell? {
-        return collectionView?.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell
+        return (collectionView?.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField
     }
     
     // MARK: - Lifecycle
