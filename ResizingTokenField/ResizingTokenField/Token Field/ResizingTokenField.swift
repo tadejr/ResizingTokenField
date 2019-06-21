@@ -80,6 +80,21 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                                 forCellWithReuseIdentifier: DefaultTokenCell.identifier)
     }
     
+    // MARK: - Rotation
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        viewModel.minimizeTextFieldCellSize()
+        collectionView.collectionViewLayout.invalidateLayout()
+        
+        // Invalidate layout after a short delay to strecth the text field cell.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.viewModel.invalidateTextFieldCellSize()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
     // MARK: - Add/remove tokens
     
     func append(tokens: [ResizingTokenFieldToken], animated: Bool) {
