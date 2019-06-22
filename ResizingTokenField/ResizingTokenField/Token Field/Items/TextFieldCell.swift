@@ -8,6 +8,19 @@
 
 import UIKit
 
+private class DeleteDetectingTextField: UITextField {
+    var onDeleteBackwardWhenEmpty: (() -> ())?
+    
+    override public func deleteBackward() {
+        let isEmpty: Bool = text?.isEmpty ?? false
+        super.deleteBackward()
+        
+        if isEmpty {
+            onDeleteBackwardWhenEmpty?()
+        }
+    }
+}
+
 class TextFieldCell: UICollectionViewCell {
     
     static let identifier: String = "TextFieldCell"
@@ -15,16 +28,19 @@ class TextFieldCell: UICollectionViewCell {
     /// Implement to handle text field changes.
     var onTextFieldEditingChanged: ((String?) -> Void)?
     
+    /// Implement to handle delete backward when empty.
+    var onDeleteBackwardWhenEmpty: (() -> ())?
+    
     let textField: UITextField
     
     required init?(coder aDecoder: NSCoder) {
-        self.textField = UITextField(frame: CGRect.zero)
+        self.textField = DeleteDetectingTextField(frame: CGRect.zero)
         super.init(coder: aDecoder)
         setUpTextField()
     }
     
     override init(frame: CGRect) {
-        self.textField = UITextField(frame: CGRect.zero)
+        self.textField = DeleteDetectingTextField(frame: CGRect.zero)
         super.init(frame: frame)
         setUpTextField()
     }
@@ -39,6 +55,9 @@ class TextFieldCell: UICollectionViewCell {
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         textField.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        (textField as? DeleteDetectingTextField)?.onDeleteBackwardWhenEmpty = { [weak self] in
+            self?.onDeleteBackwardWhenEmpty?()
+        }
     }
     
     override func awakeFromNib() {

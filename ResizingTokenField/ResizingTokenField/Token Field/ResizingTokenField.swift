@@ -110,6 +110,14 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
+    // MARK: - Selecting tokens
+    
+    func selectLastToken() {
+        if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView?.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
+            _ = cell.becomeFirstResponder()
+        }
+    }
+    
     // MARK: - Add/remove tokens
     
     func append(tokens: [ResizingTokenFieldToken], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
@@ -154,6 +162,9 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
+    func remove(tokens: [ResizingTokenFieldToken], replacementText: String?, animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+    }
+    
     // MARK: - Handling content height
     
     private func updateContentHeight(newHeight: CGFloat, animated: Bool) {
@@ -171,7 +182,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.identifierForCell(atIndexPath: indexPath),
                                                       for: indexPath)
         switch cell {
-        case let tokenCell as DefaultTokenCell:
+        case let tokenCell as ResizingTokenFieldTokenCell:
             populate(tokenCell: tokenCell, atIndexPath: indexPath)
         case let textFieldCell as TextFieldCell:
             populate(textFieldCell: textFieldCell, atIndexPath: indexPath)
@@ -183,13 +194,21 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         return cell
     }
     
-    private func populate(tokenCell: DefaultTokenCell, atIndexPath indexPath: IndexPath) {
-        guard let token = viewModel.token(atIndexPath: indexPath) else { return }
+    private func populate(tokenCell: ResizingTokenFieldTokenCell, atIndexPath indexPath: IndexPath) {
+        guard let token = viewModel.token(atIndexPath: indexPath) else {
+            tokenCell.onRemove = nil
+            return
+        }
         tokenCell.populate(withToken: token, font: viewModel.font)
+        tokenCell.onRemove = { [weak self] (replacementText) in
+            self?.remove(tokens: [token], replacementText: replacementText, animated: true, completion: nil)
+        }
     }
     
     private func populate(textFieldCell: TextFieldCell, atIndexPath indexPath: IndexPath) {
-        
+        textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in
+            self?.selectLastToken()
+        }
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -199,5 +218,11 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     // MARK: - UICollectionViewDelegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
+            _ = cell.becomeFirstResponder()
+        }
+    }
 
 }

@@ -100,6 +100,13 @@ class ResizingTokenFieldViewModel {
         return indexPaths
     }
     
+    // MARK: - Selecting tokens
+    
+    var lastTokenCellIndexPath: IndexPath? {
+        guard tokens.count > 0 else { return nil }
+        return IndexPath(item: tokens.count-1, section: 0)
+    }
+    
     // MARK: - Data source
     
     var numberOfItems: Int {

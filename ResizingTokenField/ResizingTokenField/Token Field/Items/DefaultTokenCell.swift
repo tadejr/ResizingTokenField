@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DefaultTokenCell: UICollectionViewCell, TokenCellItem {
+class DefaultTokenCell: ResizingTokenFieldTokenCell {
     
     static let nibName: String = "DefaultTokenCell"
     static let identifier: String = "DefaultTokenCell"
@@ -16,13 +16,25 @@ class DefaultTokenCell: UICollectionViewCell, TokenCellItem {
     @IBOutlet weak var titleLabel: UILabel!
     
     // MARK: - TokenCellItem
-    static func width(forToken token: ResizingTokenFieldToken, font: UIFont) -> CGFloat {
+    
+    override class func width(forToken token: ResizingTokenFieldToken, font: UIFont) -> CGFloat {
         let titleWidth = token.title.size(withAttributes: [.font: font]).width
         return 4 + ceil(titleWidth) + 4  // Leading + title + trailing
     }
 
-    func populate(withToken token: ResizingTokenFieldToken, font: UIFont) {
+    override func populate(withToken token: ResizingTokenFieldToken, font: UIFont) {
         titleLabel.font = font
         titleLabel.text = token.title
     }
+    
+    override var isSelected: Bool {
+        didSet {
+            backgroundColor = isSelected ? .gray : .white
+        }
+    }
+    
+    // MARK: - Autocorrection
+    
+//    var autocorrectionType: UITextAutocorrectionType = .no
+    
 }
