@@ -100,6 +100,14 @@ class ResizingTokenFieldViewModel {
         return indexPaths
     }
     
+    /// Finds and removes tokens from the list.
+    /// Returns index paths representing removed tokens.
+    func remove(tokens: [ResizingTokenFieldToken]) -> [IndexPath] {
+        var indexPaths: [IndexPath] = []
+        
+        return indexPaths
+    }
+    
     // MARK: - Selecting tokens
     
     var lastTokenCellIndexPath: IndexPath? {
@@ -151,7 +159,6 @@ class ResizingTokenFieldViewModel {
     
     func token(atIndexPath indexPath: IndexPath) -> ResizingTokenFieldToken? {
         guard tokens.count > indexPath.item else { return nil }
-        
         return tokens[indexPath.item]
     }
     

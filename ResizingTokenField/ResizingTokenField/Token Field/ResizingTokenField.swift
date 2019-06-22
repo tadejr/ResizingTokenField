@@ -125,6 +125,22 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         insertItemsThenResizeTextFieldCell(atIndexPaths: newIndexPaths, animated: animated, completion: completion)
     }
     
+    /// Remove provided tokens, if they exist.
+    func remove(tokens: [ResizingTokenFieldToken], replacementText: String?, animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        
+    }
+    
+    /// Remove tokens at provided indexes, if they exist.
+    /// This function is the faster than `remove(tokens:)`.
+    func removeTokens(atIndexes: [Int], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        
+    }
+    
+    /// Convenience function for removing tokens at index paths.
+    private func removeTokens(atIndexPaths: [IndexPath], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        
+    }
+    
     /// Inserts items and correctly resizes the text field cell.
     /// This is done by:
     /// - setting text field cell size to minimum
@@ -162,7 +178,17 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
-    func remove(tokens: [ResizingTokenFieldToken], replacementText: String?, animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+    /// Removes items and correctly resizes the text field cell.
+    /// This is done by:
+    /// - setting text field cell size to minimum
+    /// - finding and removing items; since text field cell width is set to minimum it will stay in the same row only if there is enough room
+    /// - re-invalidates collectionView layout, causing the cell's size to be recalculated to correct width
+    private func removeItemsThenResizeTextFieldCell(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        guard isCollectionViewLoaded else {
+            // Collection view initial load was not performed yet, items will be correctly configured there.
+            completion?(true)
+            return
+        }
     }
     
     // MARK: - Handling content height
