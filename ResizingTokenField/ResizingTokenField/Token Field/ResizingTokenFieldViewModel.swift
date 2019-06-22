@@ -83,6 +83,23 @@ class ResizingTokenFieldViewModel {
         cachedTextFieldCellSize = CGSize(width: Constants.TextFieldCell.minWidth, height: itemHeight)
     }
     
+    // MARK: - Add/remove tokens
+    
+    /// Appends tokens to the end of the list.
+    /// Returns index paths representing the new tokens.
+    func append(tokens: [ResizingTokenFieldToken]) -> [IndexPath] {
+        let start: Int = self.tokens.count
+        self.tokens += tokens
+        let end: Int = self.tokens.count
+        
+        var indexPaths: [IndexPath] = []
+        for i: Int in start..<end {
+            indexPaths.append(IndexPath(item: i, section: 0))
+        }
+        
+        return indexPaths
+    }
+    
     // MARK: - Data source
     
     var numberOfItems: Int {

@@ -19,6 +19,7 @@ class Token: ResizingTokenFieldToken {
 class ViewController: UIViewController {
 
     @IBOutlet weak var tokenField: ResizingTokenField!
+    @IBOutlet weak var animationSwitch: UISwitch!
     
     private lazy var titles: [String] = {
         "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit".components(separatedBy: " ")
@@ -33,13 +34,13 @@ class ViewController: UIViewController {
             Token(title: "Dolor")
         ]
         
-        tokenField.append(tokens: tokens, animated: false)
+        tokenField.append(tokens: tokens)
     }
     
     // MARK: - IB actions
     
     @IBAction func didTapAddTokenButton(_ sender: UIButton) {
-        tokenField.append(tokens: [Token(title: getRandomTitle())], animated: false)
+        tokenField.append(tokens: [Token(title: getRandomTitle())], animated: animationSwitch.isOn, completion: nil)
     }
     
     @IBAction func didTapAddMultipleTokensButton(_ sender: UIButton) {
@@ -48,7 +49,7 @@ class ViewController: UIViewController {
             tokens.append(Token(title: getRandomTitle()))
         }
         
-        tokenField.append(tokens: tokens, animated: false)
+        tokenField.append(tokens: tokens, animated: animationSwitch.isOn, completion: nil)
     }
     
     // MARK: - Rotation
