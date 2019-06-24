@@ -25,6 +25,10 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.fontSize = newValue }
     }
     
+    var tokens: [ResizingTokenFieldToken] {
+        return viewModel.tokens
+    }
+    
     private var viewModel: ResizingTokenFieldViewModel!
     
     private var collectionView: UICollectionView?
@@ -127,6 +131,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     /// Remove provided tokens, if they exist.
     func remove(tokens: [ResizingTokenFieldToken], replacementText: String?, animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        let removedIndexPaths = viewModel.remove(tokens: tokens)
         
     }
     

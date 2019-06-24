@@ -103,9 +103,27 @@ class ResizingTokenFieldViewModel {
     /// Finds and removes tokens from the list.
     /// Returns index paths representing removed tokens.
     func remove(tokens: [ResizingTokenFieldToken]) -> [IndexPath] {
-        var indexPaths: [IndexPath] = []
+        var indexesToRemove: Set<Int> = []
+        for token in tokens {
+            // Find first occurence of this token and mark it.
+            for i in 0..<self.tokens.count {
+                if self.tokens[i].isEqual(to: token) {
+                    indexesToRemove.insert(i)
+                    break
+                }
+            }
+        }
         
-        return indexPaths
+        var removedIndexPaths: [IndexPath] = []
+        var removedCount: Int = 0
+        for indexToRemove in indexesToRemove.sorted() {
+            let index: Int = indexToRemove - removedCount
+            self.tokens.remove(at: index)
+            removedIndexPaths.append(IndexPath(item: index+1, section: 0))
+            removedCount += 1
+        }
+        
+        return removedIndexPaths
     }
     
     // MARK: - Selecting tokens
