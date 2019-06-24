@@ -103,9 +103,9 @@ class ResizingTokenFieldViewModel {
     /// Finds and removes tokens from the list.
     /// Returns index paths representing removed tokens.
     func remove(tokens: [ResizingTokenFieldToken]) -> [IndexPath] {
-        var indexesToRemove: Set<Int> = []
+        var indexesToRemove: IndexSet = IndexSet()
         for token in tokens {
-            // Find first occurence of this token and mark it.
+            // Find first occurence of this token.
             for i in 0..<self.tokens.count {
                 if self.tokens[i].isEqual(to: token) {
                     indexesToRemove.insert(i)
@@ -114,12 +114,31 @@ class ResizingTokenFieldViewModel {
             }
         }
         
+        return remove(tokensAtIndexes: indexesToRemove)
+    }
+    
+    /// Finds and removes tokens from the list.
+    /// Returns index paths representing removed tokens.
+    func remove(tokensAtIndexPaths indexPaths: [IndexPath]) -> [IndexPath] {
+        var indexesToRemove: IndexSet = IndexSet()
+        for indexPath in indexPaths {
+            let index = indexPath.item
+            guard index < tokens.count else { continue }
+            indexesToRemove.insert(index)
+        }
+        
+        return remove(tokensAtIndexes: indexesToRemove)
+    }
+    
+    /// Removes tokens from the list.
+    /// Returns index paths representing removed tokens.
+    func remove(tokensAtIndexes indexes: IndexSet) -> [IndexPath] {
         var removedIndexPaths: [IndexPath] = []
         var removedCount: Int = 0
-        for indexToRemove in indexesToRemove.sorted() {
+        for indexToRemove in indexes.sorted() {
+            removedIndexPaths.append(IndexPath(item: indexToRemove, section: 0))
             let index: Int = indexToRemove - removedCount
             self.tokens.remove(at: index)
-            removedIndexPaths.append(IndexPath(item: index+1, section: 0))
             removedCount += 1
         }
         

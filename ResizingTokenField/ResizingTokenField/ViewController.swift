@@ -49,13 +49,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func didTapAddMultipleTokensButton(_ sender: UIButton) {
-        tokenField.remove(tokens: [tokenField.tokens[1]], replacementText: nil) 
-//        var tokens: [Token] = []
-//        for _ in 0...(Int(arc4random_uniform(5))) {
-//            tokens.append(Token(title: getRandomTitle()))
-//        }
-//
-//        tokenField.append(tokens: tokens, animated: animationSwitch.isOn, completion: nil)
+        var tokens: [Token] = []
+        for _ in 0...(Int(arc4random_uniform(5))) {
+            tokens.append(Token(title: getRandomTitle()))
+        }
+
+        tokenField.append(tokens: tokens, animated: animationSwitch.isOn, completion: nil)
     }
     
     // MARK: - Rotation
