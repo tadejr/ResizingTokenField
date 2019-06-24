@@ -12,11 +12,8 @@ class ResizingTokenFieldViewModel {
     var tokens: [ResizingTokenFieldToken] = []
     
     /// Convenience reference, used for calculating item sizes.
-    private weak var collectionView: UICollectionView?
-    
-    init(collectionView: UICollectionView?) {
-        self.collectionView = collectionView
-    }
+    /// Should be set once collection view is set up.
+    weak var collectionView: UICollectionView?
     
     // MARK: - Font
     
@@ -138,6 +135,7 @@ class ResizingTokenFieldViewModel {
         for indexToRemove in indexes.sorted() {
             removedIndexPaths.append(IndexPath(item: indexToRemove, section: 0))
             let index: Int = indexToRemove - removedCount
+            guard index < self.tokens.count else { continue }
             self.tokens.remove(at: index)
             removedCount += 1
         }
