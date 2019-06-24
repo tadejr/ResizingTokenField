@@ -263,7 +263,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
         tokenCell.populate(withToken: token, font: viewModel.font)
         tokenCell.onRemove = { [weak self] (text) in
-            self?.remove(tokensAtIndexPaths: [indexPath], replaceWithText: text, animated: true, completion: nil)
+            self?.remove(tokens: [token], replaceWithText: text, animated: true, completion: nil)
         }
     }
     
