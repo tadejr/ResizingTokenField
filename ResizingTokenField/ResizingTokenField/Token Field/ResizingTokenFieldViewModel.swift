@@ -37,11 +37,11 @@ class ResizingTokenFieldViewModel {
     
     // MARK: - Label cell
     
+    var isShowingLabelCell: Bool = Constants.LabelCell.isShownByDefault
     var labelCellText: String?
-    var showLabelCell: Bool = true
     
-    var labelCellIndexPath: IndexPath? {
-        return showLabelCell ? IndexPath(item: 0, section: 0) : nil
+    var labelCellIndexPath: IndexPath {
+        return IndexPath(item: 0, section: 0)
     }
     
     // MARK: - Text field cell
@@ -171,11 +171,11 @@ class ResizingTokenFieldViewModel {
     }
     
     private func indexForToken(atIndexPath indexPath: IndexPath) -> Int {
-        return showLabelCell ? indexPath.item - 1 : indexPath.item
+        return isShowingLabelCell ? indexPath.item - 1 : indexPath.item
     }
     
     private func indexPathForToken(atIndex index: Int) -> IndexPath {
-        return IndexPath(item: showLabelCell ? index + 1 : index,
+        return IndexPath(item: isShowingLabelCell ? index + 1 : index,
                          section: 0)
     }
     
@@ -183,13 +183,13 @@ class ResizingTokenFieldViewModel {
     
     var numberOfItems: Int {
         var count = tokens.count + 1    // Tokens + text field cell
-        if showLabelCell { count += 1 } // Label cell
+        if isShowingLabelCell { count += 1 } // Label cell
         return count
     }
     
     func identifierForCell(atIndexPath indexPath: IndexPath) -> String {
         switch indexPath.item {
-        case labelCellIndexPath?.item:
+        case (isShowingLabelCell ? labelCellIndexPath.item : nil):
             return LabelCell.identifier
         case textFieldCellIndexPath.item:
             return TextFieldCell.identifier

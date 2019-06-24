@@ -24,7 +24,7 @@ class Token: ResizingTokenFieldToken, Equatable {
 class ViewController: UIViewController {
 
     @IBOutlet weak var tokenField: ResizingTokenField!
-    @IBOutlet weak var animationSwitch: UISwitch!
+    @IBOutlet weak var animateSwitch: UISwitch!
     
     private lazy var titles: [String] = {
         "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit".components(separatedBy: " ")
@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     // MARK: - IB actions
     
     @IBAction func didTapAddTokenButton(_ sender: UIButton) {
-        tokenField.append(tokens: [Token(title: getRandomTitle())], animated: animationSwitch.isOn, completion: nil)
+        tokenField.append(tokens: [Token(title: getRandomTitle())], animated: animateSwitch.isOn, completion: nil)
     }
     
     @IBAction func didTapAddMultipleTokensButton(_ sender: UIButton) {
@@ -55,7 +55,11 @@ class ViewController: UIViewController {
             tokens.append(Token(title: getRandomTitle()))
         }
 
-        tokenField.append(tokens: tokens, animated: animationSwitch.isOn, completion: nil)
+        tokenField.append(tokens: tokens, animated: animateSwitch.isOn, completion: nil)
+    }
+    
+    @IBAction func didTapToggleLabelButton(_ sender: UIButton) {
+        tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn, completion: nil) : tokenField.showLabel(animated: animateSwitch.isOn, completion: nil)
     }
     
     // MARK: - Rotation

@@ -25,17 +25,16 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.fontSize = newValue }
     }
     
+    var isShowingLabel: Bool { return viewModel.isShowingLabelCell }
     var labelText: String? {
         get { return viewModel.labelCellText }
         set { viewModel.labelCellText = newValue }
     }
     
-    var tokens: [ResizingTokenFieldToken] {
-        return viewModel.tokens
-    }
+    var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
+    var textField: UITextField? { return (collectionView?.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
-    
     private var collectionView: UICollectionView?
     
     /// Tracks when the initial collection view load is performed.
@@ -44,10 +43,6 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     /// Height constraint of the collection view. This constraint's constant is updated as collection view resizes.
     private var heightConstraint: NSLayoutConstraint?
-    
-    var textField: UITextField? {
-        return (collectionView?.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField
-    }
     
     // MARK: - Lifecycle
     
@@ -120,11 +115,50 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
-    // MARK: - Selecting tokens
+    // MARK: - Toggle label
     
-    func selectLastToken() {
-        if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView?.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
-            _ = cell.becomeFirstResponder()
+    func showLabel(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        toggleLabelThenResizeTextFieldCell(visible: true, animated: animated, completion: completion)
+    }
+    
+    func hideLabel(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        toggleLabelThenResizeTextFieldCell(visible: false, animated: animated, completion: completion)
+    }
+    
+    /// Shows/hides the label cell.
+    /// This is done by:
+    /// - setting text field cell size to minimum
+    /// - toggling the label; since text field cell width is set to minimum it will stay in the same row only if there is enough room
+    /// - re-invalidates collectionView layout, causing the cell's size to be recalculated to correct width
+    private func toggleLabelThenResizeTextFieldCell(visible: Bool, animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        guard viewModel.isShowingLabelCell != visible else {
+            completion?(true)
+            return
+        }
+        
+        viewModel.isShowingLabelCell = visible
+        viewModel.minimizeTextFieldCellSize()
+        if animated {
+            UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
+                visible ? self.collectionView?.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView?.deleteItems(at: [self.viewModel.labelCellIndexPath])
+            }, completion: { (finished: Bool) in
+                defer { completion?(finished) }
+                guard finished else { return }
+                self.viewModel.invalidateTextFieldCellSize()
+                self.collectionView?.collectionViewLayout.invalidateLayout()
+            })
+        } else {
+            UIView.performWithoutAnimation {
+                visible ? self.collectionView?.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView?.deleteItems(at: [self.viewModel.labelCellIndexPath])
+            }
+            
+            // Invalidate layout after a short delay to strecth the text field cell.
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Duration.reloadDelay) { [weak self] in
+                defer { completion?(true) }
+                guard let self = self else { return }
+                self.viewModel.invalidateTextFieldCellSize()
+                self.collectionView?.collectionViewLayout.invalidateLayout()
+            }
         }
     }
     
@@ -230,6 +264,14 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         _ = textField?.becomeFirstResponder()
         if let text = text {
             textField?.text = text
+        }
+    }
+    
+    // MARK: - Selecting tokens
+    
+    private func selectLastToken() {
+        if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView?.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
+            _ = cell.becomeFirstResponder()
         }
     }
     

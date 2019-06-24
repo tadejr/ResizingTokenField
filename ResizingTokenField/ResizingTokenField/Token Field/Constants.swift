@@ -14,6 +14,10 @@ struct Constants {
         static let defaultSize: CGFloat = 15
     }
     
+    struct LabelCell {
+        static let isShownByDefault: Bool = false
+    }
+    
     struct TextFieldCell {
         static let minWidth: CGFloat = 60
     }
