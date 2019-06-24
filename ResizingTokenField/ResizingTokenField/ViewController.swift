@@ -11,7 +11,7 @@ import UIKit
 class Token: ResizingTokenFieldToken, Equatable {
     
     static func == (lhs: Token, rhs: Token) -> Bool {
-        return lhs.title == rhs.title
+        return lhs === rhs
     }
     
     var title: String

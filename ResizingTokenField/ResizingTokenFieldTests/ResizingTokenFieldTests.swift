@@ -15,13 +15,11 @@ class ResizingTokenFieldTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
         tokenField = ResizingTokenField()
     }
 
     override func tearDown() {
         super.tearDown()
-        
         tokenField = nil
     }
     
