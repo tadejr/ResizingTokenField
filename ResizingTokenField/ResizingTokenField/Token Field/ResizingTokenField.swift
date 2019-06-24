@@ -25,6 +25,11 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.fontSize = newValue }
     }
     
+    var labelText: String? {
+        get { return viewModel.labelCellText }
+        set { viewModel.labelCellText = newValue }
+    }
+    
     var tokens: [ResizingTokenFieldToken] {
         return viewModel.tokens
     }
@@ -95,6 +100,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func registerCells() {
+        collectionView?.register(LabelCell.self, forCellWithReuseIdentifier: LabelCell.identifier)
         collectionView?.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
         collectionView?.register(UINib(nibName: DefaultTokenCell.nibName, bundle: Bundle(for: DefaultTokenCell.self)),
                                 forCellWithReuseIdentifier: DefaultTokenCell.identifier)
@@ -246,6 +252,8 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         switch cell {
         case let tokenCell as ResizingTokenFieldTokenCell:
             populate(tokenCell: tokenCell, atIndexPath: indexPath)
+        case let labelCell as LabelCell:
+            populate(labelCell: labelCell, atIndexPath: indexPath)
         case let textFieldCell as TextFieldCell:
             populate(textFieldCell: textFieldCell, atIndexPath: indexPath)
         default:
@@ -265,6 +273,11 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         tokenCell.onRemove = { [weak self] (text) in
             self?.remove(tokens: [token], replaceWithText: text, animated: true, completion: nil)
         }
+    }
+    
+    private func populate(labelCell: LabelCell, atIndexPath indexPath: IndexPath) {
+        labelCell.label.font = viewModel.font
+        labelCell.label.text = viewModel.labelCellText
     }
     
     private func populate(textFieldCell: TextFieldCell, atIndexPath indexPath: IndexPath) {

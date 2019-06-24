@@ -23,6 +23,7 @@
 		BE6EBE2C22BAA37300B9A872 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */; };
 		BEDA6F1622BB90C600E08059 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDA6F1522BB90C600E08059 /* Constants.swift */; };
 		BEFFD25422C0F273001ED71E /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25322C0F273001ED71E /* Tokens.swift */; };
+		BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25522C10FF4001ED71E /* LabelCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		BEDA6F1522BB90C600E08059 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BEFFD25322C0F273001ED71E /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
+		BEFFD25522C10FF4001ED71E /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				BE6EBE2522BA832100B9A872 /* DefaultTokenCell.swift */,
 				BE6EBE2622BA832100B9A872 /* DefaultTokenCell.xib */,
 				BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */,
+				BEFFD25522C10FF4001ED71E /* LabelCell.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				BE6EBE2222BA814B00B9A872 /* TokenFieldItems.swift in Sources */,
 				BE6EBDFC22BA74B200B9A872 /* ViewController.swift in Sources */,
 				BE6EBE2722BA832100B9A872 /* DefaultTokenCell.swift in Sources */,
+				BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */,
 				BEDA6F1622BB90C600E08059 /* Constants.swift in Sources */,
 				BE6EBE2C22BAA37300B9A872 /* TextFieldCell.swift in Sources */,
 				BE6EBDFA22BA74B200B9A872 /* AppDelegate.swift in Sources */,

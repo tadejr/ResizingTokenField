@@ -35,7 +35,21 @@ class ResizingTokenFieldViewModel {
         itemHeight = 4 + ceil(font.lineHeight) + 4   // Top + height + bottom
     }
     
+    // MARK: - Label cell
+    
+    var labelCellText: String?
+    var showLabelCell: Bool = true
+    
+    var labelCellIndexPath: IndexPath? {
+        return showLabelCell ? IndexPath(item: 0, section: 0) : nil
+    }
+    
     // MARK: - Text field cell
+    
+    var textFieldCellIndexPath: IndexPath {
+        // The last cell
+        return IndexPath(item: numberOfItems-1, section: 0)
+    }
     
     /// The current size of the text field cell.
     var textFieldCellSize: CGSize {
@@ -91,7 +105,7 @@ class ResizingTokenFieldViewModel {
         
         var indexPaths: [IndexPath] = []
         for i: Int in start..<end {
-            indexPaths.append(IndexPath(item: i, section: 0))
+            indexPaths.append(indexPathForToken(atIndex: i))
         }
         
         return indexPaths
@@ -133,7 +147,7 @@ class ResizingTokenFieldViewModel {
         var removedIndexPaths: [IndexPath] = []
         var removedCount: Int = 0
         for indexToRemove in indexes.sorted() {
-            removedIndexPaths.append(IndexPath(item: indexToRemove, section: 0))
+            removedIndexPaths.append(indexPathForToken(atIndex: indexToRemove))
             let index: Int = indexToRemove - removedCount
             guard index < self.tokens.count else { continue }
             self.tokens.remove(at: index)
@@ -147,27 +161,49 @@ class ResizingTokenFieldViewModel {
     
     var lastTokenCellIndexPath: IndexPath? {
         guard tokens.count > 0 else { return nil }
-        return IndexPath(item: tokens.count-1, section: 0)
+        return IndexPath(item: numberOfItems - 2, section: 0)
+    }
+    
+    func token(atIndexPath indexPath: IndexPath) -> ResizingTokenFieldToken? {
+        let tokenIndex = indexForToken(atIndexPath: indexPath)
+        guard tokenIndex >= 0, tokens.count > tokenIndex else { return nil }
+        return tokens[tokenIndex]
+    }
+    
+    private func indexForToken(atIndexPath indexPath: IndexPath) -> Int {
+        return showLabelCell ? indexPath.item - 1 : indexPath.item
+    }
+    
+    private func indexPathForToken(atIndex index: Int) -> IndexPath {
+        return IndexPath(item: showLabelCell ? index + 1 : index,
+                         section: 0)
     }
     
     // MARK: - Data source
     
     var numberOfItems: Int {
-        return tokens.count + 1
+        var count = tokens.count + 1    // Tokens + text field cell
+        if showLabelCell { count += 1 } // Label cell
+        return count
     }
     
     func identifierForCell(atIndexPath indexPath: IndexPath) -> String {
-        let isTextFieldCellIndexPath = indexPath.item == textFieldCellIndexPath.item
-        if isTextFieldCellIndexPath {
+        switch indexPath.item {
+        case labelCellIndexPath?.item:
+            return LabelCell.identifier
+        case textFieldCellIndexPath.item:
             return TextFieldCell.identifier
+        default:
+            return DefaultTokenCell.identifier
         }
-        
-        return DefaultTokenCell.identifier
     }
     
     func sizeForItemAt(indexPath: IndexPath) -> CGSize {
         let identifier = identifierForCell(atIndexPath: indexPath)
         switch identifier {
+        case LabelCell.identifier:
+            return CGSize(width: LabelCell.width(forText: labelCellText, font: font),
+                          height: itemHeight)
         case TextFieldCell.identifier:
             return textFieldCellSize
         case DefaultTokenCell.identifier:
@@ -181,20 +217,6 @@ class ResizingTokenFieldViewModel {
         
         // Should never reach
         return CGSize.zero
-    }
-    
-    // MARK: - Text field cell
-    
-    var textFieldCellIndexPath: IndexPath {
-        // The last cell
-        return IndexPath(item: tokens.count, section: 0)
-    }
-    
-    // MARK: - Tokens
-    
-    func token(atIndexPath indexPath: IndexPath) -> ResizingTokenFieldToken? {
-        guard tokens.count > indexPath.item else { return nil }
-        return tokens[indexPath.item]
     }
     
 }

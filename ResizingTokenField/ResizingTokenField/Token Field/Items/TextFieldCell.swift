@@ -23,7 +23,7 @@ private class DeleteDetectingTextField: UITextField {
 
 class TextFieldCell: UICollectionViewCell {
     
-    static let identifier: String = "TextFieldCell"
+    static let identifier: String = "ResizingTokenFieldTextFieldCell"
     
     /// Implement to handle text field changes.
     var onTextFieldEditingChanged: ((String?) -> Void)?

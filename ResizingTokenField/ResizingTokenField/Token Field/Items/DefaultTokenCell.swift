@@ -11,7 +11,7 @@ import UIKit
 class DefaultTokenCell: ResizingTokenFieldTokenCell {
     
     static let nibName: String = "DefaultTokenCell"
-    static let identifier: String = "DefaultTokenCell"
+    static let identifier: String = "ResizingTokenFieldDefaultTokenCell"
     
     @IBOutlet weak var titleLabel: UILabel!
     

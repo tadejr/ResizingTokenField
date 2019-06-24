@@ -33,6 +33,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tokenField.labelText = "These are some tokens:"
         let tokens: [Token] = [
             Token(title: "Lorem"),
             Token(title: "Ipsum"),

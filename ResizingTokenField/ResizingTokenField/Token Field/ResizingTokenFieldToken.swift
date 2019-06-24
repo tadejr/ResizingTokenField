@@ -13,7 +13,7 @@ protocol ResizingTokenFieldToken {
     /// Title displayed on the token.
     var title: String { get }
     
-    /// Equality check.
+    /// Equality check. Protocol adopter can conform to Equatable instead of implementing this.
     func isEqual(to token: ResizingTokenFieldToken) -> Bool
     
 }
