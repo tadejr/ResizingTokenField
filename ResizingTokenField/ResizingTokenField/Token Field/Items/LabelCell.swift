@@ -12,7 +12,7 @@ class LabelCell: UICollectionViewCell {
     
     static let identifier: String = "ResizingTokenFieldLabelCell"
     
-    let label: UILabel
+    let label: UILabel = UILabel(frame: .zero)
     
     static func width(forText text: String?, font: UIFont) -> CGFloat {
         guard let text = text else { return 0 }
@@ -21,13 +21,11 @@ class LabelCell: UICollectionViewCell {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.label = UILabel(frame: CGRect.zero)
         super.init(coder: aDecoder)
         setUpLabel()
     }
 
     override init(frame: CGRect) {
-        self.label = UILabel(frame: CGRect.zero)
         super.init(frame: frame)
         setUpLabel()
     }

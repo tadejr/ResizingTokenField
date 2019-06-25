@@ -31,16 +31,14 @@ class TextFieldCell: UICollectionViewCell {
     /// Implement to handle delete backward when empty.
     var onDeleteBackwardWhenEmpty: (() -> ())?
     
-    let textField: UITextField
+    let textField: UITextField = DeleteDetectingTextField(frame: .zero)
     
     required init?(coder aDecoder: NSCoder) {
-        self.textField = DeleteDetectingTextField(frame: CGRect.zero)
         super.init(coder: aDecoder)
         setUpTextField()
     }
     
     override init(frame: CGRect) {
-        self.textField = DeleteDetectingTextField(frame: CGRect.zero)
         super.init(frame: frame)
         setUpTextField()
     }

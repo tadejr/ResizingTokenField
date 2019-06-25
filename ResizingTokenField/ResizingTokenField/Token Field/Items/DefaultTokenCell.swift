@@ -10,10 +10,27 @@ import UIKit
 
 class DefaultTokenCell: ResizingTokenFieldTokenCell {
     
-    static let nibName: String = "DefaultTokenCell"
     static let identifier: String = "ResizingTokenFieldDefaultTokenCell"
     
-    @IBOutlet weak var titleLabel: UILabel!
+    let titleLabel: UILabel = UILabel(frame: .zero)
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setUpLabel()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setUpLabel()
+        backgroundColor = .white
+    }
+    
+    private func setUpLabel() {
+        addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    }
     
     // MARK: - TokenCellItem
     
