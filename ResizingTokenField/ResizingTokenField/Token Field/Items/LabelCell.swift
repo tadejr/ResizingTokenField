@@ -10,8 +10,6 @@ import UIKit
 
 class LabelCell: UICollectionViewCell {
     
-    static let identifier: String = "ResizingTokenFieldLabelCell"
-    
     let label: UILabel = UILabel(frame: .zero)
     
     static func width(forText text: String?, font: UIFont) -> CGFloat {

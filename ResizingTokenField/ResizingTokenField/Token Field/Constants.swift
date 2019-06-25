@@ -11,7 +11,7 @@ import UIKit
 struct Constants {
     
     struct Font {
-        static let defaultSize: CGFloat = 15
+        static let defaultFont: UIFont = UIFont.systemFont(ofSize: 15)
     }
     
     struct LabelCell {
@@ -25,6 +25,12 @@ struct Constants {
     struct Duration {
         static let reloadDelay: TimeInterval = 0.1
         static let animationDefault: TimeInterval = 0.3
+    }
+    
+    struct Identifier {
+        static let labelCell: String = "ResizingTokenFieldLabelCell"
+        static let tokenCell: String = "ResizingTokenFieldTokenCell"
+        static let textFieldCell: String = "ResizingTokenFieldTextFieldCell"
     }
     
 }

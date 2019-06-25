@@ -10,8 +10,6 @@ import UIKit
 
 class DefaultTokenCell: ResizingTokenFieldTokenCell {
     
-    static let identifier: String = "ResizingTokenFieldDefaultTokenCell"
-    
     let titleLabel: UILabel = UILabel(frame: .zero)
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,9 +47,5 @@ class DefaultTokenCell: ResizingTokenFieldTokenCell {
             backgroundColor = isSelected ? .gray : .white
         }
     }
-    
-    // MARK: - Autocorrection
-    
-//    var autocorrectionType: UITextAutocorrectionType = .no
     
 }

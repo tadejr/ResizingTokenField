@@ -24,8 +24,6 @@ class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
         // Override.
     }
     
-    
-    
     // MARK: UIResponder
     
     override var canBecomeFirstResponder: Bool { return true }

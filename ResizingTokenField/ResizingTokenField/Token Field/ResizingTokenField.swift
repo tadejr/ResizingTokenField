@@ -100,9 +100,9 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func registerCells() {
-        collectionView.register(LabelCell.self, forCellWithReuseIdentifier: LabelCell.identifier)
-        collectionView.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
-        collectionView.register(DefaultTokenCell.self, forCellWithReuseIdentifier: DefaultTokenCell.identifier)
+        collectionView.register(LabelCell.self, forCellWithReuseIdentifier: Constants.Identifier.labelCell)
+        collectionView.register(TextFieldCell.self, forCellWithReuseIdentifier: Constants.Identifier.textFieldCell)
+        collectionView.register(DefaultTokenCell.self, forCellWithReuseIdentifier: Constants.Identifier.tokenCell)
     }
     
     // MARK: - Rotation

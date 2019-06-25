@@ -190,23 +190,23 @@ class ResizingTokenFieldViewModel {
     func identifierForCell(atIndexPath indexPath: IndexPath) -> String {
         switch indexPath.item {
         case (isShowingLabelCell ? labelCellIndexPath.item : nil):
-            return LabelCell.identifier
+            return Constants.Identifier.labelCell
         case textFieldCellIndexPath.item:
-            return TextFieldCell.identifier
+            return Constants.Identifier.textFieldCell
         default:
-            return DefaultTokenCell.identifier
+            return Constants.Identifier.tokenCell
         }
     }
     
     func sizeForItemAt(indexPath: IndexPath) -> CGSize {
         let identifier = identifierForCell(atIndexPath: indexPath)
         switch identifier {
-        case LabelCell.identifier:
+        case Constants.Identifier.labelCell:
             return CGSize(width: LabelCell.width(forText: labelCellText, font: font),
                           height: itemHeight)
-        case TextFieldCell.identifier:
+        case Constants.Identifier.textFieldCell:
             return textFieldCellSize
-        case DefaultTokenCell.identifier:
+        case Constants.Identifier.tokenCell:
             if let token = token(atIndexPath: indexPath) {
                 return CGSize(width: DefaultTokenCell.width(forToken: token, font: font),
                               height: itemHeight)
