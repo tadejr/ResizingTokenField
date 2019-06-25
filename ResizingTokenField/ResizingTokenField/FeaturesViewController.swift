@@ -23,6 +23,7 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tokenField: ResizingTokenField!
     @IBOutlet weak var animateSwitch: UISwitch!
     
@@ -36,9 +37,9 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
         tokenField.preferredReturnKeyType = .done
         tokenField.textFieldDelegate = self
         
-        let placeholder: String = "Type here…"
+        let placeholder = "Type here…"
         tokenField.placeholder = placeholder
-        tokenField.textFieldMinWidth = ceil(placeholder.size(withAttributes: [.font: tokenField.font]).width)
+        tokenField.textFieldMinWidth = placeholder.width(withFont: tokenField.font)
         
         tokenField.labelText = "Tokens:"
         let tokens: [Token] = [
@@ -47,6 +48,16 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
         ]
         
         tokenField.append(tokens: tokens)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerForKeyboardNotifications()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        unregisterFromKeyboardNotifications()
     }
     
     // MARK: - IB actions
@@ -61,11 +72,11 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
             tokens.append(Token(title: getRandomTitle()))
         }
 
-        tokenField.append(tokens: tokens, animated: animateSwitch.isOn, completion: nil)
+        tokenField.append(tokens: tokens, animated: animateSwitch.isOn)
     }
     
     @IBAction func didTapToggleLabelButton(_ sender: UIButton) {
-        tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn, completion: nil) : tokenField.showLabel(animated: animateSwitch.isOn, completion: nil)
+        tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn) : tokenField.showLabel(animated: animateSwitch.isOn)
     }
     
     // MARK: - UITextFieldDelegate
@@ -74,7 +85,7 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
         guard textField == tokenField.textField else { return true }
         guard let text = textField.text, !text.isEmpty else { return true }
         
-        tokenField.append(tokens: [Token(title: text)])
+        tokenField.append(tokens: [Token(title: text)], animated: animateSwitch.isOn)
         tokenField.text = nil
         return false
     }
@@ -86,7 +97,14 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
         tokenField.handleOrientationChange()
     }
     
-    // MARK: - Helpers
+    // MARK: Keyboard
+    
+    override func keyboardVisibleHeightWillChange(newHeight: CGFloat) {
+        scrollView.contentInset.bottom = newHeight
+        scrollView.scrollIndicatorInsets.bottom = newHeight
+    }
+    
+    // MARK: - Adding tokens
     
     private func getRandomTitle() -> String {
         return titles[Int(arc4random_uniform(UInt32(titles.count)))]

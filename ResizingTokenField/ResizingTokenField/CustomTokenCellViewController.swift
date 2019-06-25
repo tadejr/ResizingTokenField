@@ -32,11 +32,23 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         
         tokenField.labelText = "Tokens:"
         tokenField.showLabel()
-        tokenField.placeholder = "Type to search…"
+        let placeholder = "Type to search…"
+        tokenField.placeholder = placeholder
+        tokenField.textFieldMinWidth = placeholder.width(withFont: tokenField.font)
         tokenField.delegate = self
         tokenField.customCellDelegate = self
         tokenField.itemHeight = 40
         tokenField.preferredReturnKeyType = .search
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerForKeyboardNotifications()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        unregisterFromKeyboardNotifications()
     }
     
     // MARK: - Rotation
@@ -99,6 +111,13 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         let titleWidth = token.title.size(withAttributes: [.font: CustomTokenCell.titleFont]).width
         let subtitleWidth = token.subtitle.size(withAttributes: [.font: CustomTokenCell.subtitleFont]).width
         return 40 + 8 + ceil(max(titleWidth, subtitleWidth)) + 8  // Image placeholder + padding + max(title, subtitle) + padding
+    }
+    
+    // MARK: Keyboard
+    
+    override func keyboardVisibleHeightWillChange(newHeight: CGFloat) {
+        tableView.contentInset.bottom = newHeight
+        tableView.scrollIndicatorInsets.bottom = newHeight
     }
     
     // MARK: - Finding tokens
