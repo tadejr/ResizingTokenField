@@ -32,10 +32,10 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
-    var textField: UITextField? { return (collectionView?.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
+    var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
-    private var collectionView: UICollectionView?
+    private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: ResizingTokenFieldFlowLayout())
     
     /// Tracks when the initial collection view load is performed.
     /// This flag is used to prevent crashes from trying to insert/delete items before the initial load.
@@ -46,28 +46,34 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     // MARK: - Lifecycle
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initialize()
+    }
+    
+    private func initialize() {
         setUpCollectionView()
         registerCells()
         
         viewModel.minimizeTextFieldCellSize()
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Duration.reloadDelay) { [weak self] in
             guard let self = self else { return }
             self.viewModel.invalidateTextFieldCellSize()
-            self.collectionView?.collectionViewLayout.invalidateLayout()
+            self.collectionView.collectionViewLayout.invalidateLayout()
         }
     }
     
     private func setUpCollectionView() {
-        let layout = ResizingTokenFieldFlowLayout()
-        layout.onContentHeightChanged = { [weak self] (oldHeight, newHeight) in
+        let layout = collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout
+        layout?.onContentHeightChanged = { [weak self] (oldHeight, newHeight) in
             self?.updateContentHeight(newHeight: newHeight, animated: false)
         }
         
-        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,14 +96,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         heightConstraint!.priority = UILayoutPriority(rawValue: 999) // To avoid constraint issues when used in a UIStackView
         addConstraint(heightConstraint!)
         
-        self.collectionView = collectionView
         viewModel.collectionView = collectionView
     }
     
     private func registerCells() {
-        collectionView?.register(LabelCell.self, forCellWithReuseIdentifier: LabelCell.identifier)
-        collectionView?.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
-        collectionView?.register(UINib(nibName: DefaultTokenCell.nibName, bundle: Bundle(for: DefaultTokenCell.self)),
+        collectionView.register(LabelCell.self, forCellWithReuseIdentifier: LabelCell.identifier)
+        collectionView.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
+        collectionView.register(UINib(nibName: DefaultTokenCell.nibName, bundle: Bundle(for: DefaultTokenCell.self)),
                                 forCellWithReuseIdentifier: DefaultTokenCell.identifier)
     }
     
@@ -105,13 +110,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     func handleOrientationChange() {
         viewModel.minimizeTextFieldCellSize()
-        collectionView?.collectionViewLayout.invalidateLayout()
+        collectionView.collectionViewLayout.invalidateLayout()
         
         // Invalidate layout after a short delay to strecth the text field cell.
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Duration.reloadDelay) { [weak self] in
             guard let self = self else { return }
             self.viewModel.invalidateTextFieldCellSize()
-            self.collectionView?.collectionViewLayout.invalidateLayout()
+            self.collectionView.collectionViewLayout.invalidateLayout()
         }
     }
     
@@ -140,16 +145,16 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         viewModel.minimizeTextFieldCellSize()
         if animated {
             UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
-                visible ? self.collectionView?.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView?.deleteItems(at: [self.viewModel.labelCellIndexPath])
+                visible ? self.collectionView.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView.deleteItems(at: [self.viewModel.labelCellIndexPath])
             }, completion: { (finished: Bool) in
                 defer { completion?(finished) }
                 guard finished else { return }
                 self.viewModel.invalidateTextFieldCellSize()
-                self.collectionView?.collectionViewLayout.invalidateLayout()
+                self.collectionView.collectionViewLayout.invalidateLayout()
             })
         } else {
             UIView.performWithoutAnimation {
-                visible ? self.collectionView?.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView?.deleteItems(at: [self.viewModel.labelCellIndexPath])
+                visible ? self.collectionView.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView.deleteItems(at: [self.viewModel.labelCellIndexPath])
             }
             
             // Invalidate layout after a short delay to strecth the text field cell.
@@ -157,7 +162,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                 defer { completion?(true) }
                 guard let self = self else { return }
                 self.viewModel.invalidateTextFieldCellSize()
-                self.collectionView?.collectionViewLayout.invalidateLayout()
+                self.collectionView.collectionViewLayout.invalidateLayout()
             }
         }
     }
@@ -203,16 +208,16 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         viewModel.minimizeTextFieldCellSize()
         if animated {
             UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
-                self.collectionView?.insertItems(at: indexPaths)
+                self.collectionView.insertItems(at: indexPaths)
             }, completion: { (finished: Bool) in
                 defer { completion?(finished) }
                 guard finished else { return }
                 self.viewModel.invalidateTextFieldCellSize()
-                self.collectionView?.collectionViewLayout.invalidateLayout()
+                self.collectionView.collectionViewLayout.invalidateLayout()
             })
         } else {
             UIView.performWithoutAnimation {
-                collectionView?.insertItems(at: indexPaths)
+                collectionView.insertItems(at: indexPaths)
             }
             
             // Invalidate layout after a short delay to strecth the text field cell.
@@ -220,7 +225,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                 defer { completion?(true) }
                 guard let self = self else { return }
                 self.viewModel.invalidateTextFieldCellSize()
-                self.collectionView?.collectionViewLayout.invalidateLayout()
+                self.collectionView.collectionViewLayout.invalidateLayout()
             }
         }
     }
@@ -240,16 +245,16 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         viewModel.minimizeTextFieldCellSize()
         if animated {
             UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
-                self.collectionView?.deleteItems(at: indexPaths)
+                self.collectionView.deleteItems(at: indexPaths)
             }, completion: { (finished: Bool) in
                 defer { completion?(finished) }
                 guard finished else { return }
                 self.viewModel.invalidateTextFieldCellSize()
-                self.collectionView?.collectionViewLayout.invalidateLayout()
+                self.collectionView.collectionViewLayout.invalidateLayout()
             })
         } else {
             UIView.performWithoutAnimation {
-                collectionView?.deleteItems(at: indexPaths)
+                collectionView.deleteItems(at: indexPaths)
             }
             
             // Invalidate layout after a short delay to strecth the text field cell.
@@ -257,7 +262,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                 defer { completion?(true) }
                 guard let self = self else { return }
                 self.viewModel.invalidateTextFieldCellSize()
-                self.collectionView?.collectionViewLayout.invalidateLayout()
+                self.collectionView.collectionViewLayout.invalidateLayout()
             }
         }
         
@@ -270,7 +275,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     // MARK: - Selecting tokens
     
     private func selectLastToken() {
-        if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView?.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
+        if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
             _ = cell.becomeFirstResponder()
         }
     }
@@ -323,6 +328,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func populate(textFieldCell: TextFieldCell, atIndexPath indexPath: IndexPath) {
+        textFieldCell.textField.font = viewModel.font
         textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in
             self?.selectLastToken()
         }
