@@ -12,17 +12,43 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     // MARK: - Configuration
     
-    /// If set, this will be the text style used for all labels.
-    /// Otherwise default system font with fontSize will be used.
-    var textStyle: UIFont.TextStyle? {
-        get { return viewModel.textStyle }
-        set { viewModel.textStyle = newValue }
+    weak var delegate: ResizingTokenFieldDelegate?
+    weak var customCellDelegate: ResizingTokenFieldCustomCellDelegate? {
+        didSet {
+            viewModel.customCellDelegate = customCellDelegate
+            registerCells()
+        }
     }
     
-    /// Used if textStyle is not set. Default value 15.
-    var fontSize: CGFloat {
-        get { return viewModel.fontSize }
-        set { viewModel.fontSize = newValue }
+    weak var textFieldDelegate: UITextFieldDelegate? {
+        didSet { textField?.delegate = textFieldDelegate }
+    }
+    
+    var itemHeight: CGFloat {
+        get { return viewModel.itemHeight }
+        set { viewModel.customItemHeight = newValue }
+    }
+    
+    private var cachedText: String? // If text is set before text field cell is loaded.
+    var text: String? {
+        get { return cachedText ?? textField?.text }
+        set {
+            if let textField = self.textField {
+                textField.text = newValue
+            } else {
+                cachedText = newValue
+            }
+        }
+    }
+    
+    var placeholder: String? {
+        didSet { textField?.placeholder = placeholder }
+    }
+    
+    /// Font used for labels and text field.
+    var font: UIFont {
+        get { return viewModel.font }
+        set { viewModel.font = newValue }
     }
     
     var isShowingLabel: Bool { return viewModel.isShowingLabelCell }
@@ -32,7 +58,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
-    var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
+    private var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: ResizingTokenFieldFlowLayout())
@@ -102,7 +128,14 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     private func registerCells() {
         collectionView.register(LabelCell.self, forCellWithReuseIdentifier: Constants.Identifier.labelCell)
         collectionView.register(TextFieldCell.self, forCellWithReuseIdentifier: Constants.Identifier.textFieldCell)
-        collectionView.register(DefaultTokenCell.self, forCellWithReuseIdentifier: Constants.Identifier.tokenCell)
+        
+        if let customClass = customCellDelegate?.resizingTokenFieldCustomTokenCellClass(self) {
+            collectionView.register(customClass, forCellWithReuseIdentifier: Constants.Identifier.tokenCell)
+        } else if let customNib = customCellDelegate?.resizingTokenFieldCustomTokenCellNib(self) {
+            collectionView.register(customNib, forCellWithReuseIdentifier: Constants.Identifier.tokenCell)
+        } else {
+            collectionView.register(DefaultTokenCell.self, forCellWithReuseIdentifier: Constants.Identifier.tokenCell)
+        }
     }
     
     // MARK: - Rotation
@@ -141,6 +174,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
         
         viewModel.isShowingLabelCell = visible
+        
+        guard isCollectionViewLoaded else {
+            // Collection view initial load was not performed yet, items will be correctly configured there.
+            completion?(true)
+            return
+        }
+        
         viewModel.minimizeTextFieldCellSize()
         if animated {
             UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
@@ -285,6 +325,12 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         heightConstraint?.constant = newHeight
     }
     
+    // MARK: - Text field
+    
+    @objc func textFieldEditingChanged(_ textField: UITextField) {
+        delegate?.resizingTokenField(self, didEditText: textField.text)
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -315,7 +361,12 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             tokenCell.onRemove = nil
             return
         }
-        tokenCell.populate(withToken: token, font: viewModel.font)
+        
+        if let defaultTokenCell = tokenCell as? DefaultTokenCell {
+            defaultTokenCell.titleLabel.font = viewModel.font
+        }
+        
+        tokenCell.populate(withToken: token)
         tokenCell.onRemove = { [weak self] (text) in
             self?.remove(tokens: [token], replaceWithText: text, animated: true, completion: nil)
         }
@@ -327,7 +378,15 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func populate(textFieldCell: TextFieldCell, atIndexPath indexPath: IndexPath) {
+        if let text = cachedText {
+            cachedText = nil
+            textFieldCell.textField.text = text
+        }
+        
+        textFieldCell.textField.placeholder = placeholder
         textFieldCell.textField.font = viewModel.font
+        textFieldCell.textField.delegate = textFieldDelegate
+        textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
         textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in
             self?.selectLastToken()
         }
@@ -336,7 +395,27 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return viewModel.sizeForItemAt(indexPath: indexPath)
+        let identifier = viewModel.identifierForCell(atIndexPath: indexPath)
+        switch identifier {
+        case Constants.Identifier.labelCell:
+            return viewModel.labelCellSize
+        case Constants.Identifier.textFieldCell:
+            return viewModel.textFieldCellSize
+        case Constants.Identifier.tokenCell:
+            if let token = viewModel.token(atIndexPath: indexPath) {
+                if let delegate = customCellDelegate {
+                    return CGSize(width: delegate.resizingTokenField(self, tokenCellWidthForToken: token),
+                        height: itemHeight)
+                }
+                
+                return viewModel.defaultTokenCellSize(forToken: token)
+            }
+        default:
+            break
+        }
+        
+        // Should never reach
+        return CGSize.zero
     }
     
     // MARK: - UICollectionViewDelegate

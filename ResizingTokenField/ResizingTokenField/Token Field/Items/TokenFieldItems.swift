@@ -10,19 +10,13 @@ import UIKit
 
 class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
     
-    /// Returns width of an item for a particular token.
-    class func width(forToken token: ResizingTokenFieldToken, font: UIFont) -> CGFloat {
+    /// Configure item for the provided token and font.
+    func populate(withToken token: ResizingTokenFieldToken) {
         // Override.
-        return 0
     }
     
     /// Called when this token cell should be removed, usually due to user tapping backspace.
     var onRemove: ((String?) -> Void)?
-    
-    /// Configure item for the provided token and font.
-    func populate(withToken token: ResizingTokenFieldToken, font: UIFont) {
-        // Override.
-    }
     
     // MARK: UIResponder
     

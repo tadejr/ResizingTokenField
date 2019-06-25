@@ -10,6 +10,11 @@ import UIKit
 
 class DefaultTokenCell: ResizingTokenFieldTokenCell {
     
+    static func width(forToken token: ResizingTokenFieldToken, font: UIFont) -> CGFloat {
+        let titleWidth = token.title.size(withAttributes: [.font: font]).width
+        return 4 + ceil(titleWidth) + 4  // Leading + title + trailing
+    }
+    
     let titleLabel: UILabel = UILabel(frame: .zero)
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,14 +36,8 @@ class DefaultTokenCell: ResizingTokenFieldTokenCell {
     }
     
     // MARK: - TokenCellItem
-    
-    override class func width(forToken token: ResizingTokenFieldToken, font: UIFont) -> CGFloat {
-        let titleWidth = token.title.size(withAttributes: [.font: font]).width
-        return 4 + ceil(titleWidth) + 4  // Leading + title + trailing
-    }
 
-    override func populate(withToken token: ResizingTokenFieldToken, font: UIFont) {
-        titleLabel.font = font
+    override func populate(withToken token: ResizingTokenFieldToken) {
         titleLabel.text = token.title
     }
     

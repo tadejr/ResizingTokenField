@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FeaturesViewController.swift
 //  ResizingTokenField
 //
 //  Created by Tadej Razborsek on 19/06/2019.
@@ -8,32 +8,30 @@
 
 import UIKit
 
-class Token: ResizingTokenFieldToken, Equatable {
+class FeaturesViewController: UIViewController {
     
-    static func == (lhs: Token, rhs: Token) -> Bool {
-        return lhs === rhs
+    class Token: ResizingTokenFieldToken, Equatable {
+        
+        static func == (lhs: Token, rhs: Token) -> Bool {
+            return lhs === rhs
+        }
+        
+        var title: String
+        
+        init(title: String) {
+            self.title = title
+        }
     }
     
-    var title: String
-    
-    init(title: String) {
-        self.title = title
-    }
-}
-
-class ViewController: UIViewController {
-
     @IBOutlet weak var tokenField: ResizingTokenField!
     @IBOutlet weak var animateSwitch: UISwitch!
     
-    private lazy var titles: [String] = {
-        "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit".components(separatedBy: " ")
-    }()
+    private lazy var titles: [String] = { "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit".components(separatedBy: " ") }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tokenField.textStyle = .body 
+        tokenField.font = .preferredFont(forTextStyle: .body)
         
         tokenField.labelText = "These are some tokens:"
         let tokens: [Token] = [

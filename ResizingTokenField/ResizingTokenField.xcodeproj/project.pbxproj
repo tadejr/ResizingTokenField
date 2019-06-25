@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BE6EBDFA22BA74B200B9A872 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBDF922BA74B200B9A872 /* AppDelegate.swift */; };
-		BE6EBDFC22BA74B200B9A872 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBDFB22BA74B200B9A872 /* ViewController.swift */; };
+		BE6EBDFC22BA74B200B9A872 /* FeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBDFB22BA74B200B9A872 /* FeaturesViewController.swift */; };
 		BE6EBDFF22BA74B200B9A872 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE6EBDFD22BA74B200B9A872 /* Main.storyboard */; };
 		BE6EBE0122BA74B400B9A872 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE6EBE0022BA74B400B9A872 /* Assets.xcassets */; };
 		BE6EBE0422BA74B400B9A872 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE6EBE0222BA74B400B9A872 /* LaunchScreen.storyboard */; };
@@ -21,6 +21,10 @@
 		BE6EBE2A22BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2922BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift */; };
 		BE6EBE2C22BAA37300B9A872 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */; };
 		BEDA6F1622BB90C600E08059 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDA6F1522BB90C600E08059 /* Constants.swift */; };
+		BEE2FAFC22C2569200D0BEE4 /* CustomTokenCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FAFB22C2569200D0BEE4 /* CustomTokenCellViewController.swift */; };
+		BEE2FAFF22C2772500D0BEE4 /* CustomTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FAFD22C2772500D0BEE4 /* CustomTokenCell.swift */; };
+		BEE2FB0022C2772500D0BEE4 /* CustomTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE2FAFE22C2772500D0BEE4 /* CustomTokenCell.xib */; };
+		BEE2FB0222C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift */; };
 		BEFFD25422C0F273001ED71E /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25322C0F273001ED71E /* Tokens.swift */; };
 		BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25522C10FF4001ED71E /* LabelCell.swift */; };
 /* End PBXBuildFile section */
@@ -38,7 +42,7 @@
 /* Begin PBXFileReference section */
 		BE6EBDF622BA74B200B9A872 /* ResizingTokenField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResizingTokenField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE6EBDF922BA74B200B9A872 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BE6EBDFB22BA74B200B9A872 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BE6EBDFB22BA74B200B9A872 /* FeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesViewController.swift; sourceTree = "<group>"; };
 		BE6EBDFE22BA74B200B9A872 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BE6EBE0022BA74B400B9A872 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE6EBE0322BA74B400B9A872 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,6 +58,10 @@
 		BE6EBE2922BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldFlowLayout.swift; sourceTree = "<group>"; };
 		BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		BEDA6F1522BB90C600E08059 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BEE2FAFB22C2569200D0BEE4 /* CustomTokenCellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenCellViewController.swift; sourceTree = "<group>"; };
+		BEE2FAFD22C2772500D0BEE4 /* CustomTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenCell.swift; sourceTree = "<group>"; };
+		BEE2FAFE22C2772500D0BEE4 /* CustomTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTokenCell.xib; sourceTree = "<group>"; };
+		BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldDelegates.swift; sourceTree = "<group>"; };
 		BEFFD25322C0F273001ED71E /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
 		BEFFD25522C10FF4001ED71E /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,7 +107,10 @@
 			children = (
 				BE6EBE1A22BA777D00B9A872 /* Token Field */,
 				BE6EBDF922BA74B200B9A872 /* AppDelegate.swift */,
-				BE6EBDFB22BA74B200B9A872 /* ViewController.swift */,
+				BE6EBDFB22BA74B200B9A872 /* FeaturesViewController.swift */,
+				BEE2FAFB22C2569200D0BEE4 /* CustomTokenCellViewController.swift */,
+				BEE2FAFD22C2772500D0BEE4 /* CustomTokenCell.swift */,
+				BEE2FAFE22C2772500D0BEE4 /* CustomTokenCell.xib */,
 				BE6EBDFD22BA74B200B9A872 /* Main.storyboard */,
 				BE6EBE0022BA74B400B9A872 /* Assets.xcassets */,
 				BE6EBE0222BA74B400B9A872 /* LaunchScreen.storyboard */,
@@ -121,6 +132,7 @@
 		BE6EBE1A22BA777D00B9A872 /* Token Field */ = {
 			isa = PBXGroup;
 			children = (
+				BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift */,
 				BE6EBE1B22BA779A00B9A872 /* ResizingTokenField.swift */,
 				BE6EBE1D22BA7AA700B9A872 /* ResizingTokenFieldViewModel.swift */,
 				BE6EBE2922BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift */,
@@ -223,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEE2FB0022C2772500D0BEE4 /* CustomTokenCell.xib in Resources */,
 				BE6EBE0422BA74B400B9A872 /* LaunchScreen.storyboard in Resources */,
 				BE6EBE0122BA74B400B9A872 /* Assets.xcassets in Resources */,
 				BE6EBDFF22BA74B200B9A872 /* Main.storyboard in Resources */,
@@ -244,11 +257,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE6EBE1E22BA7AA700B9A872 /* ResizingTokenFieldViewModel.swift in Sources */,
+				BEE2FAFC22C2569200D0BEE4 /* CustomTokenCellViewController.swift in Sources */,
+				BEE2FAFF22C2772500D0BEE4 /* CustomTokenCell.swift in Sources */,
 				BE6EBE2022BA7F5300B9A872 /* ResizingTokenFieldToken.swift in Sources */,
 				BE6EBE2222BA814B00B9A872 /* TokenFieldItems.swift in Sources */,
-				BE6EBDFC22BA74B200B9A872 /* ViewController.swift in Sources */,
+				BE6EBDFC22BA74B200B9A872 /* FeaturesViewController.swift in Sources */,
 				BE6EBE2722BA832100B9A872 /* DefaultTokenCell.swift in Sources */,
 				BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */,
+				BEE2FB0222C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift in Sources */,
 				BEDA6F1622BB90C600E08059 /* Constants.swift in Sources */,
 				BE6EBE2C22BAA37300B9A872 /* TextFieldCell.swift in Sources */,
 				BE6EBDFA22BA74B200B9A872 /* AppDelegate.swift in Sources */,

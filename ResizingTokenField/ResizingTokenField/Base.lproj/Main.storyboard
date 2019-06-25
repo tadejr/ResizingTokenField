@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N2t-BB-VMs">
     <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,22 +10,90 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Custom Token Cell View Controller-->
+        <scene sceneID="R97-dx-cLH">
+            <objects>
+                <viewController id="1op-Sl-UpJ" customClass="CustomTokenCellViewController" customModule="ResizingTokenField" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hP4-SZ-n93">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="eqB-2j-akw" customClass="ResizingTokenField" customModule="ResizingTokenField" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="88" width="414" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="26l-bF-qgk">
+                                <rect key="frame" x="0.0" y="138" width="414" height="724"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchResultCell" textLabel="hTb-2e-rHg" style="IBUITableViewCellStyleDefault" id="H5r-bw-sSW">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="H5r-bw-sSW" id="dC7-Sh-Atu">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hTb-2e-rHg">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.666666666666664"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="1op-Sl-UpJ" id="Pi0-f2-IVD"/>
+                                    <outlet property="delegate" destination="1op-Sl-UpJ" id="JOa-gf-lLH"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="26l-bF-qgk" firstAttribute="leading" secondItem="DuF-vy-NTk" secondAttribute="leading" id="SQT-9M-Ymj"/>
+                            <constraint firstItem="DuF-vy-NTk" firstAttribute="bottom" secondItem="26l-bF-qgk" secondAttribute="bottom" id="YNn-Sk-V6M"/>
+                            <constraint firstItem="26l-bF-qgk" firstAttribute="top" secondItem="eqB-2j-akw" secondAttribute="bottom" id="dcI-c2-Bl3"/>
+                            <constraint firstItem="eqB-2j-akw" firstAttribute="leading" secondItem="DuF-vy-NTk" secondAttribute="leading" id="fkh-vK-Saq"/>
+                            <constraint firstItem="eqB-2j-akw" firstAttribute="top" secondItem="DuF-vy-NTk" secondAttribute="top" id="lpP-cq-5hW"/>
+                            <constraint firstItem="26l-bF-qgk" firstAttribute="trailing" secondItem="DuF-vy-NTk" secondAttribute="trailing" id="r1e-x4-R0A"/>
+                            <constraint firstItem="eqB-2j-akw" firstAttribute="trailing" secondItem="DuF-vy-NTk" secondAttribute="trailing" id="u6w-Cm-dPt"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="DuF-vy-NTk"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="26l-bF-qgk" id="xfZ-c4-Xhh"/>
+                        <outlet property="tokenField" destination="eqB-2j-akw" id="Bnx-CQ-CJl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LLj-AP-VcK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-590" y="-571"/>
+        </scene>
+        <!--Features-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ResizingTokenField" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="FeaturesViewController" customModule="ResizingTokenField" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ycb-qq-1by">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="Ycb-qq-1by">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="95O-sX-2GS">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="242"/>
+                                        <rect key="frame" x="0.0" y="26" width="414" height="252"/>
                                         <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMb-T5-zUj">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
+                                                <state key="normal" title="Custom Token Cell Example"/>
+                                                <connections>
+                                                    <segue destination="1op-Sl-UpJ" kind="show" id="qP4-FG-YoY"/>
+                                                </connections>
+                                            </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aa5-g9-x8b" userLabel="Options Stack View">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
+                                                <rect key="frame" x="0.0" y="60" width="414" height="52"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ByU-Xg-J3g" userLabel="Option Stack View">
                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
@@ -44,33 +112,33 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="u3r-Ry-IdL" userLabel="Buttons Stack View">
-                                                <rect key="frame" x="0.0" y="82" width="414" height="30"/>
+                                                <rect key="frame" x="0.0" y="142" width="414" height="30"/>
                                                 <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X6-i0-sUA">
+                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333333" height="30"/>
+                                                        <state key="normal" title="Toggle Label"/>
+                                                        <connections>
+                                                            <action selector="didTapToggleLabelButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dS6-uc-vbm"/>
+                                                        </connections>
+                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBu-Yf-uUf">
-                                                        <rect key="frame" x="0.0" y="0.0" width="100.66666666666667" height="30"/>
+                                                        <rect key="frame" x="121.33333333333331" y="0.0" width="101" height="30"/>
                                                         <state key="normal" title="Add Token"/>
                                                         <connections>
                                                             <action selector="didTapAddTokenButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GOr-Jz-6xI"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MqD-Nm-SH9">
-                                                        <rect key="frame" x="100.66666666666669" y="0.0" width="192" height="30"/>
+                                                        <rect key="frame" x="222.33333333333337" y="0.0" width="191.66666666666663" height="30"/>
                                                         <state key="normal" title="Add Multiple Tokens"/>
                                                         <connections>
                                                             <action selector="didTapAddMultipleTokensButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dta-k9-kAn"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X6-i0-sUA">
-                                                        <rect key="frame" x="292.66666666666669" y="0.0" width="121.33333333333331" height="30"/>
-                                                        <state key="normal" title="Toggle Label"/>
-                                                        <connections>
-                                                            <action selector="didTapToggleLabelButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dS6-uc-vbm"/>
-                                                        </connections>
-                                                    </button>
                                                 </subviews>
                                             </stackView>
-                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="100" translatesAutoresizingMaskIntoConstraints="NO" id="1A0-6X-olA" customClass="ResizingTokenField" customModule="ResizingTokenField" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="142" width="414" height="100"/>
+                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="1A0-6X-olA" customClass="ResizingTokenField" customModule="ResizingTokenField" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="202" width="414" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
@@ -78,9 +146,9 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="95O-sX-2GS" firstAttribute="top" secondItem="Ycb-qq-1by" secondAttribute="top" constant="50" id="708-4c-sMu"/>
+                                    <constraint firstItem="95O-sX-2GS" firstAttribute="top" secondItem="Ycb-qq-1by" secondAttribute="top" constant="26" id="708-4c-sMu"/>
                                     <constraint firstAttribute="trailing" secondItem="95O-sX-2GS" secondAttribute="trailing" id="BY3-q2-EEH"/>
-                                    <constraint firstAttribute="bottom" secondItem="95O-sX-2GS" secondAttribute="bottom" constant="50" id="Dhe-OB-wWg"/>
+                                    <constraint firstAttribute="bottom" secondItem="95O-sX-2GS" secondAttribute="bottom" constant="16" id="Dhe-OB-wWg"/>
                                     <constraint firstItem="95O-sX-2GS" firstAttribute="leading" secondItem="Ycb-qq-1by" secondAttribute="leading" id="wpK-6U-ecb"/>
                                 </constraints>
                             </scrollView>
@@ -95,6 +163,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Features" id="nIj-pS-H6I"/>
                     <connections>
                         <outlet property="animateSwitch" destination="cMD-aw-PQi" id="4rq-Or-0QD"/>
                         <outlet property="tokenField" destination="1A0-6X-olA" id="egj-yR-oYE"/>
@@ -102,7 +171,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-262" y="-26"/>
+            <point key="canvasLocation" x="-1639.1304347826087" y="-570.53571428571422"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="v4c-wi-NqR">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="N2t-BB-VMs" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Auz-Mh-vCo">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="oRV-H5-nD7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="46b-gc-j4Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2549.275362318841" y="-570.53571428571422"/>
         </scene>
     </scenes>
 </document>

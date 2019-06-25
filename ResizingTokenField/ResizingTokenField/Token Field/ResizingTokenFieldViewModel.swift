@@ -12,28 +12,22 @@ class ResizingTokenFieldViewModel {
     var tokens: [ResizingTokenFieldToken] = []
     
     /// Convenience reference, used for calculating item sizes.
-    /// Should be set once collection view is set up.
     weak var collectionView: UICollectionView?
+    
+    /// Convenience reference, used for calculating item sizes.
+    weak var customCellDelegate: ResizingTokenFieldCustomCellDelegate?
     
     // MARK: - Font
     
     /// Font used by all labels.
-    var font: UIFont = UIFont.systemFont(ofSize: Constants.Font.defaultSize)
+    var font: UIFont = Constants.Font.defaultFont {
+        didSet { defaultItemHeight = 4 + ceil(font.lineHeight) + 4 }  // Top + height + bottom
+    }
     
     /// Height of items.
-    var itemHeight: CGFloat = ceil(UIFont.systemFont(ofSize: Constants.Font.defaultSize).lineHeight)
-    
-    var textStyle: UIFont.TextStyle? {
-        didSet { updateFont() }
-    }
-    var fontSize: CGFloat = Constants.Font.defaultSize {
-        didSet { updateFont() }
-    }
-    
-    func updateFont() {
-        font = textStyle != nil ? UIFont.preferredFont(forTextStyle: textStyle!) : UIFont.systemFont(ofSize: fontSize)
-        itemHeight = 4 + ceil(font.lineHeight) + 4   // Top + height + bottom
-    }
+    var defaultItemHeight: CGFloat = ceil(Constants.Font.defaultFont.lineHeight) + 8
+    var customItemHeight: CGFloat?
+    var itemHeight: CGFloat { return customItemHeight ?? defaultItemHeight }
     
     // MARK: - Label cell
     
@@ -42,6 +36,11 @@ class ResizingTokenFieldViewModel {
     
     var labelCellIndexPath: IndexPath {
         return IndexPath(item: 0, section: 0)
+    }
+    
+    var labelCellSize: CGSize {
+        return CGSize(width: LabelCell.width(forText: labelCellText, font: font),
+                      height: itemHeight)
     }
     
     // MARK: - Text field cell
@@ -198,25 +197,9 @@ class ResizingTokenFieldViewModel {
         }
     }
     
-    func sizeForItemAt(indexPath: IndexPath) -> CGSize {
-        let identifier = identifierForCell(atIndexPath: indexPath)
-        switch identifier {
-        case Constants.Identifier.labelCell:
-            return CGSize(width: LabelCell.width(forText: labelCellText, font: font),
-                          height: itemHeight)
-        case Constants.Identifier.textFieldCell:
-            return textFieldCellSize
-        case Constants.Identifier.tokenCell:
-            if let token = token(atIndexPath: indexPath) {
-                return CGSize(width: DefaultTokenCell.width(forToken: token, font: font),
-                              height: itemHeight)
-            }
-        default:
-            break
-        }
-        
-        // Should never reach
-        return CGSize.zero
+    func defaultTokenCellSize(forToken token: ResizingTokenFieldToken) -> CGSize {
+        return CGSize(width: DefaultTokenCell.width(forToken: token, font: font),
+                      height: itemHeight)
     }
     
 }
