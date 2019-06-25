@@ -36,6 +36,14 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         tokenField.delegate = self
         tokenField.customCellDelegate = self
         tokenField.itemHeight = 40
+        tokenField.preferredReturnKeyType = .search
+    }
+    
+    // MARK: - Rotation
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        tokenField.handleOrientationChange()
     }
     
     // MARK: - ResizingTokenFieldDelegate

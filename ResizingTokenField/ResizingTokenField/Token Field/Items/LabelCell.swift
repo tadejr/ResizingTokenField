@@ -20,18 +20,16 @@ class LabelCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setUpLabel()
+        setUp()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUpLabel()
+        setUp()
     }
     
-    private func setUpLabel() {
+    private func setUp() {
         addSubview(label)
-        
-        backgroundColor = .white
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

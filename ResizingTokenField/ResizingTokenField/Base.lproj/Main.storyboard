@@ -20,10 +20,17 @@
                         <subviews>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="eqB-2j-akw" customClass="ResizingTokenField" customModule="ResizingTokenField" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="88" width="414" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F7v-r8-jwy" userLabel="Separator">
+                                <rect key="frame" x="0.0" y="138" width="414" height="1"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="tUh-OP-G5v"/>
+                                </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="26l-bF-qgk">
-                                <rect key="frame" x="0.0" y="138" width="414" height="724"/>
+                                <rect key="frame" x="0.0" y="139" width="414" height="723"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchResultCell" textLabel="hTb-2e-rHg" style="IBUITableViewCellStyleDefault" id="H5r-bw-sSW">
@@ -52,13 +59,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="F7v-r8-jwy" firstAttribute="leading" secondItem="DuF-vy-NTk" secondAttribute="leading" id="0f9-5P-8uL"/>
                             <constraint firstItem="26l-bF-qgk" firstAttribute="leading" secondItem="DuF-vy-NTk" secondAttribute="leading" id="SQT-9M-Ymj"/>
                             <constraint firstItem="DuF-vy-NTk" firstAttribute="bottom" secondItem="26l-bF-qgk" secondAttribute="bottom" id="YNn-Sk-V6M"/>
-                            <constraint firstItem="26l-bF-qgk" firstAttribute="top" secondItem="eqB-2j-akw" secondAttribute="bottom" id="dcI-c2-Bl3"/>
+                            <constraint firstItem="F7v-r8-jwy" firstAttribute="top" secondItem="eqB-2j-akw" secondAttribute="bottom" id="cod-Ob-Md9"/>
+                            <constraint firstItem="DuF-vy-NTk" firstAttribute="trailing" secondItem="F7v-r8-jwy" secondAttribute="trailing" id="cqU-b1-FXe"/>
                             <constraint firstItem="eqB-2j-akw" firstAttribute="leading" secondItem="DuF-vy-NTk" secondAttribute="leading" id="fkh-vK-Saq"/>
                             <constraint firstItem="eqB-2j-akw" firstAttribute="top" secondItem="DuF-vy-NTk" secondAttribute="top" id="lpP-cq-5hW"/>
                             <constraint firstItem="26l-bF-qgk" firstAttribute="trailing" secondItem="DuF-vy-NTk" secondAttribute="trailing" id="r1e-x4-R0A"/>
                             <constraint firstItem="eqB-2j-akw" firstAttribute="trailing" secondItem="DuF-vy-NTk" secondAttribute="trailing" id="u6w-Cm-dPt"/>
+                            <constraint firstItem="26l-bF-qgk" firstAttribute="top" secondItem="F7v-r8-jwy" secondAttribute="bottom" id="yJG-Or-rIE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="DuF-vy-NTk"/>
                     </view>
@@ -139,7 +149,7 @@
                                             </stackView>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="1A0-6X-olA" customClass="ResizingTokenField" customModule="ResizingTokenField" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="202" width="414" height="50"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
                                     </stackView>

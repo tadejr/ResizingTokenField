@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FeaturesViewController: UIViewController {
+class FeaturesViewController: UIViewController, UITextFieldDelegate {
     
     class Token: ResizingTokenFieldToken, Equatable {
         
@@ -31,13 +31,19 @@ class FeaturesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tokenField.font = .preferredFont(forTextStyle: .body)
+        tokenField.layer.borderWidth = 1
+        tokenField.layer.borderColor = UIColor.darkGray.cgColor
+        tokenField.preferredReturnKeyType = .done
+        tokenField.textFieldDelegate = self
         
-        tokenField.labelText = "These are some tokens:"
+        let placeholder: String = "Type here…"
+        tokenField.placeholder = placeholder
+        tokenField.textFieldMinWidth = ceil(placeholder.size(withAttributes: [.font: tokenField.font]).width)
+        
+        tokenField.labelText = "Tokens:"
         let tokens: [Token] = [
             Token(title: "Lorem"),
-            Token(title: "Ipsum"),
-            Token(title: "Dolor")
+            Token(title: "Ipsum")
         ]
         
         tokenField.append(tokens: tokens)
@@ -51,7 +57,7 @@ class FeaturesViewController: UIViewController {
     
     @IBAction func didTapAddMultipleTokensButton(_ sender: UIButton) {
         var tokens: [Token] = []
-        for _ in 0...(Int(arc4random_uniform(5))) {
+        for _ in 0...(Int(arc4random_uniform(4)) + 1) {
             tokens.append(Token(title: getRandomTitle()))
         }
 
@@ -60,6 +66,17 @@ class FeaturesViewController: UIViewController {
     
     @IBAction func didTapToggleLabelButton(_ sender: UIButton) {
         tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn, completion: nil) : tokenField.showLabel(animated: animateSwitch.isOn, completion: nil)
+    }
+    
+    // MARK: - UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard textField == tokenField.textField else { return true }
+        guard let text = textField.text, !text.isEmpty else { return true }
+        
+        tokenField.append(tokens: [Token(title: text)])
+        tokenField.text = nil
+        return false
     }
     
     // MARK: - Rotation

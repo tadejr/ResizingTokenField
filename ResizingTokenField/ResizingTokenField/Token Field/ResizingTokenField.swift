@@ -41,6 +41,10 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
+    var preferredReturnKeyType: UIReturnKeyType = .default {
+        didSet { textField?.returnKeyType = preferredReturnKeyType }
+    }
+    
     var placeholder: String? {
         didSet { textField?.placeholder = placeholder }
     }
@@ -51,6 +55,17 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.font = newValue }
     }
     
+    var contentInsets: UIEdgeInsets = Constants.Content.defaultInsets {
+        didSet {
+            (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.sectionInset = contentInsets
+        }
+    }
+    
+    var textFieldMinWidth: CGFloat {
+        get { return viewModel.textFieldCellMinWidth }
+        set { viewModel.textFieldCellMinWidth = newValue }
+    }
+    
     var isShowingLabel: Bool { return viewModel.isShowingLabelCell }
     var labelText: String? {
         get { return viewModel.labelCellText }
@@ -58,7 +73,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
-    private var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
+    var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: ResizingTokenFieldFlowLayout())
@@ -86,16 +101,17 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         setUpCollectionView()
         registerCells()
         
-        viewModel.minimizeTextFieldCellSize()
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Duration.reloadDelay) { [weak self] in
-            guard let self = self else { return }
-            self.viewModel.invalidateTextFieldCellSize()
-            self.collectionView.collectionViewLayout.invalidateLayout()
-        }
+//        viewModel.minimizeTextFieldCellSize()
+//        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Duration.reloadDelay) { [weak self] in
+//            guard let self = self else { return }
+//            self.viewModel.invalidateTextFieldCellSize()
+//            self.collectionView.collectionViewLayout.invalidateLayout()
+//        }
     }
     
     private func setUpCollectionView() {
         let layout = collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout
+        layout?.sectionInset = contentInsets
         layout?.onContentHeightChanged = { [weak self] (oldHeight, newHeight) in
             self?.updateContentHeight(newHeight: newHeight, animated: false)
         }
@@ -103,7 +119,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .lightGray
+        collectionView.backgroundColor = .clear
         
         addSubview(collectionView)
         
@@ -385,11 +401,10 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         
         textFieldCell.textField.placeholder = placeholder
         textFieldCell.textField.font = viewModel.font
+        textFieldCell.textField.returnKeyType = preferredReturnKeyType
         textFieldCell.textField.delegate = textFieldDelegate
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
-        textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in
-            self?.selectLastToken()
-        }
+        textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in self?.selectLastToken() }
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

@@ -14,12 +14,16 @@ struct Constants {
         static let defaultFont: UIFont = UIFont.systemFont(ofSize: 15)
     }
     
+    struct Content {
+        static let defaultInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    }
+    
     struct LabelCell {
-        static let isShownByDefault: Bool = false
+        static let isShownByDefault: Bool = true
     }
     
     struct TextFieldCell {
-        static let minWidth: CGFloat = 60
+        static let defaultMinWidth: CGFloat = 60
     }
     
     struct Duration {

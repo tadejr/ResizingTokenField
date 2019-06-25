@@ -33,18 +33,16 @@ class TextFieldCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setUpTextField()
+        setUp()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUpTextField()
+        setUp()
     }
     
-    private func setUpTextField() {
+    private func setUp() {
         addSubview(textField)
-        
-        backgroundColor = .gray
         
         textField.autocorrectionType = .no
         textField.translatesAutoresizingMaskIntoConstraints = false

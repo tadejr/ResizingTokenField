@@ -19,16 +19,18 @@ class DefaultTokenCell: ResizingTokenFieldTokenCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setUpLabel()
+        setUp()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUpLabel()
-        backgroundColor = .white
+        setUp()
     }
     
-    private func setUpLabel() {
+    private func setUp() {
+        layer.cornerRadius = 5
+        backgroundColor = .lightGray
+        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -43,7 +45,7 @@ class DefaultTokenCell: ResizingTokenFieldTokenCell {
     
     override var isSelected: Bool {
         didSet {
-            backgroundColor = isSelected ? .gray : .white
+            backgroundColor = isSelected ? .gray : .lightGray
         }
     }
     

@@ -47,7 +47,11 @@ class ResizingTokenFieldViewModel {
     
     var textFieldCellIndexPath: IndexPath {
         // The last cell
-        return IndexPath(item: numberOfItems-1, section: 0)
+        return IndexPath(item: numberOfItems - 1, section: 0)
+    }
+    
+    var textFieldCellMinWidth: CGFloat = Constants.TextFieldCell.defaultMinWidth {
+        didSet { invalidateTextFieldCellSize() }
     }
     
     /// The current size of the text field cell.
@@ -62,11 +66,11 @@ class ResizingTokenFieldViewModel {
     }
     
     private var cachedTextFieldCellSize: CGSize?
-    
+
     private func calculateTextFieldCellSize() -> CGSize {
         guard let collectionView = self.collectionView, let layout = collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout else {
             // Should never reach.
-            return CGSize(width: Constants.TextFieldCell.minWidth, height: itemHeight)
+            return CGSize(width: textFieldCellMinWidth, height: itemHeight)
         }
         
         var remainingWidth: CGFloat = 0
@@ -76,7 +80,7 @@ class ResizingTokenFieldViewModel {
             remainingWidth = collectionView.bounds.size.width - cell.frame.origin.x - sectionInsets.right
         }
         
-        if remainingWidth < Constants.TextFieldCell.minWidth {
+        if remainingWidth < textFieldCellMinWidth {
             // Text field cell should be in a new row, use all available width.
             return CGSize(width: collectionView.bounds.size.width - sectionInsets.left - sectionInsets.right, height: itemHeight)
         } else {
@@ -90,7 +94,7 @@ class ResizingTokenFieldViewModel {
     }
     
     func minimizeTextFieldCellSize() {
-        cachedTextFieldCellSize = CGSize(width: Constants.TextFieldCell.minWidth, height: itemHeight)
+        cachedTextFieldCellSize = CGSize(width: textFieldCellMinWidth, height: itemHeight)
     }
     
     // MARK: - Add/remove tokens
