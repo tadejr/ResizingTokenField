@@ -27,7 +27,6 @@ struct Constants {
     }
     
     struct Duration {
-        static let reloadDelay: TimeInterval = 0.1
         static let animationDefault: TimeInterval = 0.3
     }
     

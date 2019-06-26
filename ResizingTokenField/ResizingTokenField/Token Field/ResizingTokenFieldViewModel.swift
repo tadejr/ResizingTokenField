@@ -11,12 +11,6 @@ import UIKit
 class ResizingTokenFieldViewModel {
     var tokens: [ResizingTokenFieldToken] = []
     
-    /// Convenience reference, used for calculating item sizes.
-    weak var collectionView: UICollectionView?
-    
-    /// Convenience reference, used for calculating item sizes.
-    weak var customCellDelegate: ResizingTokenFieldCustomCellDelegate?
-    
     // MARK: - Font
     
     /// Font used by all labels.
@@ -50,51 +44,10 @@ class ResizingTokenFieldViewModel {
         return IndexPath(item: numberOfItems - 1, section: 0)
     }
     
-    var textFieldCellMinWidth: CGFloat = Constants.TextFieldCell.defaultMinWidth {
-        didSet { invalidateTextFieldCellSize() }
-    }
-    
-    /// The current size of the text field cell.
-    var textFieldCellSize: CGSize {
-        if let cachedSize = cachedTextFieldCellSize {
-            return cachedSize
-        }
-        
-        let calculatedSize = calculateTextFieldCellSize()
-        cachedTextFieldCellSize = calculatedSize
-        return calculatedSize
-    }
-    
-    private var cachedTextFieldCellSize: CGSize?
-
-    private func calculateTextFieldCellSize() -> CGSize {
-        guard let collectionView = self.collectionView, let layout = collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout else {
-            // Should never reach.
-            return CGSize(width: textFieldCellMinWidth, height: itemHeight)
-        }
-        
-        var remainingWidth: CGFloat = 0
-        let sectionInsets = layout.appropriateSectionInsetsForSectionAt(section: 0)
-        if let cell = collectionView.cellForItem(at: textFieldCellIndexPath) {
-            // Cell's frame should reach the end of current row.
-            remainingWidth = collectionView.bounds.size.width - cell.frame.origin.x - sectionInsets.right
-        }
-        
-        if remainingWidth < textFieldCellMinWidth {
-            // Text field cell should be in a new row, use all available width.
-            return CGSize(width: collectionView.bounds.size.width - sectionInsets.left - sectionInsets.right, height: itemHeight)
-        } else {
-            // Text field cell fits in the same row.
-            return CGSize(width: remainingWidth, height: itemHeight)
-        }
-    }
-    
-    func invalidateTextFieldCellSize() {
-        cachedTextFieldCellSize = nil
-    }
-    
-    func minimizeTextFieldCellSize() {
-        cachedTextFieldCellSize = CGSize(width: textFieldCellMinWidth, height: itemHeight)
+    // The smallest allowed size of the text field cell.
+    var textFieldCellMinWidth: CGFloat = Constants.TextFieldCell.defaultMinWidth
+    var textFieldCellMinSize: CGSize {
+        return CGSize(width: textFieldCellMinWidth, height: itemHeight)
     }
     
     // MARK: - Add/remove tokens
