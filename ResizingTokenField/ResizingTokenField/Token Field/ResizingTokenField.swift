@@ -74,7 +74,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
+    
+    /// Reference to the current text field instance, or nil if no text field is loaded.
     var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
+    
+    /// Set this to true to make text field first responder immediately after it loads.
+    /// If `textField` returns a non-nil value it should be used instead of this flag.
+    var makeTextFieldFirstResponderImmediately: Bool = false
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: ResizingTokenFieldFlowLayout())
@@ -85,6 +91,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     /// Height constraint of the collection view. This constraint's constant is updated as collection view resizes.
     private var heightConstraint: NSLayoutConstraint?
+    
     
     // MARK: - Lifecycle
     
@@ -101,13 +108,6 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     private func initialize() {
         setUpCollectionView()
         registerCells()
-        
-//        viewModel.minimizeTextFieldCellSize()
-//        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Duration.reloadDelay) { [weak self] in
-//            guard let self = self else { return }
-//            self.viewModel.invalidateTextFieldCellSize()
-//            self.collectionView.collectionViewLayout.invalidateLayout()
-//        }
     }
     
     private func setUpCollectionView() {
@@ -324,6 +324,11 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         textFieldCell.textField.delegate = textFieldDelegate
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
         textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in self?.selectLastToken() }
+        
+        if makeTextFieldFirstResponderImmediately {
+            makeTextFieldFirstResponderImmediately = false
+            textFieldCell.textField.becomeFirstResponder()
+        }
     }
     
     @objc private func textFieldEditingChanged(_ textField: UITextField) {

@@ -39,6 +39,7 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         tokenField.customCellDelegate = self
         tokenField.itemHeight = 40
         tokenField.preferredReturnKeyType = .search
+        tokenField.makeTextFieldFirstResponderImmediately = true
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -27,19 +27,22 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var tokenField: ResizingTokenField!
     @IBOutlet weak var animateSwitch: UISwitch!
     
+    let tokenField2 = ResizingTokenField(frame: .zero)
+    
     private lazy var titles: [String] = { "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit".components(separatedBy: " ") }()
+    private var randomTitle: String { return titles[Int(arc4random_uniform(UInt32(titles.count)))] }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tokenField.layer.borderWidth = 1
-        tokenField.layer.borderColor = UIColor.darkGray.cgColor
-        tokenField.preferredReturnKeyType = .done
-        tokenField.textFieldDelegate = self
-        
-        let placeholder = "Type here…"
-        tokenField.placeholder = placeholder
-        tokenField.textFieldMinWidth = placeholder.width(withFont: tokenField.font)
+//        tokenField.layer.borderWidth = 1
+//        tokenField.layer.borderColor = UIColor.darkGray.cgColor
+//        tokenField.preferredReturnKeyType = .done
+//        tokenField.textFieldDelegate = self
+//
+//        let placeholder = "Type here…"
+//        tokenField.placeholder = placeholder
+//        tokenField.textFieldMinWidth = placeholder.width(withFont: tokenField.font)
         
         tokenField.labelText = "Tokens:"
         let tokens: [Token] = [
@@ -48,6 +51,11 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
         ]
         
         tokenField.append(tokens: tokens)
+        
+        tokenField2.layer.borderWidth = 1
+        tokenField2.layer.borderColor = UIColor.darkGray.cgColor
+        (tokenField.superview as? UIStackView)?.addArrangedSubview(tokenField2)
+        tokenField2.makeTextFieldFirstResponderImmediately = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,13 +71,13 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
     // MARK: - IB actions
     
     @IBAction func didTapAddTokenButton(_ sender: UIButton) {
-        tokenField.append(tokens: [Token(title: getRandomTitle())], animated: animateSwitch.isOn, completion: nil)
+        tokenField.append(tokens: [Token(title: randomTitle)], animated: animateSwitch.isOn, completion: nil)
     }
     
     @IBAction func didTapAddMultipleTokensButton(_ sender: UIButton) {
         var tokens: [Token] = []
         for _ in 0...(Int(arc4random_uniform(4)) + 1) {
-            tokens.append(Token(title: getRandomTitle()))
+            tokens.append(Token(title: randomTitle))
         }
 
         tokenField.append(tokens: tokens, animated: animateSwitch.isOn)
@@ -97,17 +105,11 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
         tokenField.handleOrientationChange()
     }
     
-    // MARK: Keyboard
+    // MARK: - Keyboard
     
     override func keyboardVisibleHeightWillChange(newHeight: CGFloat) {
         scrollView.contentInset.bottom = newHeight
         scrollView.scrollIndicatorInsets.bottom = newHeight
-    }
-    
-    // MARK: - Adding tokens
-    
-    private func getRandomTitle() -> String {
-        return titles[Int(arc4random_uniform(UInt32(titles.count)))]
     }
     
 }
