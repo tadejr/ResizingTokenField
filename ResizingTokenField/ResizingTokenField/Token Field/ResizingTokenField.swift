@@ -73,14 +73,19 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.labelCellText = newValue }
     }
     
+    /// List of currently displayed tokens.
     var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
     
     /// Reference to the current text field instance, or nil if no text field is loaded.
     var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
     
-    /// Set this to true to make text field first responder immediately after it loads.
+    /// Set to true to make text field first responder immediately after it loads.
     /// If `textField` returns a non-nil value it should be used instead of this flag.
     var makeTextFieldFirstResponderImmediately: Bool = false
+    
+    /// Use to control animation when tokens are removed due to text input.
+    /// For example, if user taps backspace while a token is selected.
+    var textInputRemovesTokensAnimated: Bool = true
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: ResizingTokenFieldFlowLayout())
@@ -91,7 +96,6 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     /// Height constraint of the collection view. This constraint's constant is updated as collection view resizes.
     private var heightConstraint: NSLayoutConstraint?
-    
     
     // MARK: - Lifecycle
     
@@ -147,10 +151,17 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
-    // MARK: - Rotation
+    // MARK: - Content
     
-    func handleOrientationChange() {
+    /// Use to invalidate the internal collection view layout.
+    /// Call this when device rotation changes.
+    func invalidateLayout() {
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    /// Use to reload the internal collection view data.
+    func reloadData() {
+        collectionView.reloadData()
     }
     
     // MARK: - Toggle label
@@ -207,15 +218,9 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     /// Remove tokens at provided indexes, if they are in the token field.
-    /// This function is the faster than `remove(tokens:)`.
+    /// This function is faster than `remove(tokens:)`.
     func remove(tokensAtIndexes indexes: IndexSet, animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let removedIndexPaths = viewModel.remove(tokensAtIndexes: indexes)
-        removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
-    }
-    
-    
-    private func remove(tokensAtIndexPaths indexPaths: [IndexPath], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
-        let removedIndexPaths = viewModel.remove(tokensAtIndexPaths: indexPaths)
         removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
     }
     
@@ -252,14 +257,6 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             UIView.performWithoutAnimation {
                 collectionView.deleteItems(at: indexPaths)
             }
-        }
-    }
-    
-    // MARK: - Selecting tokens
-    
-    private func selectLastToken() {
-        if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
-            _ = cell.becomeFirstResponder()
         }
     }
     
@@ -301,7 +298,8 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         tokenCell.populate(withToken: token)
         tokenCell.onRemove = { [weak self] (text) in
             guard let self = self else { return }
-            self.remove(tokens: [token], animated: true)
+            guard self.delegate?.resizingTokenField(self, shouldRemoveToken: token) != false else { return }
+            self.remove(tokens: [token], animated: self.textInputRemovesTokensAnimated)
             self.text = text
             _ = self.textField?.becomeFirstResponder()
         }
@@ -335,6 +333,12 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         delegate?.resizingTokenField(self, didEditText: textField.text)
     }
     
+    private func selectLastToken() {
+        if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
+            _ = cell.becomeFirstResponder()
+        }
+    }
+    
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -366,7 +370,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
         
         // Should never reach
-        return CGSize.zero
+        return .zero
     }
     
     // MARK: - ResizingTokenFieldFlowLayoutDelegate

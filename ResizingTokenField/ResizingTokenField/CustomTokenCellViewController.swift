@@ -56,10 +56,14 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        tokenField.handleOrientationChange()
+        tokenField.invalidateLayout()
     }
     
     // MARK: - ResizingTokenFieldDelegate
+    
+    func resizingTokenField(_ tokenField: ResizingTokenField, shouldRemoveToken token: ResizingTokenFieldToken) -> Bool {
+        return true
+    }
     
     func resizingTokenField(_ tokenField: ResizingTokenField, didEditText newText: String?) {
         defer { tableView.reloadData() }

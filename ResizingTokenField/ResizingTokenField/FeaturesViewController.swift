@@ -102,7 +102,7 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        tokenField.handleOrientationChange()
+        tokenField.invalidateLayout()
     }
     
     // MARK: - Keyboard

@@ -84,19 +84,6 @@ class ResizingTokenFieldViewModel {
         return remove(tokensAtIndexes: indexesToRemove)
     }
     
-    /// Finds and removes tokens from the list.
-    /// Returns index paths representing removed tokens.
-    func remove(tokensAtIndexPaths indexPaths: [IndexPath]) -> [IndexPath] {
-        var indexesToRemove: IndexSet = IndexSet()
-        for indexPath in indexPaths {
-            let index = indexPath.item
-            guard index < tokens.count else { continue }
-            indexesToRemove.insert(index)
-        }
-        
-        return remove(tokensAtIndexes: indexesToRemove)
-    }
-    
     /// Removes tokens from the list.
     /// Returns index paths representing removed tokens.
     func remove(tokensAtIndexes indexes: IndexSet) -> [IndexPath] {
