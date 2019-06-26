@@ -9,37 +9,40 @@
 import UIKit
 
 protocol ResizingTokenFieldFlowLayoutDelegate: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout, heightDidChange newHeight: CGFloat)
     func lastCellIndexPath(in collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout) -> IndexPath
 }
 
 /// A UICollectionViewFlowLayout subclass, which:
-/// - tracks content height changes (onContentHeightChanged)
-/// - left aligns items, inspired by:
+/// - tracks content height changes
+/// - left aligns items, as discussed in:
 ///     - https://stackoverflow.com/questions/22539979/left-align-cells-in-uicollectionview/
 ///     - https://stackoverflow.com/questions/13017257/how-do-you-determine-spacing-between-cells-in-uicollectionview-flowlayout/
 /// - stretches the last cell to the end of its row
 class ResizingTokenFieldFlowLayout: UICollectionViewFlowLayout {
     
-    // Tracking content height changes
-    var onContentHeightChanged: ((_ oldHeight: CGFloat, _ newHeight: CGFloat) -> Void)?
-    private var oldContentHeight: CGFloat = 0
-    
     private var delegate: ResizingTokenFieldFlowLayoutDelegate? {
         return collectionView?.delegate as? ResizingTokenFieldFlowLayoutDelegate
     }
     
+    // MARK: - Content height
+    
+    private var oldContentHeight: CGFloat = 0
+    
     override var collectionViewContentSize: CGSize {
         let contentSize = super.collectionViewContentSize
         
-        let oldHeight = oldContentHeight
-        let newHeight = contentSize.height
-        oldContentHeight = newHeight
-        if oldHeight != newHeight {
-            onContentHeightChanged?(oldHeight, newHeight)
+        if oldContentHeight != contentSize.height {
+            oldContentHeight = contentSize.height
+            if let collectionView = collectionView {
+                delegate?.collectionView(collectionView, layout: self, heightDidChange: contentSize.height)
+            }
         }
         
         return contentSize
     }
+    
+    // MARK: - Layout
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let layoutAttributes: [UICollectionViewLayoutAttributes]? = super.layoutAttributesForElements(in: rect)
@@ -74,14 +77,12 @@ class ResizingTokenFieldFlowLayout: UICollectionViewFlowLayout {
         return copiedAttributes
     }
     
-    // MARK: - Helpers
-    
-    func appropriateSectionInsetsForSectionAt(section: Int) -> UIEdgeInsets {
+    private func appropriateSectionInsetsForSectionAt(section: Int) -> UIEdgeInsets {
         guard let collectionView = self.collectionView else { return sectionInset }
         return (collectionView.delegate as? UICollectionViewDelegateFlowLayout)?.collectionView?(collectionView, layout: self, insetForSectionAt: section) ?? sectionInset
     }
     
-    func appropriateMinimumInteritemSpacingForSectionAt(section: Int) -> CGFloat {
+    private func appropriateMinimumInteritemSpacingForSectionAt(section: Int) -> CGFloat {
         guard let collectionView = self.collectionView else { return minimumInteritemSpacing }
         return (collectionView.delegate as? UICollectionViewDelegateFlowLayout)?.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: section) ?? minimumInteritemSpacing
     }

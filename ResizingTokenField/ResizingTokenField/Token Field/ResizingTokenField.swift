@@ -111,19 +111,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func setUpCollectionView() {
-        let layout = collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout
-        layout?.sectionInset = contentInsets
-        layout?.onContentHeightChanged = { [weak self] (oldHeight, newHeight) in
-            self?.updateContentHeight(newHeight: newHeight, animated: false)
-        }
-        
+        (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.sectionInset = contentInsets
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
         
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(collectionView)
-        
         collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
@@ -135,7 +129,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                                               toItem: nil,
                                               attribute: .notAnAttribute,
                                               multiplier: 1,
-                                              constant: 100)
+                                              constant: 40)
         heightConstraint!.priority = UILayoutPriority(rawValue: 999) // To avoid constraint issues when used in a UIStackView
         addConstraint(heightConstraint!)
     }
@@ -203,34 +197,29 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     func append(tokens: [ResizingTokenFieldToken], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let newIndexPaths = viewModel.append(tokens: tokens)
-        insertItemsThenResizeTextFieldCell(atIndexPaths: newIndexPaths, animated: animated, completion: completion)
+        insertItems(atIndexPaths: newIndexPaths, animated: animated, completion: completion)
     }
     
-    /// Remove provided tokens, if they exist.
+    /// Remove provided tokens, if they are in the token field.
     func remove(tokens: [ResizingTokenFieldToken], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let removedIndexPaths = viewModel.remove(tokens: tokens)
-        removeItemsThenResizeTextFieldCell(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
+        removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
     }
     
-    /// Remove tokens at provided indexes, if they exist.
+    /// Remove tokens at provided indexes, if they are in the token field.
     /// This function is the faster than `remove(tokens:)`.
     func remove(tokensAtIndexes indexes: IndexSet, animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let removedIndexPaths = viewModel.remove(tokensAtIndexes: indexes)
-        removeItemsThenResizeTextFieldCell(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
+        removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
     }
     
-    /// Convenience function for removing tokens at index paths.
+    
     private func remove(tokensAtIndexPaths indexPaths: [IndexPath], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let removedIndexPaths = viewModel.remove(tokensAtIndexPaths: indexPaths)
-        removeItemsThenResizeTextFieldCell(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
+        removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
     }
     
-    /// Inserts items and correctly resizes the text field cell.
-    /// This is done by:
-    /// - setting text field cell size to minimum
-    /// - inserting new items; since text field cell width is set to minimum it will stay in the same row only if there is enough room
-    /// - re-invalidates collectionView layout, causing the cell's size to be recalculated to correct width
-    private func insertItemsThenResizeTextFieldCell(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+    private func insertItems(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
         guard isCollectionViewLoaded else {
             // Collection view initial load was not performed yet, items will be correctly configured there.
             completion?(true)
@@ -248,12 +237,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
-    /// Removes items and correctly resizes the text field cell.
-    /// This is done by:
-    /// - setting text field cell size to minimum
-    /// - finding and removing items; since text field cell width is set to minimum it will stay in the same row only if there is enough room
-    /// - re-invalidates collectionView layout, causing the cell's size to be recalculated to correct width
-    private func removeItemsThenResizeTextFieldCell(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+    private func removeItems(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
         guard isCollectionViewLoaded else {
             // Collection view initial load was not performed yet, items will be correctly configured there.
             completion?(true)
@@ -269,8 +253,6 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                 collectionView.deleteItems(at: indexPaths)
             }
         }
-        
-        _ = textField?.becomeFirstResponder()
     }
     
     // MARK: - Selecting tokens
@@ -279,18 +261,6 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         if let indexPath = viewModel.lastTokenCellIndexPath, let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
             _ = cell.becomeFirstResponder()
         }
-    }
-    
-    // MARK: - Handling content height
-    
-    private func updateContentHeight(newHeight: CGFloat, animated: Bool) {
-        heightConstraint?.constant = newHeight
-    }
-    
-    // MARK: - Text field
-    
-    @objc func textFieldEditingChanged(_ textField: UITextField) {
-        delegate?.resizingTokenField(self, didEditText: textField.text)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -333,6 +303,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             guard let self = self else { return }
             self.remove(tokens: [token], animated: true)
             self.text = text
+            _ = self.textField?.becomeFirstResponder()
         }
     }
     
@@ -355,11 +326,19 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in self?.selectLastToken() }
     }
     
-    // MARK: - ResizingTokenFieldFlowLayoutDelegate
-    
-    func lastCellIndexPath(in collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout) -> IndexPath {
-        return viewModel.textFieldCellIndexPath
+    @objc private func textFieldEditingChanged(_ textField: UITextField) {
+        delegate?.resizingTokenField(self, didEditText: textField.text)
     }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
+            _ = cell.becomeFirstResponder()
+        }
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let identifier = viewModel.identifierForCell(atIndexPath: indexPath)
@@ -372,7 +351,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             if let token = viewModel.token(atIndexPath: indexPath) {
                 if let delegate = customCellDelegate {
                     return CGSize(width: delegate.resizingTokenField(self, tokenCellWidthForToken: token),
-                        height: itemHeight)
+                                  height: itemHeight)
                 }
                 
                 return viewModel.defaultTokenCellSize(forToken: token)
@@ -385,12 +364,14 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         return CGSize.zero
     }
     
-    // MARK: - UICollectionViewDelegate
+    // MARK: - ResizingTokenFieldFlowLayoutDelegate
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? ResizingTokenFieldTokenCell {
-            _ = cell.becomeFirstResponder()
-        }
+    func collectionView(_ collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout, heightDidChange newHeight: CGFloat) {
+        heightConstraint?.constant = newHeight
+    }
+    
+    func lastCellIndexPath(in collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout) -> IndexPath {
+        return viewModel.textFieldCellIndexPath
     }
 
 }

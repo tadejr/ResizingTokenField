@@ -25,7 +25,7 @@
 		BEE2FAFC22C2569200D0BEE4 /* CustomTokenCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FAFB22C2569200D0BEE4 /* CustomTokenCellViewController.swift */; };
 		BEE2FAFF22C2772500D0BEE4 /* CustomTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FAFD22C2772500D0BEE4 /* CustomTokenCell.swift */; };
 		BEE2FB0022C2772500D0BEE4 /* CustomTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE2FAFE22C2772500D0BEE4 /* CustomTokenCell.xib */; };
-		BEE2FB0222C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift */; };
+		BEE2FB0222C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift */; };
 		BEFFD25422C0F273001ED71E /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25322C0F273001ED71E /* Tokens.swift */; };
 		BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25522C10FF4001ED71E /* LabelCell.swift */; };
 /* End PBXBuildFile section */
@@ -63,7 +63,7 @@
 		BEE2FAFB22C2569200D0BEE4 /* CustomTokenCellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenCellViewController.swift; sourceTree = "<group>"; };
 		BEE2FAFD22C2772500D0BEE4 /* CustomTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenCell.swift; sourceTree = "<group>"; };
 		BEE2FAFE22C2772500D0BEE4 /* CustomTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTokenCell.xib; sourceTree = "<group>"; };
-		BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldDelegates.swift; sourceTree = "<group>"; };
+		BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldDelegate.swift; sourceTree = "<group>"; };
 		BEFFD25322C0F273001ED71E /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
 		BEFFD25522C10FF4001ED71E /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,7 +135,7 @@
 		BE6EBE1A22BA777D00B9A872 /* Token Field */ = {
 			isa = PBXGroup;
 			children = (
-				BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift */,
+				BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift */,
 				BE6EBE1B22BA779A00B9A872 /* ResizingTokenField.swift */,
 				BE6EBE1D22BA7AA700B9A872 /* ResizingTokenFieldViewModel.swift */,
 				BE6EBE2922BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift */,
@@ -267,7 +267,7 @@
 				BE6EBDFC22BA74B200B9A872 /* FeaturesViewController.swift in Sources */,
 				BE6EBE2722BA832100B9A872 /* DefaultTokenCell.swift in Sources */,
 				BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */,
-				BEE2FB0222C27EF200D0BEE4 /* ResizingTokenFieldDelegates.swift in Sources */,
+				BEE2FB0222C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift in Sources */,
 				BEDA6F1622BB90C600E08059 /* Constants.swift in Sources */,
 				BE23A7D622C2AC56009B975D /* Extensions.swift in Sources */,
 				BE6EBE2C22BAA37300B9A872 /* TextFieldCell.swift in Sources */,

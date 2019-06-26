@@ -1,5 +1,5 @@
 //
-//  ResizingTokenFieldDelegates.swift
+//  ResizingTokenFieldDelegate.swift
 //  ResizingTokenField
 //
 //  Created by Tadej Razboršek on 25/06/2019.
