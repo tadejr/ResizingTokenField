@@ -17,7 +17,7 @@
 		BE6EBE1C22BA779A00B9A872 /* ResizingTokenField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE1B22BA779A00B9A872 /* ResizingTokenField.swift */; };
 		BE6EBE1E22BA7AA700B9A872 /* ResizingTokenFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE1D22BA7AA700B9A872 /* ResizingTokenFieldViewModel.swift */; };
 		BE6EBE2022BA7F5300B9A872 /* ResizingTokenFieldToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE1F22BA7F5300B9A872 /* ResizingTokenFieldToken.swift */; };
-		BE6EBE2222BA814B00B9A872 /* TokenFieldItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2122BA814B00B9A872 /* TokenFieldItems.swift */; };
+		BE6EBE2222BA814B00B9A872 /* ResizingTokenFieldTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2122BA814B00B9A872 /* ResizingTokenFieldTokenCell.swift */; };
 		BE6EBE2722BA832100B9A872 /* DefaultTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2522BA832100B9A872 /* DefaultTokenCell.swift */; };
 		BE6EBE2A22BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2922BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift */; };
 		BE6EBE2C22BAA37300B9A872 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */; };
@@ -55,7 +55,7 @@
 		BE6EBE1B22BA779A00B9A872 /* ResizingTokenField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenField.swift; sourceTree = "<group>"; };
 		BE6EBE1D22BA7AA700B9A872 /* ResizingTokenFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldViewModel.swift; sourceTree = "<group>"; };
 		BE6EBE1F22BA7F5300B9A872 /* ResizingTokenFieldToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldToken.swift; sourceTree = "<group>"; };
-		BE6EBE2122BA814B00B9A872 /* TokenFieldItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldItems.swift; sourceTree = "<group>"; };
+		BE6EBE2122BA814B00B9A872 /* ResizingTokenFieldTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldTokenCell.swift; sourceTree = "<group>"; };
 		BE6EBE2522BA832100B9A872 /* DefaultTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTokenCell.swift; sourceTree = "<group>"; };
 		BE6EBE2922BA9A5100B9A872 /* ResizingTokenFieldFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldFlowLayout.swift; sourceTree = "<group>"; };
 		BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 		BE6EBE2422BA82EB00B9A872 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				BE6EBE2122BA814B00B9A872 /* TokenFieldItems.swift */,
+				BE6EBE2122BA814B00B9A872 /* ResizingTokenFieldTokenCell.swift */,
 				BE6EBE2522BA832100B9A872 /* DefaultTokenCell.swift */,
 				BE6EBE2B22BAA37300B9A872 /* TextFieldCell.swift */,
 				BEFFD25522C10FF4001ED71E /* LabelCell.swift */,
@@ -263,7 +263,7 @@
 				BEE2FAFC22C2569200D0BEE4 /* CustomTokenCellViewController.swift in Sources */,
 				BEE2FAFF22C2772500D0BEE4 /* CustomTokenCell.swift in Sources */,
 				BE6EBE2022BA7F5300B9A872 /* ResizingTokenFieldToken.swift in Sources */,
-				BE6EBE2222BA814B00B9A872 /* TokenFieldItems.swift in Sources */,
+				BE6EBE2222BA814B00B9A872 /* ResizingTokenFieldTokenCell.swift in Sources */,
 				BE6EBDFC22BA74B200B9A872 /* FeaturesViewController.swift in Sources */,
 				BE6EBE2722BA832100B9A872 /* DefaultTokenCell.swift in Sources */,
 				BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */,

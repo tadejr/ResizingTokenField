@@ -25,7 +25,7 @@ class ResizingTokenFieldViewModel {
     
     // MARK: - Label cell
     
-    var isShowingLabelCell: Bool = Constants.LabelCell.isShownByDefault
+    var isShowingLabelCell: Bool = true
     var labelCellText: String?
     
     var labelCellIndexPath: IndexPath {
@@ -45,9 +45,21 @@ class ResizingTokenFieldViewModel {
     }
     
     // The smallest allowed size of the text field cell.
-    var textFieldCellMinWidth: CGFloat = Constants.TextFieldCell.defaultMinWidth
+    var textFieldCellMinWidth: CGFloat = Constants.Default.textFieldCellMinWidth
     var textFieldCellMinSize: CGSize {
         return CGSize(width: textFieldCellMinWidth, height: itemHeight)
+    }
+    
+    // MARK: - Collapse/expand tokens
+    
+    private var areTokensCollapsed: Bool = false
+    
+    /// Marks tokens as collapsed/expanded.
+    /// Returns index paths representing newly collapsed/expanded tokens.
+    func toggle(areTokensCollapsed: Bool) -> [IndexPath] {
+        guard areTokensCollapsed != self.areTokensCollapsed else { return [] }
+        self.areTokensCollapsed = areTokensCollapsed
+        return indexPathsForAllTokens
     }
     
     // MARK: - Add/remove tokens
@@ -58,6 +70,8 @@ class ResizingTokenFieldViewModel {
         let start: Int = self.tokens.count
         self.tokens += tokens
         let end: Int = self.tokens.count
+        
+        guard !areTokensCollapsed else { return [] }
         
         var indexPaths: [IndexPath] = []
         for i: Int in start..<end {
@@ -90,7 +104,9 @@ class ResizingTokenFieldViewModel {
         var removedIndexPaths: [IndexPath] = []
         var removedCount: Int = 0
         for indexToRemove in indexes.sorted() {
-            removedIndexPaths.append(indexPathForToken(atIndex: indexToRemove))
+            if !areTokensCollapsed {
+                removedIndexPaths.append(indexPathForToken(atIndex: indexToRemove))
+            }
             let index: Int = indexToRemove - removedCount
             guard index < self.tokens.count else { continue }
             self.tokens.remove(at: index)
@@ -102,14 +118,24 @@ class ResizingTokenFieldViewModel {
     
     // MARK: - Selecting tokens
     
+    var tokensToDisplayCount: Int { return areTokensCollapsed ? 0 : tokens.count }
+    
     var lastTokenCellIndexPath: IndexPath? {
-        guard tokens.count > 0 else { return nil }
+        guard tokensToDisplayCount > 0 else { return nil }
         return IndexPath(item: numberOfItems - 2, section: 0)
+    }
+    
+    var indexPathsForAllTokens: [IndexPath] {
+        var indexPaths: [IndexPath] = []
+        for i: Int in 0..<tokens.count {
+            indexPaths.append(indexPathForToken(atIndex: i))
+        }
+        return indexPaths
     }
     
     func token(atIndexPath indexPath: IndexPath) -> ResizingTokenFieldToken? {
         let tokenIndex = indexForToken(atIndexPath: indexPath)
-        guard tokenIndex >= 0, tokens.count > tokenIndex else { return nil }
+        guard tokenIndex >= 0, tokensToDisplayCount > tokenIndex else { return nil }
         return tokens[tokenIndex]
     }
     
@@ -125,7 +151,7 @@ class ResizingTokenFieldViewModel {
     // MARK: - Data source
     
     var numberOfItems: Int {
-        var count = tokens.count + 1    // Tokens + text field cell
+        var count = tokensToDisplayCount + 1    // Tokens + text field cell
         if isShowingLabelCell { count += 1 } // Label cell
         return count
     }

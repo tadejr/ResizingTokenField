@@ -37,8 +37,9 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         tokenField.textFieldMinWidth = placeholder.width(withFont: tokenField.font)
         tokenField.delegate = self
         tokenField.customCellDelegate = self
+        tokenField.textFieldDelegate = self
         tokenField.itemHeight = 40
-        tokenField.preferredReturnKeyType = .search
+        tokenField.preferredReturnKeyType = .done
         tokenField.makeTextFieldFirstResponderImmediately = true
     }
     
@@ -74,6 +75,14 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         names = randomNames.filter({ $0.hasPrefix(text) })
     }
     
+    func resizingTokenFieldShouldCollapseTokens(_ tokenField: ResizingTokenField) -> Bool {
+        return tokenField.tokens.count > 0
+    }
+    
+    func resizingTokenFieldCollapsedTokensText(_ tokenField: ResizingTokenField) -> String? {
+        return "Collapsed \(tokenField.tokens.count) token" + (tokenField.tokens.count == 1 ? "" : "s")
+    }
+    
     // MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,6 +96,17 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         cell.accessoryType = isTokenAlreadyAdded ? .checkmark : .none
         
         return cell
+    }
+    
+    // MARK: UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == tokenField.textField {
+            _ = tokenField.resignFirstResponder()
+            return false
+        }
+        
+        return true
     }
     
     // MARK: - UITableViewDelegate

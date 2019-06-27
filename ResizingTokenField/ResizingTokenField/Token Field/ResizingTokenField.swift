@@ -56,7 +56,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.font = newValue }
     }
     
-    var contentInsets: UIEdgeInsets = Constants.Content.defaultInsets {
+    var contentInsets: UIEdgeInsets = Constants.Default.contentInsets {
         didSet {
             (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.sectionInset = contentInsets
         }
@@ -86,6 +86,12 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     /// Use to control animation when tokens are removed due to text input.
     /// For example, if user taps backspace while a token is selected.
     var textInputRemovesTokensAnimated: Bool = true
+    
+    /// If `true` tokens will be collapsed using animation.
+    var shouldCollapseTokensAnimated: Bool = true
+    
+    /// If `true` tokens will be expanded using animation.
+    var shouldExpandTokensAnimated: Bool = true
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: ResizingTokenFieldFlowLayout())
@@ -167,19 +173,15 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     // MARK: - Toggle label
     
     func showLabel(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
-        toggleLabelThenResizeTextFieldCell(visible: true, animated: animated, completion: completion)
+        toggleLabelCell(visible: true, animated: animated, completion: completion)
     }
     
     func hideLabel(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
-        toggleLabelThenResizeTextFieldCell(visible: false, animated: animated, completion: completion)
+        toggleLabelCell(visible: false, animated: animated, completion: completion)
     }
     
     /// Shows/hides the label cell.
-    /// This is done by:
-    /// - setting text field cell size to minimum
-    /// - toggling the label; since text field cell width is set to minimum it will stay in the same row only if there is enough room
-    /// - re-invalidates collectionView layout, causing the cell's size to be recalculated to correct width
-    private func toggleLabelThenResizeTextFieldCell(visible: Bool, animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+    private func toggleLabelCell(visible: Bool, animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
         guard viewModel.isShowingLabelCell != visible else {
             completion?(true)
             return
@@ -194,7 +196,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
         
         if animated {
-            UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
+            UIView.animate(withDuration: Constants.Default.animationDuration, animations: {
                 visible ? self.collectionView.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView.deleteItems(at: [self.viewModel.labelCellIndexPath])
             }, completion: completion)
         } else {
@@ -202,6 +204,43 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                 visible ? self.collectionView.insertItems(at: [self.viewModel.labelCellIndexPath]) : self.collectionView.deleteItems(at: [self.viewModel.labelCellIndexPath])
             }
         }
+    }
+    
+    // MARK: First responder
+    
+    override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
+        return textField?.becomeFirstResponder() == true
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        super.resignFirstResponder()
+        if let textField = self.textField, textField.isFirstResponder {
+            return textField.resignFirstResponder()
+        } else {
+            for cell in collectionView.visibleCells {
+                guard let cell = cell as? ResizingTokenFieldTokenCell else { continue }
+                if cell.isFirstResponder {
+                    return cell.resignFirstResponder()
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    // MARK: - Collapse/expand tokens
+    
+    private func collapseTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        textField?.text = delegate?.resizingTokenFieldCollapsedTokensText(self)
+        let indexPaths = viewModel.toggle(areTokensCollapsed: true)
+        removeItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
+    }
+    
+    private func expandTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        textField?.text = nil
+        let indexPaths = viewModel.toggle(areTokensCollapsed: false)
+        insertItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
     }
     
     // MARK: - Add/remove tokens
@@ -225,14 +264,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func insertItems(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
-        guard isCollectionViewLoaded else {
-            // Collection view initial load was not performed yet, items will be correctly configured there.
+        guard isCollectionViewLoaded, !indexPaths.isEmpty else {
             completion?(true)
             return
         }
         
         if animated {
-            UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
+            UIView.animate(withDuration: Constants.Default.animationDuration, animations: {
                 self.collectionView.insertItems(at: indexPaths)
             }, completion: completion)
         } else {
@@ -243,14 +281,13 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     }
     
     private func removeItems(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
-        guard isCollectionViewLoaded else {
-            // Collection view initial load was not performed yet, items will be correctly configured there.
+        guard isCollectionViewLoaded, !indexPaths.isEmpty else {
             completion?(true)
             return
         }
         
         if animated {
-            UIView.animate(withDuration: Constants.Duration.animationDefault, animations: {
+            UIView.animate(withDuration: Constants.Default.animationDuration, animations: {
                 self.collectionView.deleteItems(at: indexPaths)
             }, completion: completion)
         } else {
@@ -321,6 +358,8 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         textFieldCell.textField.returnKeyType = preferredReturnKeyType
         textFieldCell.textField.delegate = textFieldDelegate
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
+        textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
+        textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
         textFieldCell.onDeleteBackwardWhenEmpty = { [weak self] in self?.selectLastToken() }
         
         if makeTextFieldFirstResponderImmediately {
@@ -331,6 +370,22 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     @objc private func textFieldEditingChanged(_ textField: UITextField) {
         delegate?.resizingTokenField(self, didEditText: textField.text)
+    }
+    
+    @objc private func textFieldEditingDidBegin(_ textField: UITextField) {
+        expandTokens(animated: shouldExpandTokensAnimated, completion: nil)
+    }
+    
+    @objc private func textFieldEditingDidEnd(_ textField: UITextField) {
+        if delegate?.resizingTokenFieldShouldCollapseTokens(self) == true {
+            let isTokenFirstResponder: Bool = collectionView.visibleCells.contains(where: {
+                $0.isFirstResponder || ($0 as? ResizingTokenFieldTokenCell)?.isBecomingFirstResponder == true
+            })
+            
+            if !isTokenFirstResponder {
+                collapseTokens(animated: shouldCollapseTokensAnimated, completion: nil)
+            }
+        }
     }
     
     private func selectLastToken() {

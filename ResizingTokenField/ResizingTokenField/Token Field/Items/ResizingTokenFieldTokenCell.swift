@@ -1,5 +1,5 @@
 //
-//  TokenCellRepresentable.swift
+//  ResizingTokenFieldTokenCell.swift
 //  ResizingTokenField
 //
 //  Created by Tadej Razborsek on 19/06/2019.
@@ -18,20 +18,30 @@ class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
     /// Called when this token cell should be removed, usually due to user tapping backspace.
     var onRemove: ((String?) -> Void)?
     
+    
     // MARK: UIResponder
     
-    override var canBecomeFirstResponder: Bool { return true }
+    private(set) var isBecomingFirstResponder: Bool = false
     
-    override var canResignFirstResponder: Bool { return true }
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    override var canResignFirstResponder: Bool {
+        return true
+    }
     
     override func becomeFirstResponder() -> Bool {
+        isBecomingFirstResponder = true
         super.becomeFirstResponder()
+        isBecomingFirstResponder = false
         isSelected = true
         return true
     }
     
     override func resignFirstResponder() -> Bool {
         super.resignFirstResponder()
+        isBecomingFirstResponder = false
         isSelected = false
         return true
     }

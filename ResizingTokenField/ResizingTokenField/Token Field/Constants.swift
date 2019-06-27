@@ -14,20 +14,11 @@ struct Constants {
         static let defaultFont: UIFont = UIFont.systemFont(ofSize: 15)
     }
     
-    struct Content {
-        static let defaultInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
-    }
-    
-    struct LabelCell {
-        static let isShownByDefault: Bool = true
-    }
-    
-    struct TextFieldCell {
-        static let defaultMinWidth: CGFloat = 60
-    }
-    
-    struct Duration {
-        static let animationDefault: TimeInterval = 0.3
+    struct Default {
+        static let animationDuration: TimeInterval = 0.3
+        static let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        static let font: UIFont = UIFont.systemFont(ofSize: 15)
+        static let textFieldCellMinWidth: CGFloat = 60
     }
     
     struct Identifier {
