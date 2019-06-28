@@ -15,11 +15,11 @@ class ResizingTokenFieldViewModel {
     
     /// Font used by all labels.
     var font: UIFont = Constants.Font.defaultFont {
-        didSet { defaultItemHeight = 4 + ceil(font.lineHeight) + 4 }  // Top + height + bottom
+        didSet { defaultItemHeight = ceil(font.lineHeight) + 2 * Constants.Default.defaultTokenTopBottomPadding }
     }
     
     /// Height of items.
-    var defaultItemHeight: CGFloat = ceil(Constants.Font.defaultFont.lineHeight) + 8
+    var defaultItemHeight: CGFloat = ceil(Constants.Font.defaultFont.lineHeight) + 2 * Constants.Default.defaultTokenTopBottomPadding
     var customItemHeight: CGFloat?
     var itemHeight: CGFloat { return customItemHeight ?? defaultItemHeight }
     

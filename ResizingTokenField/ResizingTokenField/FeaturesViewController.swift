@@ -36,7 +36,7 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         
         tokenField.layer.borderWidth = 1
         tokenField.layer.borderColor = UIColor.darkGray.cgColor
-        tokenField.preferredReturnKeyType = .done
+        tokenField.preferredTextFieldReturnKeyType = .done
         tokenField.delegate = self
         tokenField.textFieldDelegate = self
         tokenField.shouldTextInputRemoveTokensAnimated = animateSwitch.isOn
@@ -97,6 +97,14 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         }
     }
     
+    func resizingTokenField(_ tokenField: ResizingTokenField, configurationForDefaultCellRepresenting token: ResizingTokenFieldToken) -> DefaultTokenCellConfiguration? {
+        if token.title.lowercased() == "custom" {
+            return CustomConfiguration()
+        }
+        
+        return nil
+    }
+    
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -144,3 +152,24 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
     
 }
 
+struct CustomConfiguration: DefaultTokenCellConfiguration {
+    func cornerRadius(forSelected isSelected: Bool) -> CGFloat {
+        return 0
+    }
+    
+    func borderWidth(forSelected isSelected: Bool) -> CGFloat {
+        return 1.0
+    }
+    
+    func borderColor(forSelected isSelected: Bool) -> CGColor {
+        return UIColor.red.cgColor
+    }
+    
+    func textColor(forSelected isSelected: Bool) -> UIColor {
+        return isSelected ? .green : .red
+    }
+    
+    func backgroundColor(forSelected isSelected: Bool) -> UIColor {
+        return isSelected ? .red : .green
+    }
+}

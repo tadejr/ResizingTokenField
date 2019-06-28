@@ -60,6 +60,16 @@ protocol ResizingTokenFieldDelegate: AnyObject {
     /// - Returns: Boolean value indicating if `token` can be removed.
     func resizingTokenField(_ tokenField: ResizingTokenField, shouldRemoveToken token: ResizingTokenFieldToken) -> Bool
     
+    /// Return configuration for a default token cell or `nil` to use default configuration.
+    /// Not called if custom token cells are used.
+    /// Optional.
+    ///
+    /// - Parameters:
+    ///   - tokenField: Token field showing the cell.
+    ///   - token: Token represented by the cell.
+    /// - Returns: Configuration of the cell.
+    func resizingTokenField(_ tokenField: ResizingTokenField, configurationForDefaultCellRepresenting token: ResizingTokenFieldToken) -> DefaultTokenCellConfiguration?
+    
 }
 
 /// Default implementations for optional methods.
@@ -69,6 +79,7 @@ extension ResizingTokenFieldDelegate {
     func resizingTokenField(_ tokenField: ResizingTokenField, didChangeHeight newHeight: CGFloat) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, didEditText newText: String?) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, shouldRemoveToken token: ResizingTokenFieldToken) -> Bool { return true }
+    func resizingTokenField(_ tokenField: ResizingTokenField, configurationForDefaultCellRepresenting token: ResizingTokenFieldToken) -> DefaultTokenCellConfiguration? { return nil }
     
 }
 

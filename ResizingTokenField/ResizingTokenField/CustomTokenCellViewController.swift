@@ -39,7 +39,7 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         tokenField.customCellDelegate = self
         tokenField.textFieldDelegate = self
         tokenField.itemHeight = 40
-        tokenField.preferredReturnKeyType = .done
+        tokenField.preferredTextFieldReturnKeyType = .done
         tokenField.makeTextFieldFirstResponderImmediately = true
     }
     

@@ -10,16 +10,10 @@ import UIKit
 
 class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDelegate, ResizingTokenFieldFlowLayoutDelegate {
     
+    /// List of currently displayed tokens.
+    var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
+    
     // MARK: - Configuration
-    
-    weak var delegate: ResizingTokenFieldDelegate?
-    weak var customCellDelegate: ResizingTokenFieldCustomCellDelegate? {
-        didSet { registerCells() }
-    }
-    
-    weak var textFieldDelegate: UITextFieldDelegate? {
-        didSet { textField?.delegate = textFieldDelegate }
-    }
     
     var itemHeight: CGFloat {
         get { return viewModel.itemHeight }
@@ -29,7 +23,62 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
-    private var cachedText: String? // If text is set before text field cell is loaded.
+    /// Insets of the internal collection view layout.
+    var contentInsets: UIEdgeInsets = Constants.Default.contentInsets {
+        didSet {
+            (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.sectionInset = contentInsets
+        }
+    }
+    
+    /// Spacing between items.
+    var itemSpacing: CGFloat = Constants.Default.itemSpacing {
+        didSet {
+            (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.minimumInteritemSpacing = itemSpacing
+        }
+    }
+    
+    /// Font used by the token field.
+    var font: UIFont {
+        get { return viewModel.font }
+        set { viewModel.font = newValue }
+    }
+    
+    // MARK: Label
+    
+    var isShowingLabel: Bool { return viewModel.isShowingLabelCell }
+    
+    /// Text to display in the label at the start.
+    var labelText: String? {
+        get { return viewModel.labelCellText }
+        set { viewModel.labelCellText = newValue }
+    }
+    
+    // MARK: Text field
+    
+    /// Reference to the current text field instance, or nil if no text field is loaded.
+    var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
+    
+    /// Set to true to make text field first responder immediately after it loads.
+    /// If `textField` returns a non-nil value it should be used instead of this flag.
+    var makeTextFieldFirstResponderImmediately: Bool = false
+    
+    /// Minimum allowed width of the text field. Will be stretched to the end of the last row.
+    var textFieldMinWidth: CGFloat {
+        get { return viewModel.textFieldCellMinWidth }
+        set { viewModel.textFieldCellMinWidth = newValue }
+    }
+    
+    /// Text field return key type.
+    var preferredTextFieldReturnKeyType: UIReturnKeyType = .default {
+        didSet { textField?.returnKeyType = preferredTextFieldReturnKeyType }
+    }
+    
+    /// Placeholder shown by the text field.
+    var placeholder: String? {
+        didSet { textField?.placeholder = placeholder }
+    }
+    
+    /// Use to get/set currently displayed text.
     var text: String? {
         get { return cachedText ?? textField?.text }
         set {
@@ -41,47 +90,9 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             }
         }
     }
+    private var cachedText: String? // If text is set before text field cell is loaded.
     
-    var preferredReturnKeyType: UIReturnKeyType = .default {
-        didSet { textField?.returnKeyType = preferredReturnKeyType }
-    }
-    
-    var placeholder: String? {
-        didSet { textField?.placeholder = placeholder }
-    }
-    
-    /// Font used for labels and text field.
-    var font: UIFont {
-        get { return viewModel.font }
-        set { viewModel.font = newValue }
-    }
-    
-    var contentInsets: UIEdgeInsets = Constants.Default.contentInsets {
-        didSet {
-            (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.sectionInset = contentInsets
-        }
-    }
-    
-    var textFieldMinWidth: CGFloat {
-        get { return viewModel.textFieldCellMinWidth }
-        set { viewModel.textFieldCellMinWidth = newValue }
-    }
-    
-    var isShowingLabel: Bool { return viewModel.isShowingLabelCell }
-    var labelText: String? {
-        get { return viewModel.labelCellText }
-        set { viewModel.labelCellText = newValue }
-    }
-    
-    /// List of currently displayed tokens.
-    var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
-    
-    /// Reference to the current text field instance, or nil if no text field is loaded.
-    var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
-    
-    /// Set to true to make text field first responder immediately after it loads.
-    /// If `textField` returns a non-nil value it should be used instead of this flag.
-    var makeTextFieldFirstResponderImmediately: Bool = false
+    // MARK: Animation
     
     /// Duration of all animations performed by the token field.
     var animationDuration: TimeInterval = Constants.Default.animationDuration
@@ -96,6 +107,16 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     /// If `true` tokens will be expanded using animation.
     var shouldExpandTokensAnimated: Bool = true
     
+    // MARK: Delegates
+    
+    weak var delegate: ResizingTokenFieldDelegate?
+    weak var customCellDelegate: ResizingTokenFieldCustomCellDelegate? {
+        didSet { registerCells() }
+    }
+    weak var textFieldDelegate: UITextFieldDelegate? {
+        didSet { textField?.delegate = textFieldDelegate }
+    }
+    
     // MARK: - Initialization
     
     private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
@@ -104,6 +125,9 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     /// Tracks when the initial collection view load is performed.
     /// This flag is used to prevent crashes from trying to insert/delete items before the initial load.
     private var isCollectionViewLoaded: Bool = false
+    
+    /// Tracks when initial height is set. That height change does not notify the delegate.
+    private var didSetInitialHeight: Bool = false
     
     /// Height constraint of the collection view. This constraint's constant is updated as collection view resizes.
     private var heightConstraint: NSLayoutConstraint?
@@ -142,7 +166,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
                                               toItem: nil,
                                               attribute: .notAnAttribute,
                                               multiplier: 1,
-                                              constant: 40)
+                                              constant: 0)
         heightConstraint!.priority = UILayoutPriority(rawValue: 999) // To avoid constraint issues when used in a UIStackView
         addConstraint(heightConstraint!)
     }
@@ -333,6 +357,8 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         
         if let defaultTokenCell = tokenCell as? DefaultTokenCell {
             defaultTokenCell.titleLabel.font = viewModel.font
+            let configuration = delegate?.resizingTokenField(self, configurationForDefaultCellRepresenting: token)
+            defaultTokenCell.configuration = configuration ?? Constants.Default.defaultTokenCellConfiguration
         }
         
         tokenCell.populate(withToken: token)
@@ -358,7 +384,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         
         textFieldCell.textField.placeholder = placeholder
         textFieldCell.textField.font = viewModel.font
-        textFieldCell.textField.returnKeyType = preferredReturnKeyType
+        textFieldCell.textField.returnKeyType = preferredTextFieldReturnKeyType
         textFieldCell.textField.delegate = textFieldDelegate
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
@@ -434,6 +460,12 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     // MARK: - ResizingTokenFieldFlowLayoutDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout, heightDidChange newHeight: CGFloat) {
+        guard didSetInitialHeight else {
+            didSetInitialHeight = true
+            heightConstraint?.constant = newHeight
+            return
+        }
+        
         delegate?.resizingTokenField(self, willChangeHeight: newHeight)
         heightConstraint?.constant = newHeight
         delegate?.resizingTokenField(self, didChangeHeight: newHeight)
