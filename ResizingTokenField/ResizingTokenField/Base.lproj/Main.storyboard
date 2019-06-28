@@ -79,7 +79,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LLj-AP-VcK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-590" y="-571"/>
+            <point key="canvasLocation" x="-745" y="-571"/>
         </scene>
         <!--Features-->
         <scene sceneID="tne-QT-ifu">
@@ -89,30 +89,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="Ycb-qq-1by">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="Ycb-qq-1by">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="95O-sX-2GS">
-                                        <rect key="frame" x="0.0" y="26" width="414" height="252"/>
+                                        <rect key="frame" x="8" y="26" width="398" height="268.66666666666669"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMb-T5-zUj">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="398" height="30"/>
                                                 <state key="normal" title="Custom Token Cell Example"/>
                                                 <connections>
                                                     <segue destination="1op-Sl-UpJ" kind="show" id="qP4-FG-YoY"/>
                                                 </connections>
                                             </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aa5-g9-x8b" userLabel="Options Stack View">
-                                                <rect key="frame" x="0.0" y="60" width="414" height="52"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Aa5-g9-x8b" userLabel="Options Stack View">
+                                                <rect key="frame" x="0.0" y="60.000000000000007" width="398" height="68.666666666666686"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ByU-Xg-J3g" userLabel="Option Stack View">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="199" height="52"/>
                                                         <subviews>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cMD-aw-PQi">
-                                                                <rect key="frame" x="182.66666666666666" y="0.0" width="51" height="31"/>
+                                                                <rect key="frame" x="75" y="0.0" width="51" height="31"/>
+                                                                <connections>
+                                                                    <action selector="animateSwitchValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="b8K-3z-FrD"/>
+                                                                </connections>
                                                             </switch>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbW-EJ-pfo">
-                                                                <rect key="frame" x="180.66666666666666" y="35" width="53" height="17"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbW-EJ-pfo">
+                                                                <rect key="frame" x="73" y="35" width="53" height="17"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Nnw-Q3-9Jm" userLabel="Option Stack View">
+                                                        <rect key="frame" x="199" y="0.0" width="199" height="68.666666666666671"/>
+                                                        <subviews>
+                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A0k-jD-R15">
+                                                                <rect key="frame" x="75" y="0.0" width="51" height="31"/>
+                                                                <connections>
+                                                                    <action selector="animateSwitchValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="yfi-ga-ncJ"/>
+                                                                </connections>
+                                                            </switch>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UF1-qH-Aou">
+                                                                <rect key="frame" x="52.333333333333307" y="35" width="94.333333333333314" height="33.666666666666657"/>
+                                                                <string key="text">Collapse when
+editing ends</string>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -121,26 +143,26 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="u3r-Ry-IdL" userLabel="Buttons Stack View">
-                                                <rect key="frame" x="0.0" y="142" width="414" height="30"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="u3r-Ry-IdL" userLabel="Buttons Stack View">
+                                                <rect key="frame" x="0.0" y="158.66666666666669" width="398" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X6-i0-sUA">
-                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333333" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="132.66666666666666" height="30"/>
                                                         <state key="normal" title="Toggle Label"/>
                                                         <connections>
                                                             <action selector="didTapToggleLabelButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dS6-uc-vbm"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBu-Yf-uUf">
-                                                        <rect key="frame" x="121.33333333333331" y="0.0" width="101" height="30"/>
+                                                        <rect key="frame" x="132.66666666666669" y="0.0" width="132.66666666666669" height="30"/>
                                                         <state key="normal" title="Add Token"/>
                                                         <connections>
                                                             <action selector="didTapAddTokenButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GOr-Jz-6xI"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MqD-Nm-SH9">
-                                                        <rect key="frame" x="222.33333333333337" y="0.0" width="191.66666666666663" height="30"/>
-                                                        <state key="normal" title="Add Multiple Tokens"/>
+                                                        <rect key="frame" x="265.33333333333331" y="0.0" width="132.66666666666669" height="30"/>
+                                                        <state key="normal" title="Add Multiple"/>
                                                         <connections>
                                                             <action selector="didTapAddMultipleTokensButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dta-k9-kAn"/>
                                                         </connections>
@@ -148,7 +170,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="1A0-6X-olA" customClass="ResizingTokenField" customModule="ResizingTokenField" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="202" width="414" height="50"/>
+                                                <rect key="frame" x="0.0" y="218.66666666666669" width="398" height="50"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
@@ -157,9 +179,9 @@
                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="95O-sX-2GS" firstAttribute="top" secondItem="Ycb-qq-1by" secondAttribute="top" constant="26" id="708-4c-sMu"/>
-                                    <constraint firstAttribute="trailing" secondItem="95O-sX-2GS" secondAttribute="trailing" id="BY3-q2-EEH"/>
+                                    <constraint firstAttribute="trailing" secondItem="95O-sX-2GS" secondAttribute="trailing" constant="8" id="BY3-q2-EEH"/>
                                     <constraint firstAttribute="bottom" secondItem="95O-sX-2GS" secondAttribute="bottom" constant="16" id="Dhe-OB-wWg"/>
-                                    <constraint firstItem="95O-sX-2GS" firstAttribute="leading" secondItem="Ycb-qq-1by" secondAttribute="leading" id="wpK-6U-ecb"/>
+                                    <constraint firstItem="95O-sX-2GS" firstAttribute="leading" secondItem="Ycb-qq-1by" secondAttribute="leading" constant="8" id="wpK-6U-ecb"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -169,13 +191,14 @@
                             <constraint firstItem="Ycb-qq-1by" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Hpb-4N-vup"/>
                             <constraint firstItem="Ycb-qq-1by" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="MQS-MB-nxF"/>
                             <constraint firstItem="Ycb-qq-1by" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ggG-4V-9o9"/>
-                            <constraint firstItem="95O-sX-2GS" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" id="yyx-4q-zt1"/>
+                            <constraint firstItem="95O-sX-2GS" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="yyx-4q-zt1"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Features" id="nIj-pS-H6I"/>
                     <connections>
                         <outlet property="animateSwitch" destination="cMD-aw-PQi" id="4rq-Or-0QD"/>
+                        <outlet property="collapseSwitch" destination="A0k-jD-R15" id="dpw-fb-I0d"/>
                         <outlet property="scrollView" destination="Ycb-qq-1by" id="1Ml-UQ-32q"/>
                         <outlet property="tokenField" destination="1A0-6X-olA" id="egj-yR-oYE"/>
                     </connections>

@@ -62,6 +62,16 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
     
     // MARK: - ResizingTokenFieldDelegate
     
+    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeHeight newHeight: CGFloat) {
+        view.layoutIfNeeded()
+    }
+    
+    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeHeight newHeight: CGFloat) {
+        UIView.animate(withDuration: tokenField.animationDuration) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     func resizingTokenField(_ tokenField: ResizingTokenField, shouldRemoveToken token: ResizingTokenFieldToken) -> Bool {
         return true
     }
@@ -83,21 +93,6 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         return "Collapsed \(tokenField.tokens.count) token" + (tokenField.tokens.count == 1 ? "" : "s")
     }
     
-    // MARK: - UITableViewDataSource
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return names.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath)
-        cell.textLabel?.text = names[indexPath.row]
-        let isTokenAlreadyAdded: Bool = indexOfFirstToken(forName: names[indexPath.row]) != nil
-        cell.accessoryType = isTokenAlreadyAdded ? .checkmark : .none
-        
-        return cell
-    }
-    
     // MARK: UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -107,18 +102,6 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         }
         
         return true
-    }
-    
-    // MARK: - UITableViewDelegate
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let tokenIndex = indexOfFirstToken(forName: names[indexPath.row]) {
-            tokenField.remove(tokensAtIndexes: [tokenIndex], animated: true)
-        } else {
-            tokenField.append(tokens: [Token(title: names[indexPath.row])], animated: true)
-        }
-        
-        tableView.reloadRows(at: [indexPath], with: .none)
     }
     
     // MARK: - ResizingTokenFieldCustomCellDelegate
@@ -138,6 +121,33 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         return 40 + 8 + ceil(max(titleWidth, subtitleWidth)) + 8  // Image placeholder + padding + max(title, subtitle) + padding
     }
     
+    // MARK: - UITableViewDataSource
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return names.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath)
+        cell.textLabel?.text = names[indexPath.row]
+        let isTokenAlreadyAdded: Bool = indexOfFirstToken(forName: names[indexPath.row]) != nil
+        cell.accessoryType = isTokenAlreadyAdded ? .checkmark : .none
+        
+        return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let tokenIndex = indexOfFirstToken(forName: names[indexPath.row]) {
+            tokenField.remove(tokensAtIndexes: [tokenIndex], animated: true)
+        } else {
+            tokenField.append(tokens: [Token(title: names[indexPath.row])], animated: true)
+        }
+        
+        tableView.reloadRows(at: [indexPath], with: .none)
+    }
+    
     // MARK: Keyboard
     
     override func keyboardVisibleHeightWillChange(newHeight: CGFloat) {
@@ -145,13 +155,13 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
         tableView.scrollIndicatorInsets.bottom = newHeight
     }
     
-    // MARK: - Finding tokens
+    // MARK: - Names
+    
+    private let randomNames: [String] = ["Annabelle","Benjamin","Sean","Greta","Waylon","Ulysses","Valerie","Steve","Tom","Sheena","Thaddeus","Reed","Long","Christopher","Mabel","Ann","Evelyn","Margret","Rosemary","Augustine","Adan","Elsa","Lara","Gonzalo","Karl","Dylan","Lucien","Jeromy","Sophia","Fanny","Anna","Timothy","Ethan","Hans","Naomi","Maryellen","Debbie","Jamey","Daniel","Darlene","Frank","Kieth","Kelley","Tyrell","Lamont","Ambrose","Gilbert","Eugenio","Sanford","Emilio"]
+    
     
     private func indexOfFirstToken(forName name: String?) -> Int? {
         return tokenField.tokens.firstIndex(where: { $0.title == name })
     }
     
-    // MARK: - Names
-    
-    private let randomNames: [String] = ["Annabelle","Benjamin","Sean","Greta","Waylon","Ulysses","Valerie","Steve","Tom","Sheena","Thaddeus","Reed","Long","Christopher","Mabel","Ann","Evelyn","Margret","Rosemary","Augustine","Adan","Elsa","Lara","Gonzalo","Karl","Dylan","Lucien","Jeromy","Sophia","Fanny","Anna","Timothy","Ethan","Hans","Naomi","Maryellen","Debbie","Jamey","Daniel","Darlene","Frank","Kieth","Kelley","Tyrell","Lamont","Ambrose","Gilbert","Eugenio","Sanford","Emilio"]
 }
