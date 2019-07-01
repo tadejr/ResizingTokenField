@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'ResizingTokenField_Example' do
+  pod 'ResizingTokenField', :path => '../'
+
+  target 'ResizingTokenField_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
