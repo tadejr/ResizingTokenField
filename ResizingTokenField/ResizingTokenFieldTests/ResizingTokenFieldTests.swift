@@ -125,6 +125,15 @@ class ResizingTokenFieldTests: XCTestCase {
         XCTAssert(tokenField.tokens.count == 2, "Only removing tokens at valid indexes should decrease count.")
     }
     
+    func testRemoveAllTokens() {
+        let mixedTokens: [ResizingTokenFieldToken] = MockTokens.generateClassTokens(count: 5) + MockTokens.generateStructTokens(count: 5)
+        tokenField.append(tokens: mixedTokens)
+        XCTAssert(tokenField.tokens.count == 10, "Adding tokens should increase count correctly.")
+        
+        tokenField.removeAllTokens()
+        XCTAssert(tokenField.tokens.count == 0, "Removing all tokens should decrease count to 0.")
+    }
+    
     func testShowHideLabel() {
         tokenField.showLabel()
         XCTAssert(tokenField.viewModel.numberOfItems == 2, "Token field should have 2 items (label + text field).")

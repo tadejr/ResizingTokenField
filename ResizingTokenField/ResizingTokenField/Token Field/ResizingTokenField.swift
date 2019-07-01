@@ -256,20 +256,6 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
-    // MARK: - Collapse/expand tokens
-    
-    private func collapseTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
-        textField?.text = delegate?.resizingTokenFieldCollapsedTokensText(self)
-        let indexPaths = viewModel.toggle(areTokensCollapsed: true)
-        removeItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
-    }
-    
-    private func expandTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
-        textField?.text = nil
-        let indexPaths = viewModel.toggle(areTokensCollapsed: false)
-        insertItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
-    }
-    
     // MARK: - Add/remove tokens
     
     func append(tokens: [ResizingTokenFieldToken], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
@@ -290,12 +276,20 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
     }
     
+    /// Removes all tokens.
+    func removeAllTokens(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
+        let removedIndexPaths = viewModel.removeAllTokens()
+        removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
+    }
+    
     private func insertItems(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
         guard isCollectionViewLoaded, !indexPaths.isEmpty else {
+            updateCollapsedTextIfNeeded()
             completion?(true)
             return
         }
         
+        updateCollapsedTextIfNeeded()
         if animated {
             UIView.animate(withDuration: animationDuration, animations: {
                 self.collectionView.insertItems(at: indexPaths)
@@ -304,15 +298,18 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             UIView.performWithoutAnimation {
                 collectionView.insertItems(at: indexPaths)
             }
+            completion?(true)
         }
     }
     
     private func removeItems(atIndexPaths indexPaths: [IndexPath], animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
         guard isCollectionViewLoaded, !indexPaths.isEmpty else {
+            updateCollapsedTextIfNeeded()
             completion?(true)
             return
         }
         
+        updateCollapsedTextIfNeeded()
         if animated {
             UIView.animate(withDuration: animationDuration, animations: {
                 self.collectionView.deleteItems(at: indexPaths)
@@ -321,7 +318,27 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             UIView.performWithoutAnimation {
                 collectionView.deleteItems(at: indexPaths)
             }
+            completion?(true)
         }
+    }
+    
+    // MARK: - Collapse/expand tokens
+    
+    private func collapseTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        textField?.text = delegate?.resizingTokenFieldCollapsedTokensText(self)
+        let indexPaths = viewModel.toggle(areTokensCollapsed: true)
+        removeItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
+    }
+    
+    private func expandTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        textField?.text = nil
+        let indexPaths = viewModel.toggle(areTokensCollapsed: false)
+        insertItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
+    }
+    
+    private func updateCollapsedTextIfNeeded() {
+        guard viewModel.areTokensCollapsed else { return }
+        textField?.text = delegate?.resizingTokenFieldCollapsedTokensText(self)
     }
     
     // MARK: - UICollectionViewDataSource

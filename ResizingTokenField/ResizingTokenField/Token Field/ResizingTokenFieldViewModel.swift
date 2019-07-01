@@ -52,7 +52,7 @@ class ResizingTokenFieldViewModel {
     
     // MARK: - Collapse/expand tokens
     
-    private var areTokensCollapsed: Bool = false
+    private(set) var areTokensCollapsed: Bool = false
     
     /// Marks tokens as collapsed/expanded.
     /// Returns index paths representing newly collapsed/expanded tokens.
@@ -114,6 +114,14 @@ class ResizingTokenFieldViewModel {
         }
         
         return removedIndexPaths
+    }
+    
+    /// Removes all tokens from the list.
+    /// Returns index paths representing removed tokens.
+    func removeAllTokens() -> [IndexPath] {
+        let indexPaths: [IndexPath] = areTokensCollapsed ? [] : tokens.enumerated().map({ indexPathForToken(atIndex: $0.0) })
+        tokens.removeAll()
+        return indexPaths
     }
     
     // MARK: - Selecting tokens

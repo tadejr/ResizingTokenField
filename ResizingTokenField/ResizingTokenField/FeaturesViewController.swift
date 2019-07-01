@@ -126,6 +126,10 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         tokenField.shouldExpandTokensAnimated = sender.isOn
     }
     
+    @IBAction func didTapToggleLabelButton(_ sender: UIButton) {
+        tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn) : tokenField.showLabel(animated: animateSwitch.isOn)
+    }
+    
     @IBAction func didTapAddTokenButton(_ sender: UIButton) {
         tokenField.append(tokens: [Token(title: randomTitle)], animated: animateSwitch.isOn, completion: nil)
     }
@@ -139,8 +143,8 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         tokenField.append(tokens: tokens, animated: animateSwitch.isOn)
     }
     
-    @IBAction func didTapToggleLabelButton(_ sender: UIButton) {
-        tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn) : tokenField.showLabel(animated: animateSwitch.isOn)
+    @IBAction func didTapRemoveAllTokensButton(_ sender: UIButton) {
+        tokenField.removeAllTokens(animated: animateSwitch.isOn)
     }
     
     // MARK: - Keyboard
