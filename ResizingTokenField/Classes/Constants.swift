@@ -10,15 +10,12 @@ import UIKit
 
 struct Constants {
     
-    struct Font {
-        static let defaultFont: UIFont = UIFont.systemFont(ofSize: 15)
-    }
-    
     struct Default {
         static let animationDuration: TimeInterval = 0.3
-        static let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
-        static let font: UIFont = UIFont.systemFont(ofSize: 15)
-        static let itemSpacing: CGFloat = 10
+        static let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        static let font: UIFont = UIFont.systemFont(ofSize: 14)
+        static let itemSpacing: CGFloat = 6
+        static let rowSpacing: CGFloat = 6
         static let textFieldCellMinWidth: CGFloat = 60
         static let labelTextColor: UIColor = .darkText
         static let textFieldTextColor: UIColor = .darkText
@@ -37,7 +34,7 @@ struct Constants {
 
 private struct DefaultTokenCellInitialConfiguration: DefaultTokenCellConfiguration {
     func cornerRadius(forSelected isSelected: Bool) -> CGFloat {
-        return 5
+        return 8
     }
     
     func borderWidth(forSelected isSelected: Bool) -> CGFloat {
@@ -53,6 +50,6 @@ private struct DefaultTokenCellInitialConfiguration: DefaultTokenCellConfigurati
     }
     
     func backgroundColor(forSelected isSelected: Bool) -> UIColor {
-        return isSelected ? .gray : .lightGray
+        return isSelected ? UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1) : UIColor(red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
     }
 }

@@ -22,7 +22,6 @@ TODO: Add long description of the pod here.
                        DESC
 
   s.homepage         = 'https://github.com/tadejr/ResizingTokenField.git'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'razborsek.tadej@gmail.com' => 'razborsek.tadej@gmail.com' }
   s.source           = { :git => 'https://github.com/tadejr/ResizingTokenField.git', :tag => s.version.to_s }

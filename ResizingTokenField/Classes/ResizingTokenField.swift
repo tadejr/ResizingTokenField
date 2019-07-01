@@ -15,6 +15,7 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     
     // MARK: - Configuration
     
+    /// Height of items.
     public var itemHeight: CGFloat {
         get { return viewModel.itemHeight }
         set {
@@ -30,10 +31,17 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
         }
     }
     
-    /// Spacing between items.
+    /// Spacing between items in a row.
     public var itemSpacing: CGFloat = Constants.Default.itemSpacing {
         didSet {
             (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.minimumInteritemSpacing = itemSpacing
+        }
+    }
+    
+    /// Spacing between rows.
+    public var rowSpacing: CGFloat = Constants.Default.rowSpacing {
+        didSet {
+            (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.minimumLineSpacing = rowSpacing
         }
     }
     
@@ -45,6 +53,7 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     
     // MARK: Label
     
+    /// Boolean value, indicating if label is shown.
     public var isShowingLabel: Bool { return viewModel.isShowingLabelCell }
     
     /// Text to display in the label at the start.
@@ -163,7 +172,11 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     }
     
     private func setUpCollectionView() {
-        (collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout)?.sectionInset = contentInsets
+        let layout = collectionView.collectionViewLayout as? ResizingTokenFieldFlowLayout
+        layout?.sectionInset = contentInsets
+        layout?.minimumInteritemSpacing = itemSpacing
+        layout?.minimumLineSpacing = rowSpacing
+        
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
@@ -273,25 +286,45 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     
     // MARK: - Add/remove tokens
     
+    /// Append new tokens.
+    ///
+    /// - Parameters:
+    ///   - tokens: Tokens to append.
+    ///   - animated: If `true` changes will be animated.
+    ///   - completion: Completion handler.
     public func append(tokens: [ResizingTokenFieldToken], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let newIndexPaths = viewModel.append(tokens: tokens)
         insertItems(atIndexPaths: newIndexPaths, animated: animated, completion: completion)
     }
     
     /// Remove provided tokens, if they are in the token field.
+    ///
+    /// - Parameters:
+    ///   - tokens: Tokens to remove.
+    ///   - animated: If `true` changes will be animated.
+    ///   - completion: Completion handler.
     public func remove(tokens: [ResizingTokenFieldToken], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let removedIndexPaths = viewModel.remove(tokens: tokens)
         removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
     }
     
     /// Remove tokens at provided indexes, if they are in the token field.
-    /// This function is faster than `remove(tokens:)`.
+    /// Faster than `remove(tokens:)`.
+    ///
+    /// - Parameters:
+    ///   - indexes: Indexes of tokens to remove.
+    ///   - animated: If `true` changes will be animated.
+    ///   - completion: Completion handler.
     public func remove(tokensAtIndexes indexes: IndexSet, animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let removedIndexPaths = viewModel.remove(tokensAtIndexes: indexes)
         removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
     }
     
     /// Removes all tokens.
+    ///
+    /// - Parameters:
+    ///   - animated: If `true` changes will be animated.
+    ///   - completion: Completion handler.
     public func removeAllTokens(animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let removedIndexPaths = viewModel.removeAllTokens()
         removeItems(atIndexPaths: removedIndexPaths, animated: animated, completion: completion)
