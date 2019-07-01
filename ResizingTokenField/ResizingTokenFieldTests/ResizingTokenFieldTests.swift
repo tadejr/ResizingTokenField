@@ -26,16 +26,16 @@ class ResizingTokenFieldTests: XCTestCase {
     // MARK: - Add/remove tokens
 
     func testAddRemoveClassTokens() {
-        let singleToken = ClassToken(title: "Single Class Token")
-        let mutlipleTokens = Tokens.generateClassTokens(count: 5)
+        let singleToken = MockClassToken(title: "Single Class Token")
+        let multipleTokens = MockTokens.generateClassTokens(count: 5)
         
         tokenField.append(tokens: [singleToken])
         XCTAssert(tokenField.tokens.count == 1, "Adding tokens should increase count correctly.")
         
-        tokenField.append(tokens: mutlipleTokens)
+        tokenField.append(tokens: multipleTokens)
         XCTAssert(tokenField.tokens.count == 6, "Adding tokens should increase count correctly.")
         
-        tokenField.remove(tokens: mutlipleTokens)
+        tokenField.remove(tokens: multipleTokens)
         XCTAssert(tokenField.tokens.count == 1, "Removing tokens should decerase count correctly.")
         
         tokenField.remove(tokens: [singleToken])
@@ -43,16 +43,16 @@ class ResizingTokenFieldTests: XCTestCase {
     }
 
     func testAddRemoveStructTokens() {
-        let singleToken = StructToken(title: "Single Struct Token")
-        let mutlipleTokens = Tokens.generateStructTokens(count: 5)
+        let singleToken = MockStructToken(title: "Single Struct Token")
+        let multipleTokens = MockTokens.generateStructTokens(count: 5)
         
         tokenField.append(tokens: [singleToken])
         XCTAssert(tokenField.tokens.count == 1, "Adding tokens should increase count correctly.")
         
-        tokenField.append(tokens: mutlipleTokens)
+        tokenField.append(tokens: multipleTokens)
         XCTAssert(tokenField.tokens.count == 6, "Adding tokens should increase count correctly.")
         
-        tokenField.remove(tokens: mutlipleTokens)
+        tokenField.remove(tokens: multipleTokens)
         XCTAssert(tokenField.tokens.count == 1, "Removing tokens should decerase count correctly.")
         
         tokenField.remove(tokens: [singleToken])
@@ -60,10 +60,10 @@ class ResizingTokenFieldTests: XCTestCase {
     }
     
     func testAddRemoveMixedTokens() {
-        let singleClassToken = ClassToken(title: "Single Class Token")
-        let multipleClassTokens = Tokens.generateClassTokens(count: 5)
-        let singleStructToken = StructToken(title: "Single Struct Token")
-        let multipleStructTokens = Tokens.generateStructTokens(count: 5)
+        let singleClassToken = MockClassToken(title: "Single Class Token")
+        let multipleClassTokens = MockTokens.generateClassTokens(count: 5)
+        let singleStructToken = MockStructToken(title: "Single Struct Token")
+        let multipleStructTokens = MockTokens.generateStructTokens(count: 5)
         
         tokenField.append(tokens: [singleClassToken])
         XCTAssert(tokenField.tokens.count == 1, "Adding tokens should increase count correctly.")
@@ -80,17 +80,17 @@ class ResizingTokenFieldTests: XCTestCase {
         tokenField.remove(tokens: multipleClassTokens + [singleClassToken])
         XCTAssert(tokenField.tokens.count == 1, "Removing tokens should decrease count correctly.")
         
-        let isSingleStructToken: Bool = (tokenField.tokens.first as? StructToken) == singleStructToken
-        XCTAssert(isSingleStructToken, "The last remaining token should be the Single Struct Token.")
+        let isSingleStructToken: Bool = (tokenField.tokens.first as? MockStructToken) == singleStructToken
+        XCTAssert(isSingleStructToken, "The last remaining token should be a MockStructToken.")
         
         tokenField.remove(tokens: [singleStructToken])
         XCTAssert(tokenField.tokens.count == 0, "Removing tokens should decerase count correctly.")
     }
     
     func testInvalidRemoveToken() {
-        let singleClassToken1 = ClassToken(title: "Single Class Token 1")
-        let singleClassToken2 = ClassToken(title: "Single Class Token 2")
-        let multipleClassTokens = Tokens.generateClassTokens(count: 5)
+        let singleClassToken1 = MockClassToken(title: "Single Class Token 1")
+        let singleClassToken2 = MockClassToken(title: "Single Class Token 2")
+        let multipleClassTokens = MockTokens.generateClassTokens(count: 5)
         
         tokenField.append(tokens: multipleClassTokens + [singleClassToken1])
         XCTAssert(tokenField.tokens.count == 6, "Adding tokens should increase count correctly.")
@@ -103,7 +103,7 @@ class ResizingTokenFieldTests: XCTestCase {
     }
     
     func testRemoveTokenAtIndex() {
-        let multipleClassTokens = Tokens.generateClassTokens(count: 5)
+        let multipleClassTokens = MockTokens.generateClassTokens(count: 5)
         
         tokenField.append(tokens: multipleClassTokens)
         XCTAssert(tokenField.tokens.count == 5, "Adding tokens should increase count correctly.")
@@ -113,7 +113,7 @@ class ResizingTokenFieldTests: XCTestCase {
     }
     
     func testInvalidRemoveTokenAtIndex() {
-        let multipleClassTokens = Tokens.generateClassTokens(count: 5)
+        let multipleClassTokens = MockTokens.generateClassTokens(count: 5)
         
         tokenField.append(tokens: multipleClassTokens)
         XCTAssert(tokenField.tokens.count == 5, "Adding tokens should increase count correctly.")
@@ -123,6 +123,18 @@ class ResizingTokenFieldTests: XCTestCase {
         
         tokenField.remove(tokensAtIndexes: [4, 3, 5, 1])
         XCTAssert(tokenField.tokens.count == 2, "Only removing tokens at valid indexes should decrease count.")
+    }
+    
+    func testShowHideLabel() {
+        tokenField.showLabel()
+        XCTAssert(tokenField.viewModel.numberOfItems == 2, "Token field should have 2 items (label + text field).")
+        
+        let multipleClassTokens = MockTokens.generateClassTokens(count: 5)
+        tokenField.append(tokens: multipleClassTokens)
+        XCTAssert(tokenField.viewModel.numberOfItems == 7, "Token field should have 7 items (label + tokens + text field).")
+        
+        tokenField.hideLabel()
+        XCTAssert(tokenField.viewModel.numberOfItems == 6, "Token field should have 6 items (tokens + text field).")
     }
 
 }

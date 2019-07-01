@@ -26,7 +26,7 @@
 		BEE2FAFF22C2772500D0BEE4 /* CustomTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FAFD22C2772500D0BEE4 /* CustomTokenCell.swift */; };
 		BEE2FB0022C2772500D0BEE4 /* CustomTokenCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE2FAFE22C2772500D0BEE4 /* CustomTokenCell.xib */; };
 		BEE2FB0222C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift */; };
-		BEFFD25422C0F273001ED71E /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25322C0F273001ED71E /* Tokens.swift */; };
+		BEFFD25422C0F273001ED71E /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25322C0F273001ED71E /* Mocks.swift */; };
 		BEFFD25622C10FF4001ED71E /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFD25522C10FF4001ED71E /* LabelCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,7 +64,7 @@
 		BEE2FAFD22C2772500D0BEE4 /* CustomTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenCell.swift; sourceTree = "<group>"; };
 		BEE2FAFE22C2772500D0BEE4 /* CustomTokenCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTokenCell.xib; sourceTree = "<group>"; };
 		BEE2FB0122C27EF200D0BEE4 /* ResizingTokenFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingTokenFieldDelegate.swift; sourceTree = "<group>"; };
-		BEFFD25322C0F273001ED71E /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
+		BEFFD25322C0F273001ED71E /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		BEFFD25522C10FF4001ED71E /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,7 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				BE6EBE0E22BA74B400B9A872 /* ResizingTokenFieldTests.swift */,
-				BEFFD25322C0F273001ED71E /* Tokens.swift */,
+				BEFFD25322C0F273001ED71E /* Mocks.swift */,
 				BE6EBE1022BA74B400B9A872 /* Info.plist */,
 			);
 			path = ResizingTokenFieldTests;
@@ -282,7 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE6EBE0F22BA74B400B9A872 /* ResizingTokenFieldTests.swift in Sources */,
-				BEFFD25422C0F273001ED71E /* Tokens.swift in Sources */,
+				BEFFD25422C0F273001ED71E /* Mocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -119,7 +119,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     // MARK: - Initialization
     
-    private var viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
+    let viewModel: ResizingTokenFieldViewModel = ResizingTokenFieldViewModel()
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: ResizingTokenFieldFlowLayout())
     
     /// Tracks when the initial collection view load is performed.
