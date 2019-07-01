@@ -20,6 +20,8 @@ struct Constants {
         static let font: UIFont = UIFont.systemFont(ofSize: 15)
         static let itemSpacing: CGFloat = 10
         static let textFieldCellMinWidth: CGFloat = 60
+        static let labelTextColor: UIColor = .darkText
+        static let textFieldTextColor: UIColor = .darkText
         static let defaultTokenTopBottomPadding: CGFloat = 4
         static let defaultTokenLeftRightPadding: CGFloat = 8
         static let defaultTokenCellConfiguration: DefaultTokenCellConfiguration = DefaultTokenCellInitialConfiguration()

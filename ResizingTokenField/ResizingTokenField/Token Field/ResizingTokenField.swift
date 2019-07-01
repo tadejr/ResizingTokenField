@@ -53,10 +53,25 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         set { viewModel.labelCellText = newValue }
     }
     
+    /// Text color of the label at the start.
+    var labelTextColor: UIColor = Constants.Default.labelTextColor {
+        didSet {
+            if viewModel.isShowingLabelCell {
+                collectionView.reloadItems(at: [viewModel.labelCellIndexPath])
+            }
+        }
+    }
+    
     // MARK: Text field
     
     /// Reference to the current text field instance, or nil if no text field is loaded.
+    /// The internal collection view cell for this text field is reloaded as few times as possible, but this reference might still change.
     var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
+    
+    /// Text color for the text field.
+    var textFieldTextColor: UIColor = Constants.Default.textFieldTextColor {
+        didSet { textField?.textColor = textFieldTextColor }
+    }
     
     /// Set to true to make text field first responder immediately after it loads.
     /// If `textField` returns a non-nil value it should be used instead of this flag.
@@ -390,6 +405,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
     
     private func populate(labelCell: LabelCell, atIndexPath indexPath: IndexPath) {
         labelCell.label.font = viewModel.font
+        labelCell.label.textColor = labelTextColor
         labelCell.label.text = viewModel.labelCellText
     }
     
@@ -403,6 +419,7 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
         textFieldCell.textField.font = viewModel.font
         textFieldCell.textField.returnKeyType = preferredTextFieldReturnKeyType
         textFieldCell.textField.delegate = textFieldDelegate
+        textFieldCell.textField.textColor = textFieldTextColor
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingDidBegin(_:)), for: .editingDidBegin)
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingDidEnd(_:)), for: .editingDidEnd)
