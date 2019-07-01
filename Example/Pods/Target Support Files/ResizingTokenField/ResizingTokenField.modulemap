@@ -1,0 +1,6 @@
+framework module ResizingTokenField {
+  umbrella header "ResizingTokenField-umbrella.h"
+
+  export *
+  module * { export * }
+}

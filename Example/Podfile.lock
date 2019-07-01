@@ -1,0 +1,16 @@
+PODS:
+  - ResizingTokenField (0.1.0)
+
+DEPENDENCIES:
+  - ResizingTokenField (from `../`)
+
+EXTERNAL SOURCES:
+  ResizingTokenField:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ResizingTokenField: 352e0dc15bc0d5918ed2527cca324ef018e09c1c
+
+PODFILE CHECKSUM: 7958dfeada7c8ae5b245813523ac36fad5139c4b
+
+COCOAPODS: 1.7.3
