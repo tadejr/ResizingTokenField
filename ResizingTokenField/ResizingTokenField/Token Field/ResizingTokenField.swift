@@ -366,8 +366,8 @@ class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDe
             guard let self = self else { return }
             guard self.delegate?.resizingTokenField(self, shouldRemoveToken: token) != false else { return }
             self.remove(tokens: [token], animated: self.shouldTextInputRemoveTokensAnimated)
-            self.text = text
             _ = self.textField?.becomeFirstResponder()
+            self.text = text
         }
     }
     

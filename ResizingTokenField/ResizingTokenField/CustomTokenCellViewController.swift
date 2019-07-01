@@ -82,7 +82,7 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
             names.removeAll()
             return
         }
-        names = randomNames.filter({ $0.hasPrefix(text) })
+        names = randomNames.filter({ $0.lowercased().hasPrefix(text.lowercased()) })
     }
     
     func resizingTokenFieldShouldCollapseTokens(_ tokenField: ResizingTokenField) -> Bool {
