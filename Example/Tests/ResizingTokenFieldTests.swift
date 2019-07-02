@@ -134,6 +134,8 @@ class ResizingTokenFieldTests: XCTestCase {
         XCTAssert(tokenField.tokens.count == 0, "Removing all tokens should decrease count to 0.")
     }
     
+    // MARK: - Show/hide label
+    
     func testShowHideLabel() {
         tokenField.showLabel()
         XCTAssert(tokenField.viewModel.numberOfItems == 2, "Token field should have 2 items (label + text field).")
@@ -144,6 +146,38 @@ class ResizingTokenFieldTests: XCTestCase {
         
         tokenField.hideLabel()
         XCTAssert(tokenField.viewModel.numberOfItems == 6, "Token field should have 6 items (tokens + text field).")
+    }
+    
+    // MARK: - Collapse/expand tokens
+    
+    func testCollapseExpandTokens() {
+        let multipleClassTokens = MockTokens.generateClassTokens(count: 5)
+        tokenField.append(tokens: multipleClassTokens)
+        XCTAssert(tokenField.viewModel.numberOfItems == 7, "Token field should have 7 items (label + tokens + text field).")
+        
+        tokenField.collapseTokens()
+        XCTAssert(tokenField.viewModel.numberOfItems == 2, "Token field should have 2 items (label + text field).")
+        
+        tokenField.hideLabel()
+        XCTAssert(tokenField.viewModel.numberOfItems == 1, "Token field should have 1 item (text field).")
+        
+        tokenField.expandTokens()
+        XCTAssert(tokenField.viewModel.numberOfItems == 6, "Token field should have 6 items (tokens + text field).")
+    }
+    
+    func testAddRemoveTokensWhileCollapsed() {
+        tokenField.collapseTokens()
+        
+        let multipleClassTokens = MockTokens.generateClassTokens(count: 5)
+        let multipleStructTokens = MockTokens.generateStructTokens(count: 5)
+        tokenField.append(tokens: multipleClassTokens + multipleStructTokens)
+        XCTAssert(tokenField.viewModel.numberOfItems == 2, "Token field should have 2 items (label + text field).")
+        
+        tokenField.remove(tokens: multipleStructTokens)
+        XCTAssert(tokenField.viewModel.numberOfItems == 2, "Token field should have 2 items (label + text field).")
+        
+        tokenField.expandTokens()
+        XCTAssert(tokenField.viewModel.numberOfItems == 7, "Token field should have 2 items (label + tokens + text field).")
     }
 
 }

@@ -15,11 +15,14 @@ open class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
         // Override.
     }
     
-    /// Called when this token cell should be removed, usually due to user tapping backspace.
-    var onRemove: ((String?) -> Void)?
+    /// Called when cell should be removed due to user tapping a key while this cell is the first responder.
+    var onShouldBeRemoved: ((_ replacementText: String?) -> Void)?
     
     /// Called when token cell is asked to resign first responder.
-    var onResignFirstResponder: (() -> Void)?
+    var onResignFirstResponder: ((_ isBeingRemoved: Bool) -> Void)?
+    
+    /// Set to `true` while this cell is asking if it should be removed.
+    var isBeingRemoved: Bool = false
     
     // MARK: UIResponder
     
@@ -45,7 +48,7 @@ open class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
         super.resignFirstResponder()
         isBecomingFirstResponder = false
         isSelected = false
-        onResignFirstResponder?()
+        onResignFirstResponder?(isBeingRemoved)
         return true
     }
     
@@ -56,11 +59,15 @@ open class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
     }
     
     public func insertText(_ text: String) {
-        onRemove?(text)
+        isBeingRemoved = true
+        onShouldBeRemoved?(text)
+        isBeingRemoved = false
     }
     
     public func deleteBackward() {
-        onRemove?(nil)
+        isBeingRemoved = true
+        onShouldBeRemoved?(nil)
+        isBeingRemoved = false
     }
     
 }
