@@ -62,11 +62,11 @@ class CustomTokenCellViewController: UIViewController, UITableViewDataSource, UI
     
     // MARK: - ResizingTokenFieldDelegate
     
-    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeHeight newHeight: CGFloat) {
+    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeIntrinsicHeight newHeight: CGFloat) {
         view.layoutIfNeeded()
     }
     
-    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeHeight newHeight: CGFloat) {
+    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeIntrinsicHeight newHeight: CGFloat) {
         UIView.animate(withDuration: tokenField.animationDuration) {
             self.view.layoutIfNeeded()
         }

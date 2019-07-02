@@ -160,7 +160,7 @@ class ResizingTokenFieldViewModel {
     
     var numberOfItems: Int {
         var count = tokensToDisplayCount + 1    // Tokens + text field cell
-        if isShowingLabelCell { count += 1 } // Label cell
+        if isShowingLabelCell { count += 1 }    // Label cell
         return count
     }
     

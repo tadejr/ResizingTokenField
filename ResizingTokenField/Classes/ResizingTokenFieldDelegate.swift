@@ -42,21 +42,21 @@ public protocol ResizingTokenFieldDelegate: AnyObject {
     ///   - areTokensCollapsed: Boolean value indicating if tokens were collapsed or expanded.
     func resizingTokenField(_ tokenField: ResizingTokenField, didToggleTokensCollapsed areTokensCollapsed: Bool)
     
-    /// Called when token field is about to change its height constraint constant.
+    /// Called when token field is about to change its intrinsic content height.
     /// Optional.
     ///
     /// - Parameters:
-    ///   - tokenField: Token field changing the height constraint constant.
+    ///   - tokenField: Token field changing the intrinsic height.
     ///   - newHeight: New height.
-    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeHeight newHeight: CGFloat)
+    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeIntrinsicHeight newHeight: CGFloat)
     
-    /// Called after token field updates its height constraint constant.
+    /// Called after token field updates its intrinsic content height.
     /// Optional.
     ///
     /// - Parameters:
-    ///   - tokenField: Token field changing the height constraint constant.
+    ///   - tokenField: Token field changing the intrinsic height.
     ///   - newHeight: New height.
-    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeHeight newHeight: CGFloat)
+    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeIntrinsicHeight newHeight: CGFloat)
     
     /// Called when token field text is edited.
     /// Also invoked if text is changed via the ResizingTokenField `text` property.
@@ -94,8 +94,8 @@ public extension ResizingTokenFieldDelegate {
     
     func resizingTokenField(_ tokenField: ResizingTokenField, willToggleTokensCollapsed areTokensCollapsed: Bool) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, didToggleTokensCollapsed areTokensCollapsed: Bool) {}
-    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeHeight newHeight: CGFloat) {}
-    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeHeight newHeight: CGFloat) {}
+    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeIntrinsicHeight newHeight: CGFloat) {}
+    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeIntrinsicHeight newHeight: CGFloat) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, didEditText newText: String?) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, shouldRemoveToken token: ResizingTokenFieldToken) -> Bool { return true }
     func resizingTokenField(_ tokenField: ResizingTokenField, configurationForDefaultCellRepresenting token: ResizingTokenFieldToken) -> DefaultTokenCellConfiguration? { return nil }

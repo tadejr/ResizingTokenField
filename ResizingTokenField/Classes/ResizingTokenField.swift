@@ -163,8 +163,10 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     /// Tracks when initial height is set. That height change does not notify the delegate.
     private var didSetInitialHeight: Bool = false
     
-    /// Height constraint of the collection view. This constraint's constant is updated as collection view resizes.
-    private var heightConstraint: NSLayoutConstraint?
+    /// The token field's intrinsic content height. Updated as collection view resizes.
+    private var intrinsicContentHeight: CGFloat = 0 {
+        didSet { invalidateIntrinsicContentSize() }
+    }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -197,16 +199,6 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
         collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         collectionView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
-        
-        heightConstraint = NSLayoutConstraint(item: collectionView,
-                                              attribute: .height,
-                                              relatedBy: .equal,
-                                              toItem: nil,
-                                              attribute: .notAnAttribute,
-                                              multiplier: 1,
-                                              constant: 0)
-        heightConstraint!.priority = UILayoutPriority(rawValue: 999) // To avoid constraint issues when used in a UIStackView
-        addConstraint(heightConstraint!)
     }
     
     private func registerCells() {
@@ -573,18 +565,22 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
         return .zero
     }
     
+    open override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: intrinsicContentHeight)
+    }
+    
     // MARK: - ResizingTokenFieldFlowLayoutDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout, heightDidChange newHeight: CGFloat) {
         guard didSetInitialHeight else {
             didSetInitialHeight = true
-            heightConstraint?.constant = newHeight
+            intrinsicContentHeight = newHeight
             return
         }
         
-        delegate?.resizingTokenField(self, willChangeHeight: newHeight)
-        heightConstraint?.constant = newHeight
-        delegate?.resizingTokenField(self, didChangeHeight: newHeight)
+        delegate?.resizingTokenField(self, willChangeIntrinsicHeight: newHeight)
+        intrinsicContentHeight = newHeight
+        delegate?.resizingTokenField(self, didChangeIntrinsicHeight: newHeight)
     }
     
     func lastCellIndexPath(in collectionView: UICollectionView, layout: ResizingTokenFieldFlowLayout) -> IndexPath {

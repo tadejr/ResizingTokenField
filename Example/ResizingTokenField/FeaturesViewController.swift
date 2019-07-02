@@ -84,13 +84,13 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         return "Hiding \(tokenField.tokens.count) tokens…"
     }
     
-    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeHeight newHeight: CGFloat) {
+    func resizingTokenField(_ tokenField: ResizingTokenField, willChangeIntrinsicHeight newHeight: CGFloat) {
         if animateSwitch.isOn {
             scrollView.layoutIfNeeded()
         }
     }
     
-    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeHeight newHeight: CGFloat) {
+    func resizingTokenField(_ tokenField: ResizingTokenField, didChangeIntrinsicHeight newHeight: CGFloat) {
         if animateSwitch.isOn {
             UIView.animate(withDuration: tokenField.animationDuration) {
                 self.scrollView.layoutIfNeeded()
