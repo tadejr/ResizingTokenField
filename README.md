@@ -5,10 +5,6 @@
 [![License](https://img.shields.io/cocoapods/l/ResizingTokenField.svg?style=flat)](https://cocoapods.org/pods/ResizingTokenField)
 [![Platform](https://img.shields.io/cocoapods/p/ResizingTokenField.svg?style=flat)](https://cocoapods.org/pods/ResizingTokenField)
 
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
 ## Installation
 
 ResizingTokenField is available through [CocoaPods](https://cocoapods.org). To install
@@ -29,6 +25,7 @@ pod 'ResizingTokenField'
 ## Usage
 
 The token field can be used via Interface Builder - add an empty `UIView` to your layout and set its class to `ResizingTokenField`. It can also be initialized programmatically by using `init(frame:)`.
+
 Meant to be used with auto layout; it provides intrinsic content height, meaning you only need to pin its position and width, height will change automatically as content is added and removed from the field. In Interface Builder, the Placeholder Intrinsic Size setting can be used for height.
 
 ### Configuration
