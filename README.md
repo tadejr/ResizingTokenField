@@ -5,14 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/ResizingTokenField.svg?style=flat)](https://cocoapods.org/pods/ResizingTokenField)
 [![Platform](https://img.shields.io/cocoapods/p/ResizingTokenField.svg?style=flat)](https://cocoapods.org/pods/ResizingTokenField)
 
-## Installation
+A token field implementation written in Swift 5.
 
-ResizingTokenField is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod 'ResizingTokenField'
-```
+![Example GIF](https://media.giphy.com/media/kdiLStSleRNEA7QUR7/giphy.gif)
 
 ## Features
 
@@ -21,6 +16,14 @@ pod 'ResizingTokenField'
  - Automatically updates intrinsic height as content is added and removed
  - Supports collapsing tokens into a text description
  - Allows providing a custom `UICollectionViewCell` for tokens
+
+## Installation
+
+ResizingTokenField is available through [CocoaPods](https://cocoapods.org). To install it, simply add the following line to your Podfile:
+
+```ruby
+pod 'ResizingTokenField'
+```
 
 ## Usage
 
