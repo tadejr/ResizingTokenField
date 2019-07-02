@@ -10,8 +10,9 @@ import UIKit
 
 public protocol ResizingTokenFieldDelegate: AnyObject {
     
-    /// Return `true` to allow the token field to collapse tokens.
-    /// This is called when token field editing ends.
+    /// Return `true` to allow `tokenField` to collapse tokens.
+    /// This will only be called when tokens are collapsed by internal logic.
+    /// For example, when text field editing ends.
     /// Required.
     ///
     /// - Parameter tokenField: Token field wanting to collapse tokens.
@@ -24,6 +25,22 @@ public protocol ResizingTokenFieldDelegate: AnyObject {
     /// - Parameter tokenField: Token field showing the text.
     /// - Returns: Text to show instead of the collapsed tokens.
     func resizingTokenFieldCollapsedTokensText(_ tokenField: ResizingTokenField) -> String?
+    
+    /// Called before token field tokens collapse or expand.
+    /// Optional.
+    ///
+    /// - Parameters:
+    ///   - tokenField: Token field.
+    ///   - areTokensCollapsed: Boolean value indicating if tokens will be collapsed or expanded.
+    func resizingTokenField(_ tokenField: ResizingTokenField, willToggleTokensCollapsed areTokensCollapsed: Bool)
+    
+    /// Called after token field tokens collapse or expand.
+    /// Optional.
+    ///
+    /// - Parameters:
+    ///   - tokenField: Token field.
+    ///   - areTokensCollapsed: Boolean value indicating if tokens were collapsed or expanded.
+    func resizingTokenField(_ tokenField: ResizingTokenField, didToggleTokensCollapsed areTokensCollapsed: Bool)
     
     /// Called when token field is about to change its height constraint constant.
     /// Optional.
@@ -75,6 +92,8 @@ public protocol ResizingTokenFieldDelegate: AnyObject {
 /// Default implementations for optional methods.
 public extension ResizingTokenFieldDelegate {
     
+    func resizingTokenField(_ tokenField: ResizingTokenField, willToggleTokensCollapsed areTokensCollapsed: Bool) {}
+    func resizingTokenField(_ tokenField: ResizingTokenField, didToggleTokensCollapsed areTokensCollapsed: Bool) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, willChangeHeight newHeight: CGFloat) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, didChangeHeight newHeight: CGFloat) {}
     func resizingTokenField(_ tokenField: ResizingTokenField, didEditText newText: String?) {}

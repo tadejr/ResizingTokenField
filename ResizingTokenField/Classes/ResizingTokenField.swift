@@ -10,9 +10,6 @@ import UIKit
 
 open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionViewDelegate, ResizingTokenFieldFlowLayoutDelegate {
     
-    /// List of currently displayed tokens.
-    public var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
-    
     // MARK: - Configuration
     
     /// Height of items.
@@ -70,6 +67,14 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
             }
         }
     }
+    
+    // MARK: Tokens
+    
+    /// List of currently displayed tokens.
+    public var tokens: [ResizingTokenFieldToken] { return viewModel.tokens }
+    
+    /// Indicates if tokens are currently collapsed or expanded.
+    public var areTokensCollapsed: Bool { return viewModel.areTokensCollapsed }
     
     // MARK: Text field
     
@@ -227,22 +232,27 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     
     // MARK: - First responder
     
-    override open func becomeFirstResponder() -> Bool {
+    private var currentFirstResponderCell: UICollectionViewCell? {
+        return collectionView.visibleCells.first(where: {
+            $0.isFirstResponder || ($0 as? ResizingTokenFieldTokenCell)?.isBecomingFirstResponder == true
+        })
+    }
+    
+    open override var isFirstResponder: Bool {
+        return currentFirstResponderCell != nil
+    }
+    
+    open override func becomeFirstResponder() -> Bool {
         super.becomeFirstResponder()
         return textField?.becomeFirstResponder() == true
     }
     
-    override open func resignFirstResponder() -> Bool {
+    open override func resignFirstResponder() -> Bool {
         super.resignFirstResponder()
         if let textField = self.textField, textField.isFirstResponder {
             return textField.resignFirstResponder()
-        } else {
-            for cell in collectionView.visibleCells {
-                guard let cell = cell as? ResizingTokenFieldTokenCell else { continue }
-                if cell.isFirstResponder {
-                    return cell.resignFirstResponder()
-                }
-            }
+        } else if let tokenCell = currentFirstResponderCell as? ResizingTokenFieldTokenCell {
+            return tokenCell.resignFirstResponder()
         }
         
         return false
@@ -372,16 +382,39 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     
     // MARK: - Collapse/expand tokens
     
-    private func collapseTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+    /// Collapses tokens and resigns first responder.
+    ///
+    /// - Parameters:
+    ///   - animated: If `true` changes will be animated.
+    ///   - completion: Completion handler.
+    public func collapseTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        delegate?.resizingTokenField(self, willToggleTokensCollapsed: true)
+        if let cell = currentFirstResponderCell {
+            cell.resignFirstResponder()
+        }
         textField?.text = delegate?.resizingTokenFieldCollapsedTokensText(self)
+        
         let indexPaths = viewModel.toggle(areTokensCollapsed: true)
-        removeItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
+        removeItems(atIndexPaths: indexPaths, animated: animated, completion: { [weak self] (finished: Bool) in
+            guard let self = self else { return }
+            self.delegate?.resizingTokenField(self, didToggleTokensCollapsed: true)
+        })
     }
     
-    private func expandTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+    /// Expands tokens.
+    ///
+    /// - Parameters:
+    ///   - animated: If `true` changes will be animated.
+    ///   - completion: Completion handler.
+    public func expandTokens(animated: Bool, completion: ((_ finished: Bool) -> Void)?) {
+        delegate?.resizingTokenField(self, willToggleTokensCollapsed: false)
         textField?.text = nil
+        
         let indexPaths = viewModel.toggle(areTokensCollapsed: false)
-        insertItems(atIndexPaths: indexPaths, animated: animated, completion: completion)
+        insertItems(atIndexPaths: indexPaths, animated: animated, completion: { [weak self] (finished: Bool) in
+            guard let self = self else { return }
+            self.delegate?.resizingTokenField(self, didToggleTokensCollapsed: false)
+        })
     }
     
     private func updateCollapsedTextIfNeeded() {
@@ -473,14 +506,11 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     }
     
     @objc private func textFieldEditingDidEnd(_ textField: UITextField) {
+        // Do not try to collapse if first responder moved from the text field to a token cell.
+        let isTokenCellFirstResponder: Bool = (currentFirstResponderCell as? ResizingTokenFieldTokenCell) != nil
+        guard !isTokenCellFirstResponder else { return }
         if delegate?.resizingTokenFieldShouldCollapseTokens(self) == true {
-            let isTokenFirstResponder: Bool = collectionView.visibleCells.contains(where: {
-                $0.isFirstResponder || ($0 as? ResizingTokenFieldTokenCell)?.isBecomingFirstResponder == true
-            })
-            
-            if !isTokenFirstResponder {
-                collapseTokens(animated: shouldCollapseTokensAnimated, completion: nil)
-            }
+            collapseTokens(animated: shouldCollapseTokensAnimated, completion: nil)
         }
     }
     

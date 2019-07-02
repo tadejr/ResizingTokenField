@@ -23,15 +23,15 @@ open class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
     
     private(set) var isBecomingFirstResponder: Bool = false
     
-    override open var canBecomeFirstResponder: Bool {
+    open override var canBecomeFirstResponder: Bool {
         return true
     }
     
-    override open var canResignFirstResponder: Bool {
+    open override var canResignFirstResponder: Bool {
         return true
     }
     
-    override open func becomeFirstResponder() -> Bool {
+    open override func becomeFirstResponder() -> Bool {
         isBecomingFirstResponder = true
         super.becomeFirstResponder()
         isBecomingFirstResponder = false
@@ -39,7 +39,7 @@ open class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
         return true
     }
     
-    override open func resignFirstResponder() -> Bool {
+    open override func resignFirstResponder() -> Bool {
         super.resignFirstResponder()
         isBecomingFirstResponder = false
         isSelected = false

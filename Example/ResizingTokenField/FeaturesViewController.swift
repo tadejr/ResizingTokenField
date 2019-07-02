@@ -130,8 +130,12 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         tokenField.isShowingLabel ? tokenField.hideLabel(animated: animateSwitch.isOn) : tokenField.showLabel(animated: animateSwitch.isOn)
     }
     
-    @IBAction func didTapAddTokenButton(_ sender: UIButton) {
-        tokenField.append(tokens: [Token(title: randomTitle)], animated: animateSwitch.isOn, completion: nil)
+    @IBAction func didTapToggleCollapsedButton(_ sender: UIButton) {
+        if tokenField.areTokensCollapsed {
+            tokenField.expandTokens(animated: animateSwitch.isOn, completion: nil)
+        } else {
+            tokenField.collapseTokens(animated: animateSwitch.isOn, completion: nil)
+        }
     }
     
     @IBAction func didTapAddMultipleTokensButton(_ sender: UIButton) {

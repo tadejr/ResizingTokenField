@@ -23,9 +23,6 @@ private class DeleteDetectingTextField: UITextField {
 
 class TextFieldCell: UICollectionViewCell {
     
-    /// Implement to handle text field changes.
-    var onTextFieldEditingChanged: ((String?) -> Void)?
-    
     /// Implement to handle delete backward when empty.
     var onDeleteBackwardWhenEmpty: (() -> ())?
     
@@ -55,18 +52,20 @@ class TextFieldCell: UICollectionViewCell {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+    // MARK: First responder
+    
+    override var isFirstResponder: Bool {
+        return textField.isFirstResponder
     }
     
-    // MARK: - Handling text field changes
+    override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
+        return textField.becomeFirstResponder()
+    }
     
-    @objc func textFieldEditingChanged(textField: UITextField) {
-        if textField == self.textField {
-            onTextFieldEditingChanged?(textField.text)
-        }
+    override func resignFirstResponder() -> Bool {
+        super.resignFirstResponder()
+        return textField.resignFirstResponder()
     }
     
 }

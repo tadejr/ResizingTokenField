@@ -155,9 +155,9 @@ editing ends</string>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBu-Yf-uUf">
                                                         <rect key="frame" x="199" y="0.0" width="199" height="30"/>
-                                                        <state key="normal" title="Add Token"/>
+                                                        <state key="normal" title="Toggle Collapsed"/>
                                                         <connections>
-                                                            <action selector="didTapAddTokenButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GOr-Jz-6xI"/>
+                                                            <action selector="didTapToggleCollapsedButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jcw-K9-rg9"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
