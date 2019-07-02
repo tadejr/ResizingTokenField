@@ -12,7 +12,7 @@ public protocol ResizingTokenFieldDelegate: AnyObject {
     
     /// Return `true` to allow `tokenField` to collapse tokens.
     /// This will only be called when tokens are collapsed by internal logic.
-    /// For example, when text field editing ends.
+    /// For example, when token field editing ends.
     /// Required.
     ///
     /// - Parameter tokenField: Token field wanting to collapse tokens.

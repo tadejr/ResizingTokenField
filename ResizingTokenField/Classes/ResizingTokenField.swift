@@ -455,6 +455,7 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     private func populate(tokenCell: ResizingTokenFieldTokenCell, atIndexPath indexPath: IndexPath) {
         guard let token = viewModel.token(atIndexPath: indexPath) else {
             tokenCell.onRemove = nil
+            tokenCell.onResignFirstResponder = nil
             return
         }
         
@@ -471,6 +472,16 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
             self.remove(tokens: [token], animated: self.shouldTextInputRemoveTokensAnimated)
             _ = self.textField?.becomeFirstResponder()
             self.text = text
+        }
+        tokenCell.onResignFirstResponder = { [weak self] in
+            guard let self = self else { return }
+            guard self.delegate?.resizingTokenFieldShouldCollapseTokens(self) == true else { return }
+            
+            // Do not try to collapse if first responder moved to a token cell.
+            let isTextFieldFirstResponder: Bool = self.textField?.isFirstResponder == true
+            if !isTextFieldFirstResponder {
+                self.collapseTokens(animated: self.shouldCollapseTokensAnimated, completion: nil)
+            }
         }
     }
     
@@ -512,10 +523,11 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     }
     
     @objc private func textFieldEditingDidEnd(_ textField: UITextField) {
-        // Do not try to collapse if first responder moved from the text field to a token cell.
+        guard delegate?.resizingTokenFieldShouldCollapseTokens(self) == true else { return }
+        
+        // Do not try to collapse if first responder moved to a token cell.
         let isTokenCellFirstResponder: Bool = (currentFirstResponderCell as? ResizingTokenFieldTokenCell) != nil
-        guard !isTokenCellFirstResponder else { return }
-        if delegate?.resizingTokenFieldShouldCollapseTokens(self) == true {
+        if !isTokenCellFirstResponder {
             collapseTokens(animated: shouldCollapseTokensAnimated, completion: nil)
         }
     }

@@ -18,6 +18,8 @@ open class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
     /// Called when this token cell should be removed, usually due to user tapping backspace.
     var onRemove: ((String?) -> Void)?
     
+    /// Called when token cell is asked to resign first responder.
+    var onResignFirstResponder: (() -> Void)?
     
     // MARK: UIResponder
     
@@ -43,6 +45,7 @@ open class ResizingTokenFieldTokenCell: UICollectionViewCell, UIKeyInput {
         super.resignFirstResponder()
         isBecomingFirstResponder = false
         isSelected = false
+        onResignFirstResponder?()
         return true
     }
     
