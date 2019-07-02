@@ -78,8 +78,8 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     
     // MARK: Text field
     
-    /// Reference to the current text field instance, or nil if no text field is loaded.
-    /// The internal collection view cell for this text field is reloaded as few times as possible, but this reference might still change.
+    /// Reference to the current text field instance, or `nil` if no text field is loaded.
+    /// The internal collection view cell for this text field is reloaded as few times as possible, but this reference can still change occasionally.
     public var textField: UITextField? { return (collectionView.cellForItem(at: viewModel.textFieldCellIndexPath) as? TextFieldCell)?.textField }
     
     /// Text color for the text field.
@@ -100,6 +100,11 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     /// Text field return key type.
     public var preferredTextFieldReturnKeyType: UIReturnKeyType = .default {
         didSet { textField?.returnKeyType = preferredTextFieldReturnKeyType }
+    }
+    
+    /// Text field `enablesReturnKeyAutomatically` flag.
+    public var preferredTextFieldEnablesReturnKeyAutomatically: Bool = false {
+        didSet { textField?.enablesReturnKeyAutomatically = preferredTextFieldEnablesReturnKeyAutomatically }
     }
     
     /// Placeholder shown by the text field.
@@ -484,6 +489,7 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
         textFieldCell.textField.placeholder = placeholder
         textFieldCell.textField.font = viewModel.font
         textFieldCell.textField.returnKeyType = preferredTextFieldReturnKeyType
+        textFieldCell.textField.enablesReturnKeyAutomatically = preferredTextFieldEnablesReturnKeyAutomatically
         textFieldCell.textField.delegate = textFieldDelegate
         textFieldCell.textField.textColor = textFieldTextColor
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)

@@ -37,6 +37,7 @@ class FeaturesViewController: UIViewController, UITextFieldDelegate, ResizingTok
         tokenField.layer.borderWidth = 1
         tokenField.layer.borderColor = UIColor.darkGray.cgColor
         tokenField.preferredTextFieldReturnKeyType = .done
+        tokenField.preferredTextFieldEnablesReturnKeyAutomatically = true
         tokenField.delegate = self
         tokenField.textFieldDelegate = self
         tokenField.shouldTextInputRemoveTokensAnimated = animateSwitch.isOn
