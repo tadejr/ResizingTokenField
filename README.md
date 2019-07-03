@@ -1,6 +1,6 @@
 # ResizingTokenField
 
-[![CI Status](https://img.shields.io/travis/razborsek.tadej@gmail.com/ResizingTokenField.svg?style=flat)](https://travis-ci.org/razborsek.tadej@gmail.com/ResizingTokenField)
+[![Build Status](https://img.shields.io/travis/tadejr/ResizingTokenField.svg?style=flat)](https://travis-ci.org/tadejr/ResizingTokenField)
 [![Version](https://img.shields.io/cocoapods/v/ResizingTokenField.svg?style=flat)](https://cocoapods.org/pods/ResizingTokenField)
 [![License](https://img.shields.io/cocoapods/l/ResizingTokenField.svg?style=flat)](https://cocoapods.org/pods/ResizingTokenField)
 [![Platform](https://img.shields.io/cocoapods/p/ResizingTokenField.svg?style=flat)](https://cocoapods.org/pods/ResizingTokenField)
