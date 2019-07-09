@@ -19,10 +19,20 @@ A token field implementation written in Swift 5.
 
 ## Installation
 
-ResizingTokenField is available through [CocoaPods](https://cocoapods.org). To install it, simply add the following line to your Podfile:
+### Cocoapods
+
+ResizingTokenField is available through [CocoaPods](https://cocoapods.org). To install it, add the following to your `Podfile`:
 
 ```ruby
-pod 'ResizingTokenField'
+pod 'ResizingTokenField', '~> 0.1.1'
+```
+
+### Carthage
+
+To install via [Carthage](https://github.com/Carthage/Carthage), add the following to your `Cartfile`:
+
+```ogdl
+github "tadejr/ResizingTokenField" "0.1.1"
 ```
 
 ## Usage
