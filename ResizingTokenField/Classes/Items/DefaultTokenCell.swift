@@ -43,8 +43,12 @@ class DefaultTokenCell: ResizingTokenFieldTokenCell {
         
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textAlignment = .center
         titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        titleLabel.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        
+        titleLabel.lineBreakMode = .byTruncatingMiddle
     }
     
     // MARK: - Configuration

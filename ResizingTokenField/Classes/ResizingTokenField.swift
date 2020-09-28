@@ -551,11 +551,20 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
         case Constants.Identifier.tokenCell:
             if let token = viewModel.token(atIndexPath: indexPath) {
                 if let delegate = customCellDelegate {
-                    return CGSize(width: delegate.resizingTokenField(self, tokenCellWidthForToken: token),
+                    var width = delegate.resizingTokenField(self, tokenCellWidthForToken: token)
+                    if width > collectionView.frame.size.width {
+                        width = collectionView.frame.size.width - (2 * Constants.Default.defaultTokenLeftRightPadding)
+                    }
+                    
+                    return CGSize(width: width,
                                   height: itemHeight)
                 }
+                var size = viewModel.defaultTokenCellSize(forToken: token)
+                if size.width > collectionView.frame.size.width {
+                    size.width = collectionView.frame.size.width - (2 * Constants.Default.defaultTokenLeftRightPadding)
+                }
                 
-                return viewModel.defaultTokenCellSize(forToken: token)
+                return size
             }
         default:
             break
