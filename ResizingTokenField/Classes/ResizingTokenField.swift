@@ -106,6 +106,21 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     public var preferredTextFieldEnablesReturnKeyAutomatically: Bool = false {
         didSet { textField?.enablesReturnKeyAutomatically = preferredTextFieldEnablesReturnKeyAutomatically }
     }
+
+	/// Text field Keyboard type.
+	public var preferredTextFieldKeyboardType: UIKeyboardType = .default {
+		didSet { textField?.keyboardType = preferredTextFieldKeyboardType }
+	}
+
+	/// Text field autocorrection type.
+	public var preferedTextFieldAutoCorrectionType: UITextAutocorrectionType = .no {
+		didSet { textField?.autocorrectionType = preferedTextFieldAutoCorrectionType }
+	}
+
+	/// Text field autocapitalization type.
+	public var preferedTextFieldAutoCapitalizationType: UITextAutocapitalizationType = .none {
+		didSet { textField?.autocapitalizationType = preferedTextFieldAutoCapitalizationType }
+	}
     
     /// Placeholder shown by the text field.
     public var placeholder: String? {
@@ -497,6 +512,9 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
         textFieldCell.textField.font = viewModel.font
         textFieldCell.textField.returnKeyType = preferredTextFieldReturnKeyType
         textFieldCell.textField.enablesReturnKeyAutomatically = preferredTextFieldEnablesReturnKeyAutomatically
+		textFieldCell.textField.keyboardType = preferredTextFieldKeyboardType
+		textFieldCell.textField.autocorrectionType = preferedTextFieldAutoCorrectionType
+		textFieldCell.textField.autocapitalizationType = preferedTextFieldAutoCapitalizationType
         textFieldCell.textField.delegate = textFieldDelegate
         textFieldCell.textField.textColor = textFieldTextColor
         textFieldCell.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)

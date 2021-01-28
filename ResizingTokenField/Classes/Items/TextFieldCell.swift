@@ -42,6 +42,7 @@ class TextFieldCell: UICollectionViewCell {
         addSubview(textField)
         
         textField.autocorrectionType = .no
+		textField.autocapitalizationType = .none
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
