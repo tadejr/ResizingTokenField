@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N2t-BB-VMs">
-    <device id="retina6_5" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N2t-BB-VMs">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,6 +19,9 @@
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="eqB-2j-akw" customClass="ResizingTokenField" customModule="ResizingTokenField">
                                 <rect key="frame" x="0.0" y="88" width="414" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="250" id="MRU-9y-YFe"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F7v-r8-jwy" userLabel="Separator">
                                 <rect key="frame" x="0.0" y="138" width="414" height="1"/>
@@ -34,14 +35,14 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchResultCell" textLabel="hTb-2e-rHg" style="IBUITableViewCellStyleDefault" id="H5r-bw-sSW">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="H5r-bw-sSW" id="dC7-Sh-Atu">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hTb-2e-rHg">
-                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.666666666666664"/>
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.666667938232422"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -57,6 +58,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="DuF-vy-NTk"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="F7v-r8-jwy" firstAttribute="leading" secondItem="DuF-vy-NTk" secondAttribute="leading" id="0f9-5P-8uL"/>
@@ -70,7 +72,6 @@
                             <constraint firstItem="eqB-2j-akw" firstAttribute="trailing" secondItem="DuF-vy-NTk" secondAttribute="trailing" id="u6w-Cm-dPt"/>
                             <constraint firstItem="26l-bF-qgk" firstAttribute="top" secondItem="F7v-r8-jwy" secondAttribute="bottom" id="yJG-Or-rIE"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="DuF-vy-NTk"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="26l-bF-qgk" id="xfZ-c4-Xhh"/>
@@ -95,7 +96,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="95O-sX-2GS">
                                         <rect key="frame" x="8" y="26" width="398" height="328.66666666666669"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMb-T5-zUj">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMb-T5-zUj">
                                                 <rect key="frame" x="0.0" y="0.0" width="398" height="30"/>
                                                 <state key="normal" title="Custom Token Cell Example"/>
                                                 <connections>
@@ -146,14 +147,14 @@ editing ends</string>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="u3r-Ry-IdL" userLabel="Buttons Stack View 1">
                                                 <rect key="frame" x="0.0" y="158.66666666666669" width="398" height="30"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X6-i0-sUA">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X6-i0-sUA">
                                                         <rect key="frame" x="0.0" y="0.0" width="199" height="30"/>
                                                         <state key="normal" title="Toggle Label"/>
                                                         <connections>
                                                             <action selector="didTapToggleLabelButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dS6-uc-vbm"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBu-Yf-uUf">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tBu-Yf-uUf">
                                                         <rect key="frame" x="199" y="0.0" width="199" height="30"/>
                                                         <state key="normal" title="Toggle Collapsed"/>
                                                         <connections>
@@ -165,14 +166,14 @@ editing ends</string>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="4lx-3S-udQ" userLabel="Buttons Stack View 2">
                                                 <rect key="frame" x="0.0" y="218.66666666666669" width="398" height="30"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MqD-Nm-SH9">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MqD-Nm-SH9">
                                                         <rect key="frame" x="0.0" y="0.0" width="199" height="30"/>
                                                         <state key="normal" title="Add Multiple"/>
                                                         <connections>
                                                             <action selector="didTapAddMultipleTokensButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dta-k9-kAn"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojY-Pa-5a0">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojY-Pa-5a0">
                                                         <rect key="frame" x="199" y="0.0" width="199" height="30"/>
                                                         <state key="normal" title="Remove All"/>
                                                         <connections>
@@ -197,6 +198,7 @@ editing ends</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Ycb-qq-1by" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CMc-AE-eMb"/>
@@ -205,7 +207,6 @@ editing ends</string>
                             <constraint firstItem="Ycb-qq-1by" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ggG-4V-9o9"/>
                             <constraint firstItem="95O-sX-2GS" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" constant="-16" id="yyx-4q-zt1"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Features" id="nIj-pS-H6I"/>
                     <connections>

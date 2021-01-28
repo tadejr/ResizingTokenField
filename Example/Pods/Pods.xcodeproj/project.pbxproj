@@ -10,6 +10,7 @@
 		0AFE4DBBE3E381003D6461D555410C30 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		0BABEBA47079AE86CE423157DE93E5F9 /* ResizingTokenFieldTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824EF4345DF776FA5E059915C4FF3C77 /* ResizingTokenFieldTokenCell.swift */; };
 		1E9E4D819631517F270578697BC5CA00 /* Pods-ResizingTokenField_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D2DC6B6DB90402F85991636D3C4B2ABC /* Pods-ResizingTokenField_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		21C56B8325C2DB3C003FC96D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C56B8225C2DB3C003FC96D /* Extensions.swift */; };
 		3B2DD2F16554D7E665915F910D6093FB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		43A50231877B132E86246C2A9D4DD7D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		5E4597ED2DE5433E74857C7ED21B1DB1 /* DefaultTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7431532383156D3B406D0B714BD9C12B /* DefaultTokenCell.swift */; };
@@ -49,6 +50,7 @@
 		0A3F7648F49511BE1651C727CFA7538B /* ResizingTokenFieldToken.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ResizingTokenFieldToken.swift; path = ResizingTokenField/Classes/ResizingTokenFieldToken.swift; sourceTree = "<group>"; };
 		0BEC632625F2893E8F6979BB034B72D3 /* ResizingTokenField-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ResizingTokenField-dummy.m"; sourceTree = "<group>"; };
 		218D6E533C512CABD4BBE1FFEA015AF0 /* Pods-ResizingTokenField_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ResizingTokenField_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		21C56B8225C2DB3C003FC96D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		25534C83BA6C499F19D053BFFF33E623 /* Pods-ResizingTokenField_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ResizingTokenField_Example-Info.plist"; sourceTree = "<group>"; };
 		26ED989B597013C1C4066A43332031FC /* ResizingTokenField-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ResizingTokenField-umbrella.h"; sourceTree = "<group>"; };
 		2A470761848D1BC8DF85070F4DCAB0ED /* Pods-ResizingTokenField_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ResizingTokenField_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				0A3F7648F49511BE1651C727CFA7538B /* ResizingTokenFieldToken.swift */,
 				1352AAF70B6FDA8395CCC031D621DF31 /* Items */,
 				839110EF497A08A1EFCCD7CB085D1DD8 /* Constants.swift */,
+				21C56B8225C2DB3C003FC96D /* Extensions.swift */,
 				DD117D202C115505F0B21536188FCB1F /* Pod */,
 				9D2D7765F83A885E67325AC48E3312D2 /* Support Files */,
 			);
@@ -420,6 +423,7 @@
 				F5FD8B443127E8F62E922A44ACFE29A5 /* ResizingTokenField.swift in Sources */,
 				B0F43FEAFD452CF0E769E74E2C94A25A /* ResizingTokenFieldDelegate.swift in Sources */,
 				A9D018FB360053D485061D4B3EA49563 /* ResizingTokenFieldFlowLayout.swift in Sources */,
+				21C56B8325C2DB3C003FC96D /* Extensions.swift in Sources */,
 				6B73A7B4199B0417925EB0699B4CA943 /* ResizingTokenFieldToken.swift in Sources */,
 				0BABEBA47079AE86CE423157DE93E5F9 /* ResizingTokenFieldTokenCell.swift in Sources */,
 				804601B462B314CA973DC5BD66958A6E /* ResizingTokenFieldViewModel.swift in Sources */,

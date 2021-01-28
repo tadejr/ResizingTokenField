@@ -301,7 +301,10 @@ open class ResizingTokenField: UIView, UICollectionViewDataSource, UICollectionV
     ///   - completion: Completion handler.
     public func append(tokens: [ResizingTokenFieldToken], animated: Bool = false, completion: ((_ finished: Bool) -> Void)? = nil) {
         let newIndexPaths = viewModel.append(tokens: tokens)
-        insertItems(atIndexPaths: newIndexPaths, animated: animated, completion: completion)
+		insertItems(atIndexPaths: newIndexPaths, animated: animated) { (didFinish) in
+			self.collectionView.scrollToBottom(animated: true)
+			completion?(didFinish)
+		}
     }
     
     /// Remove provided tokens, if they are in the token field.
